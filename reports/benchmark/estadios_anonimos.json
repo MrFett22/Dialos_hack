@@ -1,0 +1,78 @@
+{
+  "juegos": 2127,
+  "pct_juegos_resueltos": 0.9840150446638458,
+  "ari_semilla_min": 0.9619044109309155,
+  "ari_submuestra_80_min": 0.9158536589677386,
+  "grupos_multitemporada": 19,
+  "grupos_misma_categoria": 19,
+  "test_retest_drag": 0.9570919760889747,
+  "test_retest_magnus": 0.9879423292742171,
+  "test_retest_drag_extreme": 0.6842403646397557,
+  "test_retest_magnus_extreme": 0.9395088690825575,
+  "heterogeneidad": {
+    "drag": [
+      {
+        "categoria": "Extreme Altitude",
+        "grupos": 8,
+        "min": 0.8277264138935116,
+        "max": 0.9018829849080197,
+        "sd_observada": 0.026016426194378894,
+        "error_muestreo": 0.003855725690788106,
+        "sd_real": 0.02572912379629281,
+        "I2": 0.9780357194969296
+      },
+      {
+        "categoria": "Medium Altitude",
+        "grupos": 6,
+        "min": 0.8704498840694663,
+        "max": 0.9492572134003373,
+        "sd_observada": 0.0257030178158119,
+        "error_muestreo": 0.003061482201048966,
+        "sd_real": 0.025520040195356357,
+        "I2": 0.9858128472989028
+      },
+      {
+        "categoria": "No Altitude",
+        "grupos": 11,
+        "min": 0.9709860579187337,
+        "max": 1.063825416185039,
+        "sd_observada": 0.026565864817081706,
+        "error_muestreo": 0.0031201302227034005,
+        "sd_real": 0.026382000698825563,
+        "I2": 0.9862057680697542
+      }
+    ],
+    "magnus": [
+      {
+        "categoria": "Extreme Altitude",
+        "grupos": 8,
+        "min": 0.7171441448310321,
+        "max": 0.8365038640462714,
+        "sd_observada": 0.03564660978274617,
+        "error_muestreo": 0.007722792134530541,
+        "sd_real": 0.03479998952083474,
+        "I2": 0.9530633351276641
+      },
+      {
+        "categoria": "Medium Altitude",
+        "grupos": 6,
+        "min": 0.8151465721294727,
+        "max": 0.8594860515585487,
+        "sd_observada": 0.015874088465800747,
+        "error_muestreo": 0.0049213380161991895,
+        "sd_real": 0.015091955365372006,
+        "I2": 0.903885525117312
+      },
+      {
+        "categoria": "No Altitude",
+        "grupos": 11,
+        "min": 0.9103591466976856,
+        "max": 1.0817242555571878,
+        "sd_observada": 0.04465948282640616,
+        "error_muestreo": 0.0069716502957140455,
+        "sd_real": 0.04411196547963304,
+        "I2": 0.975630657611661
+      }
+    ]
+  }
+}

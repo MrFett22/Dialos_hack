@@ -1,0 +1,35 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "dashboard",
+      "runtimeExecutable": ".venv/Scripts/streamlit.exe",
+      "runtimeArgs": [
+        "run",
+        "dashboard/app.py",
+        "--server.port",
+        "8501",
+        "--server.headless",
+        "true"
+      ],
+      "port": 8501
+    },
+    {
+      "name": "web",
+      "runtimeExecutable": ".venv/Scripts/streamlit.exe",
+      "runtimeArgs": [
+        "run",
+        "web/app.py",
+        "--server.port",
+        "8502",
+        "--server.headless",
+        "true",
+        "--theme.base",
+        "light",
+        "--server.address",
+        "0.0.0.0"
+      ],
+      "port": 8502
+    }
+  ]
+}

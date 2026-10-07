@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Entornos virtuales
+.venv/
+venv/
+env/
+.pytools/
+.piptmp/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Datos (mantener estructura, ignorar contenido pesado)
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+# Tablas de la página (derivadas de los datos; se regeneran con el pipeline)
+data/web/*
+!data/web/README.md
+
+# Testing / caching
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+
+# Dependencias vendorizadas antiguas (reemplazadas por .venv + requirements-lock.txt)
+.pytools_bayes/
+
+# R
+.Rhistory
+
+# Artefactos pesados (reproducibles con src/models/bayesian_hierarchical.py y causal_forest.py)
+src/models/artifacts/*.nc
+src/models/artifacts/causal_forest.pkl

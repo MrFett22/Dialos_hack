@@ -1,0 +1,359 @@
+{
+  "ratios": [
+    {
+      "altitude_category": "No Altitude",
+      "AutoPitchType": "__all__",
+      "drag_ratio": 1.0,
+      "magnus_ratio": 1.0,
+      "n_groups": NaN
+    },
+    {
+      "altitude_category": "Medium Altitude",
+      "AutoPitchType": "__all__",
+      "drag_ratio": 0.9058708104048757,
+      "magnus_ratio": 0.8340023958727787,
+      "n_groups": 1832.0
+    },
+    {
+      "altitude_category": "Medium Altitude",
+      "AutoPitchType": "Changeup",
+      "drag_ratio": 0.9044891293009982,
+      "magnus_ratio": 0.7906790193228104,
+      "n_groups": 243.0
+    },
+    {
+      "altitude_category": "Medium Altitude",
+      "AutoPitchType": "Curveball",
+      "drag_ratio": 0.9072785546148028,
+      "magnus_ratio": 0.820833085744612,
+      "n_groups": 162.0
+    },
+    {
+      "altitude_category": "Medium Altitude",
+      "AutoPitchType": "Cutter",
+      "drag_ratio": 0.923003156944742,
+      "magnus_ratio": 0.8681368811214474,
+      "n_groups": 74.0
+    },
+    {
+      "altitude_category": "Medium Altitude",
+      "AutoPitchType": "Four-Seam",
+      "drag_ratio": 0.8883479081050453,
+      "magnus_ratio": 0.8417194248543239,
+      "n_groups": 587.0
+    },
+    {
+      "altitude_category": "Medium Altitude",
+      "AutoPitchType": "Sinker",
+      "drag_ratio": 0.8925819268679811,
+      "magnus_ratio": 0.8339100686962513,
+      "n_groups": 309.0
+    },
+    {
+      "altitude_category": "Medium Altitude",
+      "AutoPitchType": "Slider",
+      "drag_ratio": 0.9314218497146923,
+      "magnus_ratio": 0.8400056508545846,
+      "n_groups": 443.0
+    },
+    {
+      "altitude_category": "Extreme Altitude",
+      "AutoPitchType": "__all__",
+      "drag_ratio": 0.853593615787091,
+      "magnus_ratio": 0.7700619509621773,
+      "n_groups": 2165.0
+    },
+    {
+      "altitude_category": "Extreme Altitude",
+      "AutoPitchType": "Changeup",
+      "drag_ratio": 0.8536958111978717,
+      "magnus_ratio": 0.7120413923055501,
+      "n_groups": 271.0
+    },
+    {
+      "altitude_category": "Extreme Altitude",
+      "AutoPitchType": "Curveball",
+      "drag_ratio": 0.8610930460897182,
+      "magnus_ratio": 0.7399672046402791,
+      "n_groups": 170.0
+    },
+    {
+      "altitude_category": "Extreme Altitude",
+      "AutoPitchType": "Cutter",
+      "drag_ratio": 0.8796936503350319,
+      "magnus_ratio": 0.8208052978039384,
+      "n_groups": 80.0
+    },
+    {
+      "altitude_category": "Extreme Altitude",
+      "AutoPitchType": "Four-Seam",
+      "drag_ratio": 0.8355103287183503,
+      "magnus_ratio": 0.7810650380348698,
+      "n_groups": 710.0
+    },
+    {
+      "altitude_category": "Extreme Altitude",
+      "AutoPitchType": "Sinker",
+      "drag_ratio": 0.8364277472488556,
+      "magnus_ratio": 0.763886742103826,
+      "n_groups": 384.0
+    },
+    {
+      "altitude_category": "Extreme Altitude",
+      "AutoPitchType": "Slider",
+      "drag_ratio": 0.8946362481734823,
+      "magnus_ratio": 0.7934441994661507,
+      "n_groups": 533.0
+    }
+  ],
+  "validation": [
+    {
+      "categoria": "Medium Altitude",
+      "feature": "InducedVertBreak",
+      "n_grupos": 967,
+      "cambio_observado_mediana": -1.67732,
+      "cambio_predicho_mediana": -1.8346280099006709,
+      "corr_entre_grupos": 0.7471113027230698
+    },
+    {
+      "categoria": "Medium Altitude",
+      "feature": "HorzBreak",
+      "n_grupos": 967,
+      "cambio_observado_mediana": -1.261295,
+      "cambio_predicho_mediana": -1.0847077982159865,
+      "corr_entre_grupos": 0.8366771513536528
+    },
+    {
+      "categoria": "Medium Altitude",
+      "feature": "ZoneSpeed",
+      "n_grupos": 967,
+      "cambio_observado_mediana": 0.902985000000001,
+      "cambio_predicho_mediana": 0.7618409660574628,
+      "corr_entre_grupos": 0.11619173374126684
+    },
+    {
+      "categoria": "Medium Altitude",
+      "feature": "VertApprAngle",
+      "n_grupos": 967,
+      "cambio_observado_mediana": -0.07837899999999998,
+      "cambio_predicho_mediana": -0.11646874432762777,
+      "corr_entre_grupos": 0.4172908646023855
+    },
+    {
+      "categoria": "Medium Altitude",
+      "feature": "ZoneTime",
+      "n_grupos": 967,
+      "cambio_observado_mediana": -0.0032150000000000234,
+      "cambio_predicho_mediana": -0.001968185626826102,
+      "corr_entre_grupos": 0.023011012799446458
+    },
+    {
+      "categoria": "Medium Altitude",
+      "feature": "VertBreak",
+      "n_grupos": 967,
+      "cambio_observado_mediana": -1.2990350000000035,
+      "cambio_predicho_mediana": -1.5457687078694953,
+      "corr_entre_grupos": 0.6303028263592276
+    },
+    {
+      "categoria": "Extreme Altitude",
+      "feature": "InducedVertBreak",
+      "n_grupos": 1061,
+      "cambio_observado_mediana": -2.2011400000000005,
+      "cambio_predicho_mediana": -2.638056197359223,
+      "corr_entre_grupos": 0.8055858256142884
+    },
+    {
+      "categoria": "Extreme Altitude",
+      "feature": "HorzBreak",
+      "n_grupos": 1061,
+      "cambio_observado_mediana": -1.8167300000000002,
+      "cambio_predicho_mediana": -1.5026386994058294,
+      "corr_entre_grupos": 0.8966890019025864
+    },
+    {
+      "categoria": "Extreme Altitude",
+      "feature": "ZoneSpeed",
+      "n_grupos": 1061,
+      "cambio_observado_mediana": 1.244499999999988,
+      "cambio_predicho_mediana": 1.2023592103719523,
+      "corr_entre_grupos": 0.14250702752335329
+    },
+    {
+      "categoria": "Extreme Altitude",
+      "feature": "VertApprAngle",
+      "n_grupos": 1061,
+      "cambio_observado_mediana": -0.16507449999999935,
+      "cambio_predicho_mediana": -0.1564932213663357,
+      "corr_entre_grupos": 0.48097673055652285
+    },
+    {
+      "categoria": "Extreme Altitude",
+      "feature": "ZoneTime",
+      "n_grupos": 1061,
+      "cambio_observado_mediana": -0.004234499999999974,
+      "cambio_predicho_mediana": -0.002994155101000706,
+      "corr_entre_grupos": 0.04862493945090868
+    },
+    {
+      "categoria": "Extreme Altitude",
+      "feature": "VertBreak",
+      "n_grupos": 1061,
+      "cambio_observado_mediana": -1.6395850000000038,
+      "cambio_predicho_mediana": -2.1566541163963215,
+      "corr_entre_grupos": 0.7029663261116924
+    }
+  ],
+  "identity_max_abs": 1.0000000025378597e-05,
+  "effect_runs_per_pitch": {
+    "Changeup": {
+      "point": 0.011432440416196432,
+      "lo": 0.01116182350359798,
+      "hi": 0.01168379068089253
+    },
+    "Curveball": {
+      "point": 0.007555573930962385,
+      "lo": 0.007210586834453351,
+      "hi": 0.007910938511927625
+    },
+    "Four-Seam": {
+      "point": 0.014479947484806296,
+      "lo": 0.01414165325356166,
+      "hi": 0.014794178966363584
+    },
+    "Sinker": {
+      "point": 0.0119890665178055,
+      "lo": 0.011728073186156268,
+      "hi": 0.012230436612450041
+    },
+    "Slider": {
+      "point": 0.006511305190310627,
+      "lo": 0.006393113334246004,
+      "hi": 0.006635067451930455
+    },
+    "Cutter": {
+      "point": 0.00682186106319294,
+      "lo": 0.0065406063016033526,
+      "hi": 0.007088511254917435
+    },
+    "Splitter": {
+      "point": 0.009035713458872743,
+      "lo": 0.008452437574547606,
+      "hi": 0.0095209959708708
+    }
+  },
+  "effect_all": {
+    "point": 0.010946591762295059,
+    "lo": 0.010767641337186842,
+    "hi": 0.011117593565865442
+  },
+  "antes_del_contacto_runs_per_pitch": {
+    "Changeup": {
+      "point": 0.004142220963296469,
+      "lo": 0.003970658186109309,
+      "hi": 0.0043020376303144125
+    },
+    "Curveball": {
+      "point": 0.0032367868964095856,
+      "lo": 0.0029275116472353997,
+      "hi": 0.0035315432379248624
+    },
+    "Four-Seam": {
+      "point": 0.0052004704014698465,
+      "lo": 0.00501957064502806,
+      "hi": 0.005370733716714178
+    },
+    "Sinker": {
+      "point": 0.003401682542217965,
+      "lo": 0.003276495733663331,
+      "hi": 0.003524640055338489
+    },
+    "Slider": {
+      "point": 0.0027015683099185007,
+      "lo": 0.002602691935875819,
+      "hi": 0.0028076582532982897
+    },
+    "Cutter": {
+      "point": 0.0016964335559623094,
+      "lo": 0.0015775645901916478,
+      "hi": 0.0018334881133396231
+    },
+    "Splitter": {
+      "point": 0.003999728005793067,
+      "lo": 0.0034655266560981186,
+      "hi": 0.004534077184120608
+    }
+  },
+  "shapley_runs_per_pitch": {
+    "Changeup": {
+      "sh_swing": 0.001060940496376939,
+      "sh_take": 0.00017309879455893753,
+      "sh_whiff": 0.002449549869868351,
+      "sh_foul": 0.0004586318024922472,
+      "sh_bip": 0.007290219452899977
+    },
+    "Curveball": {
+      "sh_swing": 0.001086059350552515,
+      "sh_take": -5.149108574984393e-05,
+      "sh_whiff": 0.0018702783158641397,
+      "sh_foul": 0.0003319403157427778,
+      "sh_bip": 0.004318787034552793
+    },
+    "Four-Seam": {
+      "sh_swing": 0.0019137950861755667,
+      "sh_take": 0.0002783349933694922,
+      "sh_whiff": 0.0016372543106614916,
+      "sh_foul": 0.0013710860112632966,
+      "sh_bip": 0.009279477083336438
+    },
+    "Sinker": {
+      "sh_swing": 0.002106803822702127,
+      "sh_take": 0.00046223577292483185,
+      "sh_whiff": 0.0004416964113513716,
+      "sh_foul": 0.0003909465352396346,
+      "sh_bip": 0.00858738397558752
+    },
+    "Slider": {
+      "sh_swing": 0.0013108117616996255,
+      "sh_take": 8.375255947837156e-05,
+      "sh_whiff": 0.0012025832695367986,
+      "sh_foul": 0.00010442071920370663,
+      "sh_bip": 0.0038097368803921327
+    },
+    "Cutter": {
+      "sh_swing": 0.0009520813341797179,
+      "sh_take": 4.461550700368648e-05,
+      "sh_whiff": 0.0005574788307262633,
+      "sh_foul": 0.00014225788405264288,
+      "sh_bip": 0.005125427507230627
+    },
+    "Splitter": {
+      "sh_swing": 0.0012390782210044361,
+      "sh_take": 9.75657293551032e-05,
+      "sh_whiff": 0.002328151598841207,
+      "sh_foul": 0.00033493245659232203,
+      "sh_bip": 0.0050359854530796725
+    }
+  },
+  "observed_gap_runs_per_100": {
+    "No Altitude": {
+      "realized": -0.7196879327150171,
+      "obs": -0.5098121648725281,
+      "no": -0.5223065066491149,
+      "ext": 0.6081593718484966
+    },
+    "Medium Altitude": {
+      "realized": 0.4712541794826522,
+      "obs": 0.24375634485435863,
+      "no": -0.5020420487561821,
+      "ext": 0.5733078325645912
+    },
+    "Extreme Altitude": {
+      "realized": 0.7621932446472928,
+      "obs": 0.5854342046002994,
+      "no": -0.45199113467996727,
+      "ext": 0.6029383592053688
+    }
+  },
+  "points_per_run_per_pitch": 1375.4682524811017
+}

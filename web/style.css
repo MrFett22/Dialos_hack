@@ -1,0 +1,96 @@
+/* Pitching+ para ambientes de altitud — estilo propio sobre Streamlit */
+:root {
+  --navy: #13213c;
+  --ink: #1d2433;
+  --muted: #5b6577;
+  --line: #e3e7ef;
+  --bg-soft: #f5f7fb;
+  --no: #4c78a8;
+  --med: #f2a541;
+  --ext: #d1495b;
+  --accent: #d1495b;
+}
+
+.block-container { padding-top: 1.2rem; max-width: 1280px; }
+h1, h2, h3 { color: var(--navy); letter-spacing: -0.01em; }
+h2 { margin-top: 2.2rem !important; padding-top: 0.6rem; border-top: 1px solid var(--line); }
+
+.hero {
+  background: linear-gradient(120deg, #13213c 0%, #1f3a63 55%, #8c2f3e 100%);
+  color: #fff; border-radius: 18px; padding: 2.4rem 2.6rem 2.1rem; margin-bottom: 1.2rem;
+}
+.hero .kicker { text-transform: uppercase; font-size: 0.78rem; letter-spacing: 0.14em; opacity: 0.8; }
+.hero h1 { color: #fff; font-size: 2.6rem; line-height: 1.12; margin: 0.4rem 0 0.8rem; border: none; }
+.hero .question { font-size: 1.25rem; opacity: 0.95; max-width: 860px; }
+.hero .chips { margin-top: 1.2rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.hero .chip { background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.25); border-radius: 999px;
+  padding: 0.25rem 0.8rem; font-size: 0.85rem; }
+
+.bigidea {
+  border-left: 6px solid var(--accent); background: var(--bg-soft); border-radius: 0 14px 14px 0;
+  padding: 1.3rem 1.6rem; margin: 1rem 0 1.4rem; font-size: 1.28rem; line-height: 1.45; color: var(--navy);
+}
+.bigidea ul { font-size: 1rem; margin-top: 0.6rem; }
+
+.badge { display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  border-radius: 6px; padding: 0.15rem 0.5rem; margin-right: 0.35rem; vertical-align: middle; }
+.b-obs { background: #e3f4ea; color: #1d6b3c; }
+.b-asoc { background: #e2f3f4; color: #17606a; }
+.b-pred { background: #e4ecfa; color: #1f4b99; }
+.b-sim { background: #efe6fa; color: #5b2d91; }
+.b-expl { background: #fdeedd; color: #9a5300; }
+.b-hip { background: #eceef2; color: #4b5563; }
+.b-lim { background: #fbe4e6; color: #a1283a; }
+
+.card { border: 1px solid var(--line); border-radius: 14px; padding: 1rem 1.1rem; background: #fff; height: 100%; }
+.card .label { color: var(--muted); font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.06em; }
+.card .value { font-size: 2rem; font-weight: 700; color: var(--navy); line-height: 1.15; }
+.card .sub { color: var(--muted); font-size: 0.86rem; margin-top: 0.2rem; }
+.card.hero-score { border: 2px solid var(--accent); background: linear-gradient(180deg, #fff 0%, #fff6f7 100%); }
+.card.hero-score .value { font-size: 3.4rem; color: var(--accent); }
+
+.stat { text-align: left; }
+.stat .num { font-size: 2.1rem; font-weight: 800; color: var(--navy); }
+.stat .num.neg { color: var(--no); }
+.stat .num.pos { color: var(--ext); }
+.stat .cap { color: var(--muted); font-size: 0.9rem; }
+
+.warnbox { border: 1px solid #f0c36d; background: #fff8e8; border-radius: 12px; padding: 0.9rem 1.1rem; color: #6b4b00; }
+.dangerbox { border: 2px solid #d1495b; background: #fff1f2; border-radius: 12px; padding: 1rem 1.2rem; color: #7a1d2b; }
+.okbox { border: 1px solid #9fd3b0; background: #f1fbf4; border-radius: 12px; padding: 0.9rem 1.1rem; color: #1d5a35; }
+.formula { font-family: "JetBrains Mono", Consolas, monospace; background: var(--bg-soft); border-radius: 10px; padding: 0.8rem 1rem;
+  white-space: pre; overflow-x: auto; font-size: 0.9rem; }
+.pipeline { display: flex; flex-wrap: wrap; align-items: stretch; gap: 0.5rem; margin: 0.6rem 0 1rem; }
+.pipeline .node { flex: 1 1 150px; border: 1px solid var(--line); border-radius: 12px; padding: 0.7rem 0.8rem; background: #fff; }
+.pipeline .node b { color: var(--navy); }
+.pipeline .node small { color: var(--muted); }
+.pipeline .arrow { align-self: center; color: var(--muted); font-size: 1.4rem; }
+.foot { color: var(--muted); font-size: 0.82rem; }
+
+/* Pirámide conceptual del resultado de un pitch (explicación visual, no ecuación) */
+.pyramid { display: flex; flex-direction: column; align-items: center; gap: 0.35rem; margin: 0.6rem 0 0.4rem; }
+.pyramid .lvl { border-radius: 10px; padding: 0.55rem 0.9rem; text-align: center; color: #fff; font-weight: 600; font-size: 0.95rem; }
+.pyramid .lvl small { display: block; font-weight: 400; opacity: 0.9; font-size: 0.78rem; }
+.pyramid .arrow { color: var(--muted); font-size: 0.9rem; line-height: 1; }
+.l1 { background: #1d6b3c; width: 56%; } .l2 { background: #4c8a5c; width: 66%; } .l3 { background: #8a9a5b; width: 76%; }
+.l4 { background: #e08a3c; width: 86%; } .l5 { background: #d1495b; width: 96%; }
+.ctx { border: 1px solid var(--line); border-left: 5px solid var(--no); border-radius: 0 10px 10px 0; background: #fff; padding: 0.6rem 0.9rem;
+  margin: 0.4rem 0; font-size: 0.92rem; color: var(--ink); }
+.ctx.hot { border-left-color: var(--ext); }
+.ctx .tag { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.mini { border: 1px solid var(--line); border-radius: 12px; padding: 0.6rem 0.8rem; background: #fff; }
+.mini .label { color: var(--muted); font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.mini .value { font-size: 1.45rem; font-weight: 700; color: var(--navy); }
+.chain { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: stretch; margin: 0.4rem 0 0.8rem; }
+.chain .step { flex: 1 1 100px; min-width: 0; border: 1px solid var(--line); border-radius: 12px; padding: 0.7rem 0.9rem; background: #fff; }
+.chain .step .t { color: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.chain .step .v { font-size: 1.3rem; font-weight: 700; color: var(--navy); }
+.chain .step.final { border: 2px solid var(--accent); }
+.chain .step.final .v { color: var(--accent); }
+.chain .op { align-self: center; color: var(--muted); font-size: 1.1rem; flex: 0 0 auto; }
+.rkcard { border: 1px solid var(--line); border-radius: 14px; padding: 0.9rem 1rem; background: #fff; }
+.rkcard .pid { font-weight: 700; color: var(--navy); }
+.rkcard .row { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 0.12rem 0; border-bottom: 1px dashed #eef1f6; }
+.rkcard .row b { color: var(--navy); }
+
+@media (max-width: 700px) { .chain .step { flex-basis: 40%; } .pyramid .lvl { width: 100% !important; } }

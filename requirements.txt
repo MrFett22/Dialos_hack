@@ -1,0 +1,15 @@
+pandas
+polars
+pyarrow
+lightgbm
+xgboost
+scikit-learn
+shap
+pymc
+arviz
+econml
+streamlit
+plotly
+matplotlib
+seaborn
+pytest

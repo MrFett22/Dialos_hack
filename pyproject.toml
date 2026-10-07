@@ -1,0 +1,39 @@
+[project]
+name = "lmb-stuff-plus"
+version = "0.1.0"
+description = "Modelo Stuff+ calibrado para la Liga Mexicana de Béisbol, con corrección por altitud (Estadio Alfredo Harp Helú, CDMX, 2,240 msnm)."
+readme = "README.md"
+requires-python = ">=3.10"
+
+dependencies = [
+    "pandas",
+    "polars",
+    "pyarrow",
+    "lightgbm",
+    "xgboost",
+    "scikit-learn",
+    "shap",
+    "pymc",
+    "arviz",
+    "econml",
+    "streamlit",
+    "plotly",
+    "matplotlib",
+    "seaborn",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
