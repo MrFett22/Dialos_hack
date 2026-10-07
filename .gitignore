@@ -21,9 +21,10 @@ data/raw/*
 !data/raw/.gitkeep
 data/processed/*
 !data/processed/.gitkeep
-# Tablas de la página (derivadas de los datos; se regeneran con el pipeline)
-data/web/*
-!data/web/README.md
+# agregados pequeños que necesita la página publicada
+!data/processed/altitude_density_ratios.parquet
+!data/processed/dashboard_count_shares.parquet
+!data/processed/dashboard_pitch_defaults.parquet
 
 # Testing / caching
 .pytest_cache/

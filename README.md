@@ -23,7 +23,7 @@ bateada vuela más. Un modelo que ignore el ambiente premia o castiga a los pitc
 - **Página:** `web/app.py` (Streamlit). Plan: [`reports/web_architecture_plan.md`](reports/web_architecture_plan.md) · Validación: [`reports/web_final_validation.md`](reports/web_final_validation.md).
 - **Capturas de toda la página, sección por sección:** [`reports/capturas_web/`](reports/capturas_web/).
 
-> Este repositorio no incluye los datos (`data/raw`, `data/processed`, `data/web`). Para correr la página hay que regenerarlos con el pipeline a partir del dataset del hackathon.
+> Este repositorio no incluye los datos crudos ni procesados (`data/raw`, `data/processed`). Solo incluye lo que necesita la página publicada: las tablas derivadas y anónimas de `data/web/` y tres agregados pequeños de `data/processed/`. La página corre en Streamlit Community Cloud con `web/app.py` como archivo principal (dependencias en `web/requirements.txt`).
 
 **Inicio**
 

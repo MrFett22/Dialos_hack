@@ -1,0 +1,926 @@
+{
+  "efectos": {
+    "whiff_swing": {
+      "no_altitude": 0.24929267296698168,
+      "medium": -0.01263279478285594,
+      "medium_ic95": [
+        -0.018122720146162632,
+        -0.007142869419549249
+      ],
+      "extreme": -0.02900842204286747,
+      "extreme_ic95": [
+        -0.034133337352211426,
+        -0.023883506733523508
+      ],
+      "crudo_extreme": -0.01715236891131822,
+      "consistencia_extreme": [
+        16,
+        16
+      ],
+      "consistencia_medium": [
+        11,
+        14
+      ]
+    },
+    "k_pa": {
+      "no_altitude": 0.20257817077718,
+      "medium": -0.02893740352959129,
+      "medium_ic95": [
+        -0.03496965627344202,
+        -0.022905150785740562
+      ],
+      "extreme": -0.04657874379287914,
+      "extreme_ic95": [
+        -0.052154894249139085,
+        -0.0410025933366192
+      ],
+      "crudo_extreme": -0.03594310368075892,
+      "consistencia_extreme": [
+        16,
+        16
+      ],
+      "consistencia_medium": [
+        14,
+        14
+      ]
+    },
+    "bip_swing": {
+      "no_altitude": 0.3783689184459223,
+      "medium": 0.02470041584810706,
+      "medium_ic95": [
+        0.018916898935974376,
+        0.030483932760239744
+      ],
+      "extreme": 0.03963366673964338,
+      "extreme_ic95": [
+        0.03438952749713425,
+        0.04487780598215251
+      ],
+      "crudo_extreme": 0.02907996874847401,
+      "consistencia_extreme": [
+        16,
+        16
+      ],
+      "consistencia_medium": [
+        14,
+        14
+      ]
+    },
+    "rv_bip": {
+      "no_altitude": 0.01450289100543517,
+      "medium": 0.05828013658902444,
+      "medium_ic95": [
+        0.04690870913391461,
+        0.06965156404413426
+      ],
+      "extreme": 0.0677962795129926,
+      "extreme_ic95": [
+        0.057607558204875536,
+        0.07798500082110965
+      ],
+      "crudo_extreme": 0.07071084115026532,
+      "consistencia_extreme": [
+        16,
+        16
+      ],
+      "consistencia_medium": [
+        14,
+        14
+      ]
+    }
+  },
+  "G": {
+    "No Altitude": {
+      "G": 0.17232425348503752,
+      "ic95": [
+        0.16767200959254216,
+        0.17641363209469546
+      ]
+    },
+    "Medium Altitude": {
+      "G": 0.21217592552994713,
+      "ic95": [
+        0.20627913418800026,
+        0.21753178354540367
+      ]
+    },
+    "Extreme Altitude": {
+      "G": 0.21806262927187042,
+      "ic95": [
+        0.21220063458936633,
+        0.22427996157989225
+      ]
+    }
+  },
+  "G_extreme_menos_no": {
+    "valor": 0.0457383757868329,
+    "ic95": [
+      0.038190095718443354,
+      0.05333179691837571
+    ]
+  },
+  "G_medium_menos_no": {
+    "valor": 0.03985167204490961,
+    "ic95": [
+      0.03271668341274288,
+      0.046431529804759925
+    ]
+  },
+  "G_aumento_relativo_extreme": 0.26542042029390966,
+  "G_por_estadio_temporada": {
+    "Medium Altitude": {
+      "mayor_que_no": 14,
+      "total": 14,
+      "valores": {
+        "ANON_STADIUM_02 · 2024": 0.24027774277261058,
+        "ANON_STADIUM_02 · 2025": 0.2346254010453593,
+        "ANON_STADIUM_05 · 2024": 0.18685047672665575,
+        "ANON_STADIUM_05 · 2025": 0.19030791863511856,
+        "ANON_STADIUM_05 · 2026": 0.21259127137681472,
+        "ANON_STADIUM_11 · 2024": 0.22315084625930093,
+        "ANON_STADIUM_11 · 2025": 0.20934476244170389,
+        "ANON_STADIUM_11 · 2026": 0.2002757025609017,
+        "ANON_STADIUM_13 · 2024": 0.1917027449056859,
+        "ANON_STADIUM_13 · 2025": 0.21728885537231116,
+        "ANON_STADIUM_13 · 2026": 0.1930129393521177,
+        "ANON_STADIUM_19 · 2024": 0.19842994715100012,
+        "ANON_STADIUM_22 · 2025": 0.22442466245832454,
+        "ANON_STADIUM_22 · 2026": 0.22342793212175127
+      }
+    },
+    "Extreme Altitude": {
+      "mayor_que_no": 16,
+      "total": 16,
+      "valores": {
+        "ANON_STADIUM_04 · 2024": 0.21553816675139334,
+        "ANON_STADIUM_04 · 2025": 0.23745814065587706,
+        "ANON_STADIUM_04 · 2026": 0.24415499614982,
+        "ANON_STADIUM_10 · 2024": 0.21085403980727616,
+        "ANON_STADIUM_10 · 2025": 0.23152893802693894,
+        "ANON_STADIUM_12 · 2024": 0.18417968142517166,
+        "ANON_STADIUM_12 · 2025": 0.1930393538675375,
+        "ANON_STADIUM_12 · 2026": 0.2030421822225668,
+        "ANON_STADIUM_14 · 2024": 0.23001658003560121,
+        "ANON_STADIUM_14 · 2025": 0.2186009622596755,
+        "ANON_STADIUM_14 · 2026": 0.25646067453230065,
+        "ANON_STADIUM_16 · 2024": 0.1887762796479567,
+        "ANON_STADIUM_23 · 2025": 0.22060265371935447,
+        "ANON_STADIUM_23 · 2026": 0.21291266271926274,
+        "ANON_STADIUM_27 · 2026": 0.22810168898914085,
+        "ANON_STADIUM_28 · 2026": 0.2079989648376927
+      }
+    }
+  },
+  "consistencia_detalle": {
+    "Medium Altitude": {
+      "whiff por swing": {
+        "betas": {
+          "ANON_STADIUM_02 · 2024": 0.0074986984998307174,
+          "ANON_STADIUM_02 · 2025": 0.004445914341608947,
+          "ANON_STADIUM_05 · 2024": -0.028226156914621093,
+          "ANON_STADIUM_05 · 2025": -0.02856837078202621,
+          "ANON_STADIUM_05 · 2026": -0.0483935292362614,
+          "ANON_STADIUM_11 · 2024": -0.011961068817629629,
+          "ANON_STADIUM_11 · 2025": -0.007147012198298373,
+          "ANON_STADIUM_11 · 2026": -0.016405458222622356,
+          "ANON_STADIUM_13 · 2024": -0.031040018828993744,
+          "ANON_STADIUM_13 · 2025": -0.02289546633552848,
+          "ANON_STADIUM_13 · 2026": -0.024947240620550745,
+          "ANON_STADIUM_19 · 2024": -0.0044215753994514715,
+          "ANON_STADIUM_22 · 2025": 0.004634142497174403,
+          "ANON_STADIUM_22 · 2026": -0.004830390253739029
+        }
+      },
+      "bola en juego por swing": {
+        "betas": {
+          "ANON_STADIUM_02 · 2024": 0.006298938572853684,
+          "ANON_STADIUM_02 · 2025": 0.014460955848069619,
+          "ANON_STADIUM_05 · 2024": 0.030211958753017014,
+          "ANON_STADIUM_05 · 2025": 0.04543466081776039,
+          "ANON_STADIUM_05 · 2026": 0.04161752840676516,
+          "ANON_STADIUM_11 · 2024": 0.015972989879788548,
+          "ANON_STADIUM_11 · 2025": 0.027254471840729443,
+          "ANON_STADIUM_11 · 2026": 0.02476854791037937,
+          "ANON_STADIUM_13 · 2024": 0.03345400227337721,
+          "ANON_STADIUM_13 · 2025": 0.02385245726193392,
+          "ANON_STADIUM_13 · 2026": 0.04079664289772834,
+          "ANON_STADIUM_19 · 2024": 0.01811963122968309,
+          "ANON_STADIUM_22 · 2025": 0.015572701307599825,
+          "ANON_STADIUM_22 · 2026": 0.030091075117342565
+        }
+      },
+      "ponche por turno": {
+        "betas": {
+          "ANON_STADIUM_02 · 2024": -0.008042386591273204,
+          "ANON_STADIUM_02 · 2025": -0.005017233043848136,
+          "ANON_STADIUM_05 · 2024": -0.03033444403055036,
+          "ANON_STADIUM_05 · 2025": -0.04362347477504233,
+          "ANON_STADIUM_05 · 2026": -0.06492353042162712,
+          "ANON_STADIUM_11 · 2024": -0.033221702487410625,
+          "ANON_STADIUM_11 · 2025": -0.032270606736226774,
+          "ANON_STADIUM_11 · 2026": -0.04508101765949061,
+          "ANON_STADIUM_13 · 2024": -0.045798838290811446,
+          "ANON_STADIUM_13 · 2025": -0.03754347496770192,
+          "ANON_STADIUM_13 · 2026": -0.06534864505775263,
+          "ANON_STADIUM_19 · 2024": -0.016065760221013345,
+          "ANON_STADIUM_22 · 2025": -0.010216464105316672,
+          "ANON_STADIUM_22 · 2026": -0.017485741477131132
+        }
+      },
+      "run value RE24 por bola en juego": {
+        "betas": {
+          "ANON_STADIUM_02 · 2024": 0.09986482225499634,
+          "ANON_STADIUM_02 · 2025": 0.08458746438535379,
+          "ANON_STADIUM_05 · 2024": 0.00647085484110904,
+          "ANON_STADIUM_05 · 2025": 0.010444559269626395,
+          "ANON_STADIUM_05 · 2026": 0.04900016835331562,
+          "ANON_STADIUM_11 · 2024": 0.07001306498824068,
+          "ANON_STADIUM_11 · 2025": 0.05424153797063088,
+          "ANON_STADIUM_11 · 2026": 0.03603001764706029,
+          "ANON_STADIUM_13 · 2024": 0.03360778905162439,
+          "ANON_STADIUM_13 · 2025": 0.07632525444902638,
+          "ANON_STADIUM_13 · 2026": 0.04026025819868354,
+          "ANON_STADIUM_19 · 2024": 0.077881561941401,
+          "ANON_STADIUM_22 · 2025": 0.09225813501618041,
+          "ANON_STADIUM_22 · 2026": 0.03456386434195281
+        }
+      }
+    },
+    "Extreme Altitude": {
+      "whiff por swing": {
+        "betas": {
+          "ANON_STADIUM_04 · 2024": -0.020461480441788416,
+          "ANON_STADIUM_04 · 2025": -0.038567801557903035,
+          "ANON_STADIUM_04 · 2026": -0.032004320410665026,
+          "ANON_STADIUM_10 · 2024": -0.025995123461780564,
+          "ANON_STADIUM_10 · 2025": -0.020733026662865812,
+          "ANON_STADIUM_12 · 2024": -0.017899077004323093,
+          "ANON_STADIUM_12 · 2025": -0.03873096830043087,
+          "ANON_STADIUM_12 · 2026": -0.038147873242970344,
+          "ANON_STADIUM_14 · 2024": -0.019146491610646816,
+          "ANON_STADIUM_14 · 2025": -0.03543031690550873,
+          "ANON_STADIUM_14 · 2026": -0.014987983777664306,
+          "ANON_STADIUM_16 · 2024": -0.03945243491587836,
+          "ANON_STADIUM_23 · 2025": -0.03896659912047215,
+          "ANON_STADIUM_23 · 2026": -0.04510755415893396,
+          "ANON_STADIUM_27 · 2026": -0.0024266849919620205,
+          "ANON_STADIUM_28 · 2026": -0.02195038014696844
+        }
+      },
+      "bola en juego por swing": {
+        "betas": {
+          "ANON_STADIUM_04 · 2024": 0.02838508772895144,
+          "ANON_STADIUM_04 · 2025": 0.041987297270731604,
+          "ANON_STADIUM_04 · 2026": 0.03870657255256735,
+          "ANON_STADIUM_10 · 2024": 0.02556189079165951,
+          "ANON_STADIUM_10 · 2025": 0.018082472691612936,
+          "ANON_STADIUM_12 · 2024": 0.07588953786373756,
+          "ANON_STADIUM_12 · 2025": 0.06409161535504088,
+          "ANON_STADIUM_12 · 2026": 0.05454281554354014,
+          "ANON_STADIUM_14 · 2024": 0.03407531227924199,
+          "ANON_STADIUM_14 · 2025": 0.04044933773845187,
+          "ANON_STADIUM_14 · 2026": 0.010153679698067188,
+          "ANON_STADIUM_16 · 2024": 0.04952749673848164,
+          "ANON_STADIUM_23 · 2025": 0.04269334295564028,
+          "ANON_STADIUM_23 · 2026": 0.06927140476364023,
+          "ANON_STADIUM_27 · 2026": 0.010527657931623796,
+          "ANON_STADIUM_28 · 2026": 0.03013345441998333
+        }
+      },
+      "ponche por turno": {
+        "betas": {
+          "ANON_STADIUM_04 · 2024": -0.04640858026841926,
+          "ANON_STADIUM_04 · 2025": -0.0507114870856169,
+          "ANON_STADIUM_04 · 2026": -0.059469727648001736,
+          "ANON_STADIUM_10 · 2024": -0.04093791025839634,
+          "ANON_STADIUM_10 · 2025": -0.029610213454143303,
+          "ANON_STADIUM_12 · 2024": -0.06366602465750339,
+          "ANON_STADIUM_12 · 2025": -0.05859641921066827,
+          "ANON_STADIUM_12 · 2026": -0.05102141668129068,
+          "ANON_STADIUM_14 · 2024": -0.039071647457997453,
+          "ANON_STADIUM_14 · 2025": -0.05047635402876909,
+          "ANON_STADIUM_14 · 2026": -0.022578411459738237,
+          "ANON_STADIUM_16 · 2024": -0.04768680630727414,
+          "ANON_STADIUM_23 · 2025": -0.050460860349698704,
+          "ANON_STADIUM_23 · 2026": -0.07322065947586245,
+          "ANON_STADIUM_27 · 2026": -0.013033408479718612,
+          "ANON_STADIUM_28 · 2026": -0.03418460090922569
+        }
+      },
+      "run value RE24 por bola en juego": {
+        "betas": {
+          "ANON_STADIUM_04 · 2024": 0.08961382016327586,
+          "ANON_STADIUM_04 · 2025": 0.08338303567118767,
+          "ANON_STADIUM_04 · 2026": 0.09672230217670254,
+          "ANON_STADIUM_10 · 2024": 0.05083159690092917,
+          "ANON_STADIUM_10 · 2025": 0.06966298370912714,
+          "ANON_STADIUM_12 · 2024": 0.019949365165358793,
+          "ANON_STADIUM_12 · 2025": 0.05092959971820408,
+          "ANON_STADIUM_12 · 2026": 0.06763795727361717,
+          "ANON_STADIUM_14 · 2024": 0.06278737688944992,
+          "ANON_STADIUM_14 · 2025": 0.04450488142999307,
+          "ANON_STADIUM_14 · 2026": 0.11355474202562751,
+          "ANON_STADIUM_16 · 2024": 0.03984065572391551,
+          "ANON_STADIUM_23 · 2025": 0.07500408241929542,
+          "ANON_STADIUM_23 · 2026": 0.07543389761844975,
+          "ANON_STADIUM_27 · 2026": 0.06594091416607799,
+          "ANON_STADIUM_28 · 2026": 0.04070458474390655
+        }
+      }
+    }
+  },
+  "dano": {
+    "por_100_no": 0.2600542005484896,
+    "por_100_medium": 1.3399237137590618,
+    "por_100_extreme": 1.6181126286982854,
+    "fraccion_por_dano_extreme": 0.9259848810019291,
+    "fraccion_por_probabilidad_extreme": 0.01268318148213158,
+    "fraccion_interaccion_extreme": 0.06133193751593939,
+    "descomposicion": {
+      "Medium": {
+        "total": 0.010798695132105723,
+        "por_probabilidad": 9.941582801344636e-05,
+        "por_dano": 0.010305318443679412,
+        "interaccion": 0.00039396086041286574,
+        "ic95_total": [
+          0.009044734178368097,
+          0.012539389555214057
+        ]
+      },
+      "Extreme": {
+        "total": 0.013580584281497955,
+        "por_probabilidad": 0.00017224501507562205,
+        "por_dano": 0.012575415719839552,
+        "interaccion": 0.0008329235465827813,
+        "ic95_total": [
+          0.011957454349294112,
+          0.01525532647517588
+        ]
+      }
+    }
+  },
+  "pesos": {
+    "k_menos_bip": {
+      "No Altitude": -0.34027068484432504,
+      "Medium": -0.4119710049791756,
+      "Extreme": -0.43180992148168384,
+      "Altitud (Medium + Extreme)": -0.4226705346822072
+    },
+    "bb_menos_bip": {
+      "No Altitude": 0.3631224952044442,
+      "Medium": 0.29898377585589186,
+      "Extreme": 0.2990513435263335,
+      "Altitud (Medium + Extreme)": 0.29907793025457186
+    },
+    "k_vs_bip_aumento_extreme": 0.26901887442710004
+  },
+  "hbp_run_value": 0.39710715903257254,
+  "valores_terminales": {
+    "walk": 0.37829790794142093,
+    "strikeout": -0.33442597900141846,
+    "hbp": 0.39710715903257254,
+    "out": -0.3074526202176227,
+    "single": 0.5118248417092621,
+    "double": 0.8360222078104163,
+    "triple": 1.0410214045630186,
+    "home_run": 1.4719396653232841
+  },
+  "stuff": {
+    "eta2_ubicacion_physical": 0.018968047110376363,
+    "eta2_ubicacion_v1": 0.4558041944518777,
+    "eta2_ubicacion_v4": 0.0216152151140393,
+    "estabilidad": {
+      "stuff_plus_v1": 0.668319142401147,
+      "stuff_plus_v4": 0.7685592584492594,
+      "stuff_plus_physical": 0.7602832769028275
+    },
+    "whiff_t1": {
+      "stuff_plus_v1": 0.3323187490863335,
+      "stuff_plus_v4": 0.3043474451001299,
+      "stuff_plus_physical": 0.34029501093258696
+    },
+    "delta_vs_v4_whiff": {
+      "delta_r": 0.03594756583245706,
+      "ci95": [
+        0.0007357629915828246,
+        0.07150142356665695
+      ],
+      "n": 437,
+      "p_mejor": 0.976
+    },
+    "auc": {
+      "Stuff+ v1 (P(whiff) por pitch)": 0.6858171173422322,
+      "Stuff+ v4": 0.6506561049013917,
+      "Stuff+ Physical (modelo)": 0.6507887105691064,
+      "Stuff+ Physical (puntaje, lados marginalizados)": 0.6453685341198806
+    },
+    "r_oficial_neutral": 0.9569540971008353
+  },
+  "location": {
+    "r_stuff": -0.04177684243275562,
+    "estabilidad": 0.5420254261704306,
+    "bb_t1": -0.3851891378927292,
+    "bb_propio_t1": 0.3539183079989213,
+    "regiones": [
+      {
+        "region": "corazón",
+        "n": 158451,
+        "pct_pitches": 0.25312793543481177,
+        "delta_medio_no_altitude_por_100": -3.214736639065685,
+        "medium_menos_no_por_100": 2.381310195857092,
+        "ee_medium": 0.26739413597697015,
+        "extreme_menos_no_por_100": 2.921763221867107,
+        "ee_extreme": 0.2506754162168615
+      },
+      {
+        "region": "borde",
+        "n": 255622,
+        "pct_pitches": 0.4083601183439515,
+        "delta_medio_no_altitude_por_100": -2.8230546809886277,
+        "medium_menos_no_por_100": 1.203139462354248,
+        "ee_medium": 0.1625478846780111,
+        "extreme_menos_no_por_100": 1.550997659140499,
+        "ee_extreme": 0.1433065650283204
+      },
+      {
+        "region": "persecución",
+        "n": 146472,
+        "pct_pitches": 0.23399129673531724,
+        "delta_medio_no_altitude_por_100": 2.740450925005504,
+        "medium_menos_no_por_100": 0.2404263642661894,
+        "ee_medium": 0.11305447412522857,
+        "extreme_menos_no_por_100": 0.4576707201110729,
+        "ee_extreme": 0.1035935274909535
+      },
+      {
+        "region": "desperdicio",
+        "n": 65427,
+        "pct_pitches": 0.10452064948591949,
+        "delta_medio_no_altitude_por_100": 5.931798439076874,
+        "medium_menos_no_por_100": 0.05409401472868251,
+        "ee_medium": 0.11741429835050805,
+        "extreme_menos_no_por_100": 0.1583515587520105,
+        "ee_extreme": 0.10495894933038631
+      }
+    ]
+  },
+  "aepp": {
+    "r_altitud_t1": 0.26090873712007273,
+    "r_altitud_t1_ic95": [
+      0.1574209782613336,
+      0.35522509907181016
+    ],
+    "r_pitching_plus_altitud_t1": 0.14655737175003858,
+    "p_mejor_que_pitching_plus": 0.978,
+    "r_kbb_altitud_t1": 0.2523643064966456,
+    "delta_vs_kbb": 0.008544430623427135,
+    "estabilidad": 0.4216602446101377,
+    "rho_pesos_altitud_vs_no": 0.9857002473464692,
+    "r_bono_k": 0.9276968368796176,
+    "r_bono_bb": 0.41007184570314276,
+    "n_elegibles": 599,
+    "min_pitches": 300,
+    "min_pa": 75,
+    "ancho_mediano_rango_80": 294.0
+  },
+  "sensibilidad": {
+    "confiabilidad": 0.11126291855940043,
+    "n_pitchers": 294,
+    "r_mod_emp": 0.057087308403112005,
+    "pitches_para_0_5": 2492.168756668298,
+    "pitches_para_0_7": 5815.060432226028,
+    "mediana_pitches_extreme": 312.0,
+    "intervalos_cruzan_0": 294,
+    "r_rivales": 0.23850648362827032
+  },
+  "validacion_perfil": {
+    "aepp": {
+      "etiqueta": "AEPP (pesos de altitud)",
+      "estabilidad": 0.4216602446101377,
+      "r_carreras_t1": 0.26589193426635294,
+      "r_altitud_t1": 0.26090873712007273,
+      "r_altitud_t1_ic95": [
+        0.1574209782613336,
+        0.35522509907181016
+      ]
+    },
+    "aepp_no_altitude": {
+      "etiqueta": "mismo perfil con pesos de No Altitude",
+      "estabilidad": 0.40136519013275507,
+      "r_carreras_t1": 0.26724055145249537,
+      "r_altitud_t1": 0.25781002546107956,
+      "r_altitud_t1_ic95": [
+        0.15191051194386107,
+        0.3521734091511554
+      ]
+    },
+    "pitching_plus": {
+      "etiqueta": "Pitching+ (ajuste simple por estadio)",
+      "estabilidad": 0.5674685157321653,
+      "r_carreras_t1": 0.18906307806878467,
+      "r_altitud_t1": 0.14655737175003858,
+      "r_altitud_t1_ic95": [
+        0.0291012932959179,
+        0.24483833167935853
+      ]
+    },
+    "stuff_plus_physical": {
+      "etiqueta": "Stuff+ Physical",
+      "estabilidad": 0.7602832769028275,
+      "r_carreras_t1": 0.16857053968532346,
+      "r_altitud_t1": 0.1131751745417769,
+      "r_altitud_t1_ic95": [
+        -0.0087035444264328,
+        0.2276787844356152
+      ]
+    },
+    "location_plus": {
+      "etiqueta": "Location+",
+      "estabilidad": 0.5420254261704306,
+      "r_carreras_t1": 0.13911965857885292,
+      "r_altitud_t1": 0.14080942397367657,
+      "r_altitud_t1_ic95": [
+        0.0080886681749902,
+        0.25688169363746977
+      ]
+    },
+    "k_bb": {
+      "etiqueta": "K−BB% (con shrinkage)",
+      "estabilidad": 0.40443361508993675,
+      "r_carreras_t1": 0.27134294247138396,
+      "r_altitud_t1": 0.2523643064966456,
+      "r_altitud_t1_ic95": [
+        0.13718534901138854,
+        0.3462501852833952
+      ]
+    },
+    "carreras_100pa": {
+      "etiqueta": "carreras evitadas del año (crudo ajustado)",
+      "estabilidad": 0.12170270009897705,
+      "r_carreras_t1": 0.12170270009897705,
+      "r_altitud_t1": 0.13212936591104324,
+      "r_altitud_t1_ic95": [
+        0.023044626179774822,
+        0.23081440095738068
+      ]
+    }
+  },
+  "n_pares_validacion": {
+    "todos": 437,
+    "altitud": 279
+  },
+  "estabilidad_metricas": [
+    {
+      "metrica": "whiff_swing",
+      "etiqueta": "Whiff/Swing",
+      "mayor_es_mejor": true,
+      "estabilidad_cruda": 0.511475061905363,
+      "estabilidad_lo": 0.4277955856644222,
+      "estabilidad_hi": 0.5897039079621579,
+      "r_carreras_altitud_t1": 0.19626415917471376,
+      "r_lo": 0.09106508986187932,
+      "r_hi": 0.3011837447337014,
+      "n_pares": 437,
+      "n_pares_altitud": 279
+    },
+    {
+      "metrica": "whiff_pitch",
+      "etiqueta": "Whiff/Pitch",
+      "mayor_es_mejor": true,
+      "estabilidad_cruda": 0.48216989326810666,
+      "estabilidad_lo": 0.39933198929187347,
+      "estabilidad_hi": 0.5648911476841791,
+      "r_carreras_altitud_t1": 0.18966359003282138,
+      "r_lo": 0.08837262521055635,
+      "r_hi": 0.2956503261408959,
+      "n_pares": 437,
+      "n_pares_altitud": 279
+    },
+    {
+      "metrica": "k_pct",
+      "etiqueta": "K% (por turno)",
+      "mayor_es_mejor": true,
+      "estabilidad_cruda": 0.4448066553652348,
+      "estabilidad_lo": 0.3489280796132241,
+      "estabilidad_hi": 0.5188979043994979,
+      "r_carreras_altitud_t1": 0.23529483246158178,
+      "r_lo": 0.11601679331520261,
+      "r_hi": 0.3401581504318852,
+      "n_pares": 437,
+      "n_pares_altitud": 279
+    },
+    {
+      "metrica": "bb_pct",
+      "etiqueta": "BB% (por turno)",
+      "mayor_es_mejor": false,
+      "estabilidad_cruda": 0.3539183079989213,
+      "estabilidad_lo": 0.26540994901007803,
+      "estabilidad_hi": 0.4452672158430823,
+      "r_carreras_altitud_t1": -0.09196091209728834,
+      "r_lo": -0.21765939390304453,
+      "r_hi": 0.05663522079182089,
+      "n_pares": 437,
+      "n_pares_altitud": 279
+    },
+    {
+      "metrica": "hbp_pct",
+      "etiqueta": "HBP% (por turno)",
+      "mayor_es_mejor": false,
+      "estabilidad_cruda": 0.09231371310726456,
+      "estabilidad_lo": -0.013221369103052747,
+      "estabilidad_hi": 0.19254824058728587,
+      "r_carreras_altitud_t1": -0.11541052973940653,
+      "r_lo": -0.24983038479729228,
+      "r_hi": 0.01076847321808299,
+      "n_pares": 437,
+      "n_pares_altitud": 279
+    },
+    {
+      "metrica": "bip_pct",
+      "etiqueta": "BIP% (por turno)",
+      "mayor_es_mejor": false,
+      "estabilidad_cruda": 0.5208165321461184,
+      "estabilidad_lo": 0.4229473357602243,
+      "estabilidad_hi": 0.6043848256047705,
+      "r_carreras_altitud_t1": -0.13025945538181907,
+      "r_lo": -0.26900046310029413,
+      "r_hi": 0.006414793631792811,
+      "n_pares": 437,
+      "n_pares_altitud": 279
+    },
+    {
+      "metrica": "rv_bip",
+      "etiqueta": "Run value por BIP",
+      "mayor_es_mejor": false,
+      "estabilidad_cruda": -0.017990788618958836,
+      "estabilidad_lo": -0.119455066329836,
+      "estabilidad_hi": 0.08537014100488287,
+      "r_carreras_altitud_t1": -0.03764424237025796,
+      "r_lo": -0.1387750148194948,
+      "r_hi": 0.06905834233800182,
+      "n_pares": 437,
+      "n_pares_altitud": 279
+    },
+    {
+      "metrica": "hard_pct",
+      "etiqueta": "Hard contact% (EV ≥ 95)",
+      "mayor_es_mejor": false,
+      "estabilidad_cruda": 0.11112928408517989,
+      "estabilidad_lo": 0.008693732731180072,
+      "estabilidad_hi": 0.21202267872890826,
+      "r_carreras_altitud_t1": -0.06796600269526046,
+      "r_lo": -0.17624094269896293,
+      "r_hi": 0.03560671982875349,
+      "n_pares": 437,
+      "n_pares_altitud": 279
+    },
+    {
+      "metrica": "gb_pct",
+      "etiqueta": "Groundball%",
+      "mayor_es_mejor": true,
+      "estabilidad_cruda": 0.40900170594151536,
+      "estabilidad_lo": 0.32182165685003805,
+      "estabilidad_hi": 0.4955852906714525,
+      "r_carreras_altitud_t1": -0.05984646479657748,
+      "r_lo": -0.20683248665400641,
+      "r_hi": 0.09876523651257814,
+      "n_pares": 437,
+      "n_pares_altitud": 279
+    },
+    {
+      "metrica": "hr_bip",
+      "etiqueta": "HR/BIP",
+      "mayor_es_mejor": false,
+      "estabilidad_cruda": 0.13326620172385273,
+      "estabilidad_lo": 0.02884651662677265,
+      "estabilidad_hi": 0.22883540552928874,
+      "r_carreras_altitud_t1": 0.09230665562567078,
+      "r_lo": -0.0299954038418927,
+      "r_hi": 0.21996957342266543,
+      "n_pares": 437,
+      "n_pares_altitud": 279
+    },
+    {
+      "metrica": "stuff_plus_physical",
+      "etiqueta": "Stuff+ Physical",
+      "mayor_es_mejor": true,
+      "estabilidad_cruda": 0.7602832769028275,
+      "estabilidad_lo": 0.7128137033795324,
+      "estabilidad_hi": 0.7998979710645866,
+      "r_carreras_altitud_t1": 0.1131751745417769,
+      "r_lo": -0.0027518100414412653,
+      "r_hi": 0.22635244011031447,
+      "n_pares": 437,
+      "n_pares_altitud": 279
+    },
+    {
+      "metrica": "location_plus",
+      "etiqueta": "Location+",
+      "mayor_es_mejor": true,
+      "estabilidad_cruda": 0.5420254261704306,
+      "estabilidad_lo": 0.4840746863543475,
+      "estabilidad_hi": 0.6010601322424632,
+      "r_carreras_altitud_t1": 0.14080942397367657,
+      "r_lo": 0.007124373250326559,
+      "r_hi": 0.2574719109545941,
+      "n_pares": 437,
+      "n_pares_altitud": 279
+    },
+    {
+      "metrica": "pitching_plus",
+      "etiqueta": "Pitching+ (ajuste simple)",
+      "mayor_es_mejor": true,
+      "estabilidad_cruda": 0.5674685157321653,
+      "estabilidad_lo": 0.4891955501667808,
+      "estabilidad_hi": 0.6334326422032437,
+      "r_carreras_altitud_t1": 0.14655737175003858,
+      "r_lo": 0.0284970001484307,
+      "r_hi": 0.246644757597171,
+      "n_pares": 437,
+      "n_pares_altitud": 279
+    }
+  ],
+  "arquetipos": {
+    "silueta": {
+      "2": 0.17766622111711225,
+      "3": 0.17681411708574268,
+      "4": 0.15873778369976344,
+      "5": 0.14963432741466964,
+      "6": 0.15283251908653486,
+      "7": 0.1469305550494319
+    },
+    "k": 2,
+    "ari": 0.6911611524483623,
+    "nombres_validos": false
+  },
+  "estadios": {
+    "juegos": 2127,
+    "pct_juegos_resueltos": 0.9840150446638458,
+    "ari_semilla_min": 0.9619044109309155,
+    "ari_submuestra_80_min": 0.9158536589677386,
+    "grupos_multitemporada": 19,
+    "grupos_misma_categoria": 19,
+    "test_retest_drag": 0.9570919760889747,
+    "test_retest_magnus": 0.9879423292742171,
+    "test_retest_drag_extreme": 0.6842403646397557,
+    "test_retest_magnus_extreme": 0.9395088690825575,
+    "drag_extreme": [
+      0.8277264138935116,
+      0.9018829849080197
+    ],
+    "magnus_extreme": [
+      0.7171441448310321,
+      0.8365038640462714
+    ],
+    "drag_medium": [
+      0.8704498840694663,
+      0.9492572134003373
+    ],
+    "I2_drag_extreme": 0.9780357194969296,
+    "I2_magnus_extreme": 0.9530633351276641
+  },
+  "validacion_temporal_p0": {
+    "100": {
+      "o_m0": 0.13199597849330616,
+      "o_m1": 0.1732552211756294,
+      "o_m1b": 0.1855458255783684,
+      "o_m2": 0.1597628651152928,
+      "o_m3a": 0.16704139885274488,
+      "t_m0": 0.12530359397217938,
+      "t_m1": 0.16243954021405793,
+      "t_m1b": 0.17503438790691833,
+      "t_m2": 0.13627148660346552,
+      "t_m3a": 0.14318791600749356,
+      "rv_ajustado": 0.13748455977215276
+    },
+    "300": {
+      "o_m0": 0.1809356310940744,
+      "o_m1": 0.26735271601154065,
+      "o_m1b": 0.2854185368123549,
+      "o_m2": 0.26127196714265305,
+      "o_m3a": 0.27768674772846696,
+      "t_m0": 0.2253735738134156,
+      "t_m1": 0.30495868432483514,
+      "t_m1b": 0.3228397794227477,
+      "t_m2": 0.2814764708326585,
+      "t_m3a": 0.29556089360986354,
+      "rv_ajustado": 0.26893122777113565
+    }
+  },
+  "valor_bip": {
+    "No Altitude": 0.01461738610862278,
+    "Medium": 0.07254254876543051,
+    "Extreme": 0.08530253815217313
+  },
+  "ahorro_rodado": {
+    "No Altitude": 0.1398295387353148,
+    "Medium": 0.1900015170228558,
+    "Extreme": 0.20230788429414082
+  },
+  "stuff_versiones": {
+    "observado": {
+      "r_pct_extreme": -0.16272286261957897,
+      "estabilidad": 0.7451804465099899,
+      "whiff_t1": 0.3225368583915204
+    },
+    "oficial": {
+      "r_pct_extreme": -0.014909834853718823,
+      "estabilidad": 0.7602832769028275,
+      "whiff_t1": 0.34029501093258696
+    },
+    "neutral": {
+      "r_pct_extreme": -0.006286607532770674,
+      "estabilidad": 0.7796366752747982,
+      "whiff_t1": 0.308064436059449
+    }
+  },
+  "sensibilidad_extra": {
+    "r_mod_emp_spearman": 0.023726452459852457,
+    "techo_correlacion": 0.33356096678028807
+  },
+  "tipos_pitch": {
+    "min_pitches_comparacion": 20000,
+    "menor_costo_extreme": "Slider",
+    "mayor_costo_extreme": "Curveball",
+    "mayor_perdida_whiff": "Four-Seam",
+    "menor_cambio_whiff": "Cutter",
+    "mayor_perdida_hb": [
+      "Changeup",
+      "Sinker"
+    ],
+    "mayor_perdida_ivb": "Four-Seam",
+    "mayor_aumento_rv_bip": "Curveball",
+    "muestra_pequena": [
+      "Splitter"
+    ]
+  },
+  "contrafactual_split_half": {
+    "extreme": {
+      "InducedVertBreak": {
+        "observado": -2.2011400000000005,
+        "predicho": -2.638056197359223,
+        "corr_entre_grupos": 0.8055858256142884
+      },
+      "HorzBreak": {
+        "observado": -1.8167300000000002,
+        "predicho": -1.5026386994058294,
+        "corr_entre_grupos": 0.8966890019025864
+      },
+      "ZoneSpeed": {
+        "observado": 1.244499999999988,
+        "predicho": 1.2023592103719523,
+        "corr_entre_grupos": 0.14250702752335329
+      },
+      "VertApprAngle": {
+        "observado": -0.16507449999999935,
+        "predicho": -0.1564932213663357,
+        "corr_entre_grupos": 0.48097673055652285
+      },
+      "ZoneTime": {
+        "observado": -0.004234499999999974,
+        "predicho": -0.002994155101000706,
+        "corr_entre_grupos": 0.04862493945090868
+      },
+      "VertBreak": {
+        "observado": -1.6395850000000038,
+        "predicho": -2.1566541163963215,
+        "corr_entre_grupos": 0.7029663261116924
+      }
+    },
+    "sobreprediccion_ivb": 0.19849541481197108
+  },
+  "temporadas": {
+    "pitches": {
+      "2024": 242721,
+      "2025": 254870,
+      "2026": 129594
+    },
+    "juegos": {
+      "2024": 833,
+      "2025": 836,
+      "2026": 447
+    },
+    "hard_pct_bip": {
+      "2024": 0.21495614709955377,
+      "2025": 0.2619559674522759,
+      "2026": 0.25829807650368564
+    },
+    "ev_media_bip": {
+      "2024": 83.25791751654101,
+      "2025": 84.05231280823892,
+      "2026": 83.80448204867623
+    },
+    "pares_validacion": [
+      "2024→2025",
+      "2025→2026"
+    ]
+  },
+  "ranking_top": {
+    "lugar_1_intervalo": [
+      1.0,
+      3.0
+    ],
+    "n_p_top25_mayor_50": 12,
+    "simulaciones": 2000
+  }
+}
