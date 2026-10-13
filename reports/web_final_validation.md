@@ -163,3 +163,49 @@ Ahora la frase solo reporta el cambio de hard contact% (21.5% en 2024 → 26.2% 
 cambio real.
 
 **Reproducibilidad:** `python -m src.reports.web_data` solo cambia `summary.json` (campos nuevos); el resto de `data/web/` es idéntico.
+
+## 7. Segunda ampliación: Pitching+ general vs. altitud, óptimo por ambiente y guía para presentar
+
+No cambió ningún índice oficial (P0/P1/P2, Stuff+ Physical, Location+, Pitching+, AEPP, ranking, sensibilidad ni física). Todo lo nuevo
+sale de un paso del pipeline, `pitch_environment`, que corre después de `web_data` y se reproduce byte a byte.
+
+**Tests:** 62 PASS (53 anteriores + 9 en `tests/test_pitch_environment.py`, más la prueba de la página ampliada).
+
+| test | qué verifica |
+|---|---|
+| `test_general_values_are_the_official_ones` | el Pitching+ "general" usa exactamente los Δ(evento, conteo) del oficial (diferencia 0e+00) |
+| `test_altitude_values_have_no_manual_bonus` | la calibración del costo de contacto = Δ observado − predicho de las bolas en juego; positiva en Medium y Extreme, como en P2 |
+| `test_engine_general_equals_official_pitching_plus` | en el simulador, E[Δ] general = el del Pitching+ oficial; la descomposición por grupos explica el cambio relativo |
+| `test_optimal_profiles_inside_support` | todo óptimo está dentro del rango real de los candidatos; los que salen de p1–p99 quedan marcados como "frontera" |
+| `test_optimal_profiles_have_data_density_and_no_joint_extrapolation` | hay densidad de datos cerca del perfil y la combinación no supera el p99.9 de Mahalanobis del tipo |
+| `test_optimum_stability_is_reported` | se reporta la estabilidad (vecinos reales); el perfil no es un pico aislado |
+| `test_comparison_classes_follow_the_declared_rule` | Poco / Moderado / Mucho siguen la regla declarada antes de ver los resultados |
+| `test_location_grid_only_uses_supported_cells` | las ubicaciones óptimas solo usan celdas con soporte real |
+| `test_presentation_guide_cites_current_numbers` | las cifras clave de la guía coinciden con los outputs actuales |
+
+**Definición del baseline (Parte B).** General = valores de toda la liga (los del Pitching+ oficial). Extreme = la misma recursión RE24 por
+conteo con los pitches de Extreme, más la calibración del costo de contacto (P2 §7.2: el modelo subestima el daño por bola en juego en
+altitud; ajuste observado +0.0095 carreras). Se descartó comparar contra el Pitching+ ajustado por entorno, porque el ajuste
+resta el nivel del ambiente pero no cambia lo que vale cada resultado.
+
+**Hallazgo que no se esperaba y se reporta tal cual.** Si solo se cambia el valor de cada resultado, los lanzamientos con mucho contacto
+ganan valor relativo. Hay dos razones: el modelo no ve el ambiente (por eso se agregó la calibración) y en Extreme todo el turno es más caro
+(V(0-0) +0.047 contra +0.015 en la liga). Comparando con el lanzamiento típico del mismo conteo:
+con dos strikes la ganancia sigue al swing-and-miss (correlación +0.70); con 0 o 1 strike casi no
+(+0.07). Es el hallazgo de P1 (ponche vs. bola en juego +27%) visto lanzamiento por lanzamiento. Correlación
+de rangos general vs. Extreme sobre 627,185 lanzamientos: 0.997.
+
+**Óptimo por ambiente (Parte C).** Con los costos de Extreme, el perfil óptimo cambia menos que el ruido en 21 de
+21 combinaciones tipo × conteo (correlación de rangos ≥ 0.992). Con la física aproximada, en 17
+de 21. Mejor Stuff ≠ mejor pitch: el top 1% compartido entre Stuff+ y Pitching+ (0-0) va de
+0% a 13%.
+
+**Verificación en el navegador:** sin excepciones ni scroll horizontal; 35 gráficas. Con `streamlit.testing` se recorrieron todas las
+combinaciones de tipo, conteo, capa y enfrentamiento de la sección 10. También se corrigió el texto del ARI de los estadios anónimos: la
+página mostraba "≥ 0.92" con un valor de 0.916; ahora muestra tres decimales.
+
+**Limitaciones de la extensión:**
+- La calibración del costo de contacto es un promedio por ambiente.
+- El bootstrap es de candidatos, no de modelos reentrenados.
+- La capa física es aproximada.
+- El óptimo no considera biomecánica ni repertorio.

@@ -364,3 +364,70 @@ def counterfactual_check(sh: dict, labels: dict) -> go.Figure:
     fig.add_hline(y=0, line_color="#8892a6")
     return _layout(fig, 340, barmode="group", title=dict(text="Validación split-half: cambio en Extreme, mitad de pitchers no usada", font=dict(size=14)),
                    legend=dict(orientation="h", y=1.12, x=1, xanchor="right"))
+
+
+# ---------------------------------------------------------------------------
+# Pitching+ general vs. altitud y lanzamiento óptimo por ambiente
+# ---------------------------------------------------------------------------
+
+
+def relative_gain_bars(tab: pd.DataFrame) -> go.Figure:
+    """Ganancia de valor relativo en Extreme (frente al típico del mismo conteo) por quintil de P(whiff), antes y con dos strikes."""
+    from plotly.subplots import make_subplots
+    fases = ["0 o 1 strike", "dos strikes"]
+    fig = make_subplots(rows=1, cols=2, subplot_titles=[f"{f}" for f in fases], shared_yaxes=True)
+    for j, f in enumerate(fases, start=1):
+        t = tab[tab["fase"] == f]
+        for col, name, color in (("gana_vs_general", "vs. General", "#1f3a63"), ("gana_vs_no", "vs. No Altitude", ENV_COLORS["Extreme"])):
+            fig.add_trace(go.Bar(x=t["quintil_whiff"], y=t[col], name=name, marker_color=color, showlegend=(j == 1),
+                                 text=[f"{v:+.2f}" for v in t[col]], textposition="outside"), row=1, col=j)
+        fig.add_hline(y=0, line_color="#8892a6", row=1, col=j)
+    fig.update_xaxes(title_text="quintil de P(whiff) frente al típico del conteo (Q5 = más swing-and-miss)")
+    fig.update_yaxes(title_text="ganancia en Extreme (carreras/100)", row=1, col=1)
+    return _layout(fig, 360, barmode="group", legend=dict(orientation="h", y=1.18, x=1, xanchor="right"))
+
+
+def contribution_bars(contrib: dict) -> go.Figure:
+    """Por qué cambia el valor relativo: contribución de cada grupo de resultados (+ = gana valor en el ambiente alterno)."""
+    keys = list(contrib)
+    vals = [-100 * contrib[k] for k in keys]
+    fig = go.Figure(go.Bar(y=keys, x=vals, orientation="h", marker_color=["#2e8b57" if v > 0 else "#d1495b" for v in vals],
+                           text=[f"{v:+.2f}" for v in vals], textposition="outside"))
+    fig.add_vline(x=0, line_color="#8892a6")
+    fig = _layout(fig, 230, xaxis_title="carreras por 100 pitches frente al típico del conteo (+ = gana valor)", showlegend=False)
+    fig.update_layout(margin=dict(l=10, r=40, t=10, b=10))
+    return fig
+
+
+def profile_radar(rows: dict, labels: dict) -> go.Figure:
+    """Perfil óptimo en percentiles del tipo (0–100) para cada objetivo."""
+    cats = list(labels.values())
+    colors = {"General": "#1f3a63", "Extreme": ENV_COLORS["Extreme"], "Extreme (física aprox.)": ENV_COLORS["Medium"], "Mejor Stuff+": "#8892a6"}
+    fig = go.Figure()
+    for name, pct in rows.items():
+        r = [pct[c] for c in labels] + [pct[list(labels)[0]]]
+        fig.add_trace(go.Scatterpolar(r=r, theta=cats + [cats[0]], name=name, line=dict(color=colors.get(name, "#5b6577"), width=2),
+                                      fill="toself" if name == "General" else None, opacity=0.85))
+    fig.update_layout(polar=dict(radialaxis=dict(range=[0, 100], tickvals=[25, 50, 75], ticksuffix="")))
+    return _layout(fig, 380, legend=dict(orientation="h", y=-0.12, x=0), title=dict(text="Perfil óptimo en percentiles del tipo", font=dict(size=14)))
+
+
+def location_pair(h: pd.DataFrame, title_a: str = "Pitching+ general", title_b: str = "Pitching+ Extreme (costos)",
+                  col_b: str = "pp_extreme") -> go.Figure:
+    """Pitching+ según la ubicación para un lanzamiento fijo: general vs. Extreme, misma escala de color."""
+    from plotly.subplots import make_subplots
+    fig = make_subplots(rows=1, cols=2, subplot_titles=(title_a, title_b), horizontal_spacing=0.08)
+    vmin = float(min(h["pp_general"].min(), h[col_b].min()))
+    vmax = float(max(h["pp_general"].max(), h[col_b].max()))
+    for j, col in enumerate(("pp_general", col_b), start=1):
+        piv = h.pivot(index="z", columns="x", values=col)
+        fig.add_trace(go.Heatmap(z=piv.to_numpy(), x=piv.columns, y=piv.index, zmin=vmin, zmax=vmax, colorscale="RdBu", showscale=(j == 2),
+                                 colorbar=dict(title="Pitching+"), hovertemplate="lado %{x:+.1f} · altura %{y:.1f}<br>%{z:.1f}<extra></extra>"),
+                      row=1, col=j)
+        best = h.loc[h[col].idxmax()]
+        fig.add_trace(go.Scatter(x=[best["x"]], y=[best["z"]], mode="markers", marker=dict(symbol="star", size=16, color="gold",
+                                 line=dict(color="black", width=1)), showlegend=False, hoverinfo="skip"), row=1, col=j)
+        fig.add_shape(type="rect", x0=-0.83, x1=0.83, y0=1.5, y1=3.5, line=dict(color="black", width=1.5), row=1, col=j)
+        fig.update_xaxes(title_text="lado (pies, + = lado del brazo)", row=1, col=j)
+    fig.update_yaxes(title_text="altura (pies)", row=1, col=1)
+    return _layout(fig, 400)

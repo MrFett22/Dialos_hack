@@ -368,15 +368,43 @@ def run() -> None:
         "linear_weights_by_environment.csv": "valor RE24 de cada resultado del turno por ambiente",
         "characteristic_value_by_environment.csv": "valor de cada característica por ambiente (diseño cruzado)",
     }
+    write_readme(files, res["sensibilidad"]["info"]["confiabilidad_spearman_brown"])
+    logger.info("Datos de la web en %s", WEB)
+
+
+# Tablas del paso pitch_environment (extensión: Pitching+ general vs. altitud y óptimo por ambiente)
+EXTENSION_FILES = {
+    "pitching_env_values.json": "Δ(evento, conteo), valores terminales, calibración del costo de contacto y escalas: liga, No Altitude, Medium y Extreme",
+    "pitching_general_vs_altitude.csv": "Pitching+ general vs. Extreme por tipo de pitch y por decil de P(BIP)",
+    "pitching_relative_gain_by_whiff.csv": "ganancia de valor relativo en Extreme frente al típico del conteo, por quintil de P(whiff)",
+    "optimal_pitch_profiles.csv": "perfil óptimo (top 1%) y mejor observado por tipo, objetivo y conteo",
+    "optimal_pitch_comparison.csv": "cuánto cambia el óptimo entre objetivos (distancia, ruido bootstrap, rangos, top 1% compartido)",
+    "optimal_pitch_location.csv": "mejor combinación física + ubicación por tipo, enfrentamiento, conteo y objetivo",
+    "optimal_location_heatmap.csv": "Pitching+ por ubicación para un lanzamiento fijo de muy buen Stuff+ (general vs. Extreme)",
+    "optimal_location_fixed_pitch.csv": "el lanzamiento fijo de cada tipo usado en el mapa de ubicaciones",
+    "optimal_pitch_meta.json": "parámetros del análisis del óptimo (contextos, umbrales, rangos de los candidatos)",
+}
+
+
+def write_readme(files: dict | None = None, rel: float | None = None) -> None:
+    """README de data/web con todas las tablas presentes (lo llaman web_data y pitch_environment)."""
+    if files is None or rel is None:
+        S = json.loads((WEB / "summary.json").read_text(encoding="utf-8"))
+        rel = S["sensibilidad"]["confiabilidad"]
+        prev = (WEB / "README.md").read_text(encoding="utf-8") if (WEB / "README.md").exists() else ""
+        files = {}
+        for line in prev.splitlines():
+            if line.startswith("| `"):
+                k, v = line[3:].split("` | ", 1)
+                files[k] = v.rstrip(" |")
+    files = {**files, **EXTENSION_FILES}
     lines = ["# Datos de la página (data/web/)", "",
-             "Generados por el pipeline (`src/reports/p2_report.py` y `src/reports/web_data.py`); los usa `web/app.py`. "
-             "Identificadores anónimos. No editar a mano.", "", "| archivo | contenido |", "|---|---|"]
+             "Generados por el pipeline (`src/reports/p2_report.py`, `src/reports/web_data.py` y `src/analysis/pitch_environment.py`); los usa "
+             "`web/app.py`. Identificadores anónimos. No editar a mano.", "", "| archivo | contenido |", "|---|---|"]
     lines += [f"| `{k}` | {v} |" for k, v in files.items() if (WEB / k).exists()]
-    rel = res["sensibilidad"]["info"]["confiabilidad_spearman_brown"]
     lines += ["", f"La sensibilidad observada es exploratoria (confiabilidad ≈ {rel:.2f}). El contrafactual físico es explicativo: no mostró "
               "ventaja predictiva frente a la normalización simple por estadio anónimo.", ""]
     (WEB / "README.md").write_text("\n".join(lines), encoding="utf-8")
-    logger.info("Datos de la web en %s", WEB)
 
 
 if __name__ == "__main__":

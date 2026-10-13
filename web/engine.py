@@ -94,6 +94,8 @@ class Engine:
         self.type_effects = pd.read_csv(WEB / "pitch_type_altitude_effects.csv").set_index("tipo")
         self.type_rules = summary["tipos_pitch"]
         self.regions = pd.DataFrame(summary["location"]["regiones"]).set_index("region")
+        env_path = WEB / "pitching_env_values.json"
+        self.env_values = json.loads(env_path.read_text(encoding="utf-8")) if env_path.exists() else None
 
     # ------------------------------------------------------------------ dominio
     def type_domain(self, pitch_type: str) -> dict:
@@ -279,6 +281,73 @@ class Engine:
                 "costo_E": float(t["delta_por_100_E"]), "costo_E_se": float(t["delta_por_100_E_se"]),
                 "ivb_E": float(t["ivb_E"]), "hb_abs_E": float(t["hb_abs_E"]),
                 "orden_costo": int(ok["delta_por_100_E"].rank().get(pitch_type, 0)) if enough else None, "n_tipos": len(ok)}
+
+    # ------------------------------------------------------------------ Pitching+ general vs. para altitud
+    def general_vs_altitude(self, r: Result, alt: str = "extreme") -> dict:
+        """El MISMO lanzamiento (mismas probabilidades) valuado con los valores de la liga y con los de `alt`.
+
+        Valores por evento y conteo, calibración del costo de contacto y escala salen de `pitching_env_values.json`
+        (paso `pitch_environment` del pipeline). Stuff+ y Location+ no cambian: es el mismo pitch.
+        """
+        E = self.env_values
+        key = f"{r.inputs['balls']}-{r.inputs['strikes']}"
+        p = np.array([r.probs[e] for e in chain.EVENTS])
+        pbar = np.array([E["probabilidad_media_por_conteo"][key][e] for e in chain.EVENTS])
+        bip = [chain.EVENTS.index(e) for e in chain.BIP_CLASSES]
+        out = {}
+        for k in ("general", alt):
+            c = E["conjuntos"][k]
+            d = np.array([c["deltas"][key][e] for e in chain.EVENTS])
+            sh = c["shift_bip"]
+            xrv = float(p @ d + sh * p[bip].sum())
+            xbar = float(pbar @ d + sh * pbar[bip].sum())
+            s = E["escalas"][k]
+            dmg = float(p[bip] @ d[bip] + sh * p[bip].sum())
+            term = np.array([c["terminales"][e] for e in chain.BIP_CLASSES])
+            # costo de una bola en juego "típica" de este conteo frente a seguir el turno (Δ medio de la rama BIP)
+            dbip_tipico = float(pbar[bip] @ d[bip] / pbar[bip].sum() + sh)
+            out[k] = {"xrv": xrv, "pitching_plus": float(100 + 10 * (s["media"] - xrv) / s["sd"]),
+                      "e_rv_bip": float(p[bip] @ term / p[bip].sum() + sh),  # run value del resultado (sin restar el conteo)
+                      "e_delta_bip": dmg / p[bip].sum(), "dano_contacto": dmg, "relativo_conteo": xrv - xbar, "d": d, "shift": sh,
+                      "delta_bip_tipico": dbip_tipico}
+        groups = E["grupos"]
+        dd = out[alt]["d"] - out["general"]["d"]
+        contrib = {}
+        for g, evs in groups.items():
+            idx = [chain.EVENTS.index(e) for e in evs]
+            contrib[g] = float(((p - pbar)[idx] * dd[idx]).sum())
+        contrib["bola en juego"] += float((p[bip].sum() - pbar[bip].sum()) * (out[alt]["shift"] - out["general"]["shift"]))
+        rel_change = -100 * sum(contrib.values())  # + = gana valor relativo frente al típico del conteo (carreras/100 pitches)
+        main = max(contrib, key=lambda g: abs(contrib[g]))
+        gains = contrib[main] < 0
+        label = E["conjuntos"][alt]["etiqueta"]
+        pb, pbb = p[bip].sum(), pbar[bip].sum()
+        pk = p[[chain.EVENTS.index("whiff"), chain.EVENTS.index("called_strike")]].sum()
+        pkb = pbar[[chain.EVENTS.index("whiff"), chain.EVENTS.index("called_strike")]].sum()
+        two = r.inputs["strikes"] == 2
+        if abs(rel_change) < 0.05:
+            text = (f"Casi no cambia: frente al lanzamiento típico de este conteo, su valor relativo en {label} es prácticamente el mismo "
+                    f"({rel_change:+.2f} carreras por 100 pitches). El costo distinto de los resultados casi no lo afecta.")
+        elif main == "bola en juego":
+            rel = "menos" if pb < pbb else "más"
+            dif = out[alt]["delta_bip_tipico"] - out["general"]["delta_bip_tipico"]
+            costo = "cuesta más" if dif > 0 else "cuesta menos"
+            text = (f"{'Gana' if gains else 'Pierde'} valor relativo en {label} sobre todo por la bola en juego. En este conteo, terminar el turno "
+                    f"con una bola en juego {costo} en {label} que en la liga, comparado con seguir el turno ({dif:+.3f} carreras): la bola en "
+                    f"juego vale más para la ofensiva, pero en {label} seguir el turno también cuesta más. Este pitch tiene {rel} bola en juego "
+                    f"({pb:.1%}) que el típico del conteo ({pbb:.1%}); en total, {rel_change:+.2f} carreras por 100 pitches frente al típico.")
+        elif main == "ponche / strike":
+            why = ("con dos strikes un swing fallado o un strike cantado es ponche, y el ponche vale más en " + label) if two else \
+                  "el valor de un strike en este conteo cambia porque el resto del turno cuesta distinto"
+            text = (f"{'Gana' if gains else 'Pierde'} valor relativo en {label} sobre todo por sus strikes y swings fallados ({pk:.1%} contra "
+                    f"{pkb:.1%} del típico de este conteo): {why} ({rel_change:+.2f} carreras por 100 pitches).")
+        else:
+            text = (f"{'Gana' if gains else 'Pierde'} valor relativo en {label} sobre todo por el grupo «{main}» "
+                    f"({rel_change:+.2f} carreras por 100 pitches frente al típico del conteo).")
+        return {"general": {k: v for k, v in out["general"].items() if k not in ("d", "shift")},
+                "alt": {k: v for k, v in out[alt].items() if k not in ("d", "shift")}, "alt_label": label,
+                "contribuciones": contrib, "cambio_relativo_100": rel_change, "grupo_principal": main, "explicacion": text,
+                "p_bip": float(pb), "p_bip_tipico": float(pbb), "p_whiff": float(r.probs["whiff"])}
 
     # ------------------------------------------------------------------ interpretación
     def baseline(self, x: dict) -> Result:

@@ -145,11 +145,17 @@ pip install -r requirements.txt
 4. Stuff+ Physical y Location+ (el corazón de la zona es la región que más valor pierde);
 5. qué tipos de lanzamiento conservan mejor su valor (descriptivo, no causal);
 6. **Pitching+**;
-7. simulador "Construye tu lanzamiento" (P(BIP) × E[RV | BIP], contexto histórico del tipo y de la región) y comparación de ambientes;
-8. ranking de pitchers (AEPP) con P(top 25) e intervalos de lugar;
-9. sensibilidad exploratoria, física, limitaciones y qué mejoraríamos con más datos.
+7. simulador "Construye tu lanzamiento" (P(BIP) × E[RV | BIP], contexto histórico del tipo y de la región);
+8. **Pitching+ general vs. para altitud**: el mismo lanzamiento valuado con los costos de la liga y con los de Extreme;
+9. **¿Es el mismo un buen lanzamiento en cualquier estadio?**: el óptimo de cada tipo de pitch por ambiente;
+10. comparación física de ambientes, ranking de pitchers (AEPP) con P(top 25) e intervalos de lugar;
+11. sensibilidad exploratoria, física, limitaciones y qué mejoraríamos con más datos.
 
 Arquitectura: `reports/web_architecture_plan.md`. Validación: `reports/web_final_validation.md`.
+
+**Para presentar:** [`reports/guia_para_presentacion.md`](reports/guia_para_presentacion.md) (cada concepto en cuatro niveles y más de 20
+preguntas difíciles con respuesta). Extensiones: [`reports/pitching_plus_general_vs_altitude.md`](reports/pitching_plus_general_vs_altitude.md) y
+[`reports/optimal_pitch_by_environment.md`](reports/optimal_pitch_by_environment.md).
 
 - **Pitching+** (índice principal): cadena de probabilidades condicionales valuada en carreras, con ajuste simple por
   temporada × estadio anónimo. El contrafactual físico se conserva como herramienta explicativa: no mostró ventaja

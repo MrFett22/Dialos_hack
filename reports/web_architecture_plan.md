@@ -184,3 +184,10 @@ README.md                           # cómo correr la página
 Se agregó una sección 6 ("¿Qué tipos de lanzamiento conservan mejor su valor en altitud?") entre Location+ y Pitching+, y una sección 14
 ("Qué mejoraríamos con más datos") al final. El simulador se reorganizó en vista rápida / "¿Por qué?" / "Más detalles" para no mostrar todo a
 la vez. Detalle y fuentes en `reports/web_final_validation.md` §6.
+
+## 14. Segunda ampliación: Pitching+ general vs. altitud y óptimo por ambiente
+
+Dos secciones nuevas justo después del simulador (9 y 10); las siguientes se renumeraron (11–16). Los datos salen de un paso nuevo del
+pipeline, `pitch_environment` (`src/analysis/pitch_environment.py`), que corre después de `web_data` y escribe sus tablas en `data/web/`.
+El motor (`web/engine.py`) agrega `general_vs_altitude`, que valúa el lanzamiento del simulador con los valores de la liga y con los de
+Extreme. Detalle en `reports/web_final_validation.md` §7.

@@ -177,6 +177,15 @@ def test_page_renders_without_exceptions():
     text = " ".join(m.value for m in at.markdown)
     assert "no destino garantizado" in text or "poca muestra" in text
     assert "no el efecto causal de elegir un tipo de pitch" in text
+    # secciones de la extensión: Pitching+ general vs. altitud y óptimo por ambiente
+    if (ROOT / "data" / "web" / "optimal_pitch_profiles.csv").exists():
+        at.selectbox(key="opt_type").set_value("Four-Seam").run()
+        at.radio(key="opt_layer").set_value("extreme_fisica").run()
+        at.radio(key="opt_ctx").set_value("0-2").run()
+        at.radio(key="opt_side").set_value("opposite").run()
+        assert not at.exception
+        text = " ".join(m.value for m in at.markdown)
+        assert "¿Por qué cambió?" in text and "No es una receta" in text
 
 
 # Ampliación (tipos de pitch, regiones, daño de contacto) -----------------------

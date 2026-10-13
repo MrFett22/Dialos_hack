@@ -1,6 +1,6 @@
 # Datos de la página (data/web/)
 
-Generados por el pipeline (`src/reports/p2_report.py` y `src/reports/web_data.py`); los usa `web/app.py`. Identificadores anónimos. No editar a mano.
+Generados por el pipeline (`src/reports/p2_report.py`, `src/reports/web_data.py` y `src/analysis/pitch_environment.py`); los usa `web/app.py`. Identificadores anónimos. No editar a mano.
 
 | archivo | contenido |
 |---|---|
@@ -19,5 +19,14 @@ Generados por el pipeline (`src/reports/p2_report.py` y `src/reports/web_data.py
 | `contact_damage_by_environment.csv` | P(BIP), E[RV|BIP] y daño por ambiente y por estadio anónimo |
 | `linear_weights_by_environment.csv` | valor RE24 de cada resultado del turno por ambiente |
 | `characteristic_value_by_environment.csv` | valor de cada característica por ambiente (diseño cruzado) |
+| `pitching_env_values.json` | Δ(evento, conteo), valores terminales, calibración del costo de contacto y escalas: liga, No Altitude, Medium y Extreme |
+| `pitching_general_vs_altitude.csv` | Pitching+ general vs. Extreme por tipo de pitch y por decil de P(BIP) |
+| `pitching_relative_gain_by_whiff.csv` | ganancia de valor relativo en Extreme frente al típico del conteo, por quintil de P(whiff) |
+| `optimal_pitch_profiles.csv` | perfil óptimo (top 1%) y mejor observado por tipo, objetivo y conteo |
+| `optimal_pitch_comparison.csv` | cuánto cambia el óptimo entre objetivos (distancia, ruido bootstrap, rangos, top 1% compartido) |
+| `optimal_pitch_location.csv` | mejor combinación física + ubicación por tipo, enfrentamiento, conteo y objetivo |
+| `optimal_location_heatmap.csv` | Pitching+ por ubicación para un lanzamiento fijo de muy buen Stuff+ (general vs. Extreme) |
+| `optimal_location_fixed_pitch.csv` | el lanzamiento fijo de cada tipo usado en el mapa de ubicaciones |
+| `optimal_pitch_meta.json` | parámetros del análisis del óptimo (contextos, umbrales, rangos de los candidatos) |
 
 La sensibilidad observada es exploratoria (confiabilidad ≈ 0.11). El contrafactual físico es explicativo: no mostró ventaja predictiva frente a la normalización simple por estadio anónimo.

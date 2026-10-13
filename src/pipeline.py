@@ -62,6 +62,7 @@ STEPS = [
     ("profiles", "src.analysis.pitcher_profiles", []),
     ("p2_report", "src.reports.p2_report", []),
     ("web_data", "src.reports.web_data", []),
+    ("pitch_environment", "src.analysis.pitch_environment", []),
     ("tests", "pytest", ["-q", "tests"]),
 ]
 

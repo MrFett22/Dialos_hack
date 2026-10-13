@@ -590,3 +590,19 @@ Requisitos complementarios incorporados sin cambiar la estructura (Pitching+ sig
   - sección 14, "Qué mejoraríamos con más datos", que incluye Expected Contact Quality.
 - **Datos:** `summary.json` gana `valor_bip`, `ahorro_rodado`, `stuff_versiones`, `sensibilidad_extra`, `tipos_pitch`, `contrafactual_split_half`, `temporadas` y `ranking_top`. El resto de `data/web/` se reproduce idéntico.
 - **Tests:** 53 PASS (3 nuevos y la prueba de la página ampliada).
+
+### 7.19 Extensión: Pitching+ general vs. altitud, lanzamiento óptimo por ambiente y guía para presentar (2026-10-12)
+
+- **Guía:** `reports/guia_para_presentacion.md`. Cada concepto en cuatro niveles: Stuff+ y sus versiones, Location+, Pitching+, RV/BIP, daño de contacto, AEPP, K−BB%, contrafactual, sensibilidad, causalidad y las dos extensiones. Incluye 23 preguntas difíciles con respuesta breve y extendida. Un test verifica que sus cifras coincidan con los datos.
+- **Paso nuevo del pipeline:** `pitch_environment` (`src/analysis/pitch_environment.py` y `src/reports/pitch_environment_report.py`).
+- **Parte B** (`reports/pitching_plus_general_vs_altitude.md`):
+  - general = valores oficiales de la liga (diferencia 0);
+  - Extreme = recursión RE24 con datos de Extreme más la calibración del costo de contacto (+0.0095);
+  - mismo lanzamiento: correlación de rangos 0.997;
+  - la ganancia relativa en Extreme se concentra en el swing-and-miss con dos strikes (+0.70).
+- **Parte C** (`reports/optimal_pitch_by_environment.md`):
+  - el óptimo se busca entre lanzamientos reales, con perfil del top 1%, vecinos reales, bootstrap por pitcher, contextos 0-0, 0-2 y 2-0, y experimentos de física sola y de física + ubicación;
+  - con los costos de Extreme el óptimo cambia poco en 21/21 combinaciones; con la física aproximada, en 17/21;
+  - mejor Stuff ≠ mejor pitch.
+- **Página:** secciones nuevas 9 ("¿Qué cambia en nuestro Pitching+?") y 10 ("¿Es el mismo un buen lanzamiento en cualquier estadio?"); las siguientes se renumeraron a 11–16.
+- **Tests:** 62 PASS.
