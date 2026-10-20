@@ -6,7 +6,7 @@
 - Filas con is_whiff==1: 71,742
 - Coincide con is_swinging_strike en 100% de las filas
 - Inconsistencias is_whiff==1 pero is_swing==0: 0
-- **Inconsistencias is_whiff==1 y is_contact==1 al mismo tiempo (contradiccion logica): 447** — revisar con Diablos antes de usarla sin filtrar.
+- **Inconsistencias is_whiff==1 y is_contact==1 al mismo tiempo (contradiccion logica): 447** — revisar con el organizador antes de usarla sin filtrar.
 
 ## 3. Validacion de `is_called_strike` (columna existente)
 

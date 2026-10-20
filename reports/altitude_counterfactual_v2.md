@@ -1,6 +1,6 @@
 # Contrafactual de altitud v2 — trayectoria completa + Pitching+ v3
 
-Generado por `src/analysis/altitude_counterfactual_v2.py` (física en `src/features/trajectory.py`). Reemplaza al contrafactual v1 (`reports/altitude_counterfactual.md`). Pitches: 627,736.
+Generado por `src/analysis/altitude_counterfactual_v2.py` (física en `src/features/trajectory.py`). Reemplaza al contrafactual v1 (`historial/reports/altitude_counterfactual.md`). Pitches: 627,736.
 
 ## 1. Densidad del aire medida con los datos (no supuesta)
 

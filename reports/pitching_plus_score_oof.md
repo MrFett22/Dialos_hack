@@ -2,7 +2,7 @@
 
 **Esta es ahora la version oficial del score de Pitching+ para todos los entregables de aqui en adelante**, reemplazando a `data/processed/pitching_plus_scores.parquet` (in-sample, se conserva solo como referencia historica/auditoria, no usar para analisis nuevos).
 
-Metodologia identica a `reports/pitching_plus_score.md` (mismos pesos, mismo signo invertido en run_value/is_hard_contact, mismo z-score por temporada, misma formula 100+10z) — el UNICO cambio es el origen de las predicciones: K-fold agrupado por pitcher (k=5, seed=42) en vez de un solo modelo train/test. Cada pitcher queda completamente afuera del entrenamiento del fold que predice sus pitches — ningun pitcher se predice con un modelo que haya visto (aunque sea parcialmente) sus propios pitches.
+Metodologia identica a `historial/reports/pitching_plus_score.md` (mismos pesos, mismo signo invertido en run_value/is_hard_contact, mismo z-score por temporada, misma formula 100+10z) — el UNICO cambio es el origen de las predicciones: K-fold agrupado por pitcher (k=5, seed=42) en vez de un solo modelo train/test. Cada pitcher queda completamente afuera del entrenamiento del fold que predice sus pitches — ningun pitcher se predice con un modelo que haya visto (aunque sea parcialmente) sus propios pitches.
 
 ## Distribucion del Pitching+ (OOF)
 

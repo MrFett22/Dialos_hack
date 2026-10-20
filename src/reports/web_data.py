@@ -383,6 +383,11 @@ EXTENSION_FILES = {
     "optimal_location_heatmap.csv": "Pitching+ por ubicación para un lanzamiento fijo de muy buen Stuff+ (general vs. Extreme)",
     "optimal_location_fixed_pitch.csv": "el lanzamiento fijo de cada tipo usado en el mapa de ubicaciones",
     "optimal_pitch_meta.json": "parámetros del análisis del óptimo (contextos, umbrales, rangos de los candidatos)",
+    "validation_holdout.json": "validación fuera de muestra del modelo final: pitcher, season y park holdout contra el modelo nulo",
+    "pitch_shape_altitude_effects.csv": "cambio en Extreme por forma de pitch: Stuff+ observado, movimiento, whiff, contacto duro, HR/BIP y valor",
+    "movement_map.csv": "mapa de movimiento por pitcher × tipo (No Altitude y Extreme), Stuff+ del tipo y grupo más/menos efectivo",
+    "arsenal_altitude.csv": "arsenales (tipos con uso ≥ 10%): Stuff+ con pitches de Extreme, AEPP, K% y whiff",
+    "prospect_reference.json": "percentiles de referencia y parámetros de la calculadora de AEPP para prospectos",
 }
 
 

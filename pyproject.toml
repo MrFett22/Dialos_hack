@@ -1,7 +1,7 @@
 [project]
 name = "lmb-stuff-plus"
 version = "0.1.0"
-description = "Modelo Stuff+ calibrado para la Liga Mexicana de Béisbol, con corrección por altitud (Estadio Alfredo Harp Helú, CDMX, 2,240 msnm)."
+description = "Pitching+ para ambientes de altitud: Stuff+, Location+ y Pitching+ con datos Trackman anónimos de la LMB, ajustados por ambiente (condiciones de altitud extrema como las de la Ciudad de México)."
 readme = "README.md"
 requires-python = ">=3.10"
 

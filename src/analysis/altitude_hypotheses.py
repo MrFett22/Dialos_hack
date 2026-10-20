@@ -1,4 +1,4 @@
-"""Hipótesis del analista de los Diablos: en altitud extrema conviene evitar el contacto.
+"""Hipótesis del analista del equipo: en altitud extrema conviene evitar el contacto.
 
 Las hipótesis, variables, universos y criterios se fijaron en este docstring
 ANTES de correr el análisis por primera vez (2026-10-05).

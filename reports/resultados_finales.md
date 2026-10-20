@@ -6,18 +6,18 @@ Documento consolidado de todos los hallazgos del proyecto, con cifras exactas y 
 
 ## 1. Datos
 
-**Dataset crudo:** 635,002 pitches, 1,134 pitchers únicos, temporadas 2024/2025/2026 (`reports/eda_summary.md`). Distribución por año: 2024=243,254 · 2025=256,144 · 2026=135,604 (`reports/eda_summary.md`).
+**Dataset crudo:** 635,002 pitches, 1,134 pitchers únicos, temporadas 2024/2025/2026 (`historial/reports/eda_summary.md`). Distribución por año: 2024=243,254 · 2025=256,144 · 2026=135,604 (`historial/reports/eda_summary.md`).
 
-**Composición por altitud:** Extreme Altitude (asumido Harp Helú) = 28.9% del total (183,267 pitches) — volumen suficiente para modelar con confianza (`reports/eda_summary.md`).
+**Composición por altitud:** Extreme Altitude (el planteamiento original lo asumía como el estadio de la Ciudad de México) = 28.9% del total (183,267 pitches) — volumen suficiente para modelar con confianza (`historial/reports/eda_summary.md`).
 
-**Volumen por pitcher:** mediana 331 pitches/pitcher, p10=22, p1=8, máximo 4,222. **309 pitchers (27.2%) tienen <100 pitches** — motivó el shrinkage bayesiano de la sección 3 (`reports/eda_summary.md`).
+**Volumen por pitcher:** mediana 331 pitches/pitcher, p10=22, p1=8, máximo 4,222. **309 pitchers (27.2%) tienen <100 pitches** — motivó el shrinkage bayesiano de la sección 3 (`historial/reports/eda_summary.md`).
 
 **Targets construidos** (`reports/targets_summary.md`):
 - `is_whiff`: 71,742 positivos, 0 nulos, 447 inconsistencias lógicas (whiff+contact simultáneo) sin resolver.
 - `is_called_strike`: 97,579 positivos, 0 discrepancias vs `PitchCall`.
 - `run_value`: reconstruido sobre 162,035 plate appearances en 36,995 medias-entradas; 3,168 pitches sin estado RE válido.
 
-**Validación de run_value** (`reports/run_value_validation.md`): matriz RE24 de la LMB reconstruida sigue el patrón correcto (decrece con outs, crece con corredores) y está en escala razonable vs. la referencia MLB (*The Book*). Se encontró y corrigió un bug de reconciliación en `_advance_on_hit`: bajó las inconsistencias en PA con hit de **18.94–19.16% a 0.97%** (404 de 41,579 PA con hit). El fix no cambió el hallazgo de altitud (Δ<0.001 carreras en los 3 grupos). **Descomposición Oaxaca-Blinder de la brecha de run_value por altitud: ~82% viene de la diferencia en tasa de outs (P(out)), ~18% de valor condicional** — hallazgo fundacional que se retoma en la sección 4.
+**Validación de run_value** (`historial/reports/run_value_validation.md`): matriz RE24 de la LMB reconstruida sigue el patrón correcto (decrece con outs, crece con corredores) y está en escala razonable vs. la referencia MLB (*The Book*). Se encontró y corrigió un bug de reconciliación en `_advance_on_hit`: bajó las inconsistencias en PA con hit de **18.94–19.16% a 0.97%** (404 de 41,579 PA con hit). El fix no cambió el hallazgo de altitud (Δ<0.001 carreras en los 3 grupos). **Descomposición Oaxaca-Blinder de la brecha de run_value por altitud: ~82% viene de la diferencia en tasa de outs (P(out)), ~18% de valor condicional** — hallazgo fundacional que se retoma en la sección 4.
 
 **Arsenal** (`reports/arsenal_summary.md`): 24 de 1,718 combinaciones pitcher-year (1.4%, 440 pitches) sin fastball identificable. Nulos en `velo_diff_vs_fb`/`ivb_diff_vs_fb`/`hb_diff_vs_fb`/`tunnel_similarity`: 3,448.
 
@@ -35,13 +35,13 @@ Documento consolidado de todos los hallazgos del proyecto, con cifras exactas y 
 
 ## 2. Modelos
 
-**Stuff+ v1** (`reports/stuff_plus_baseline.md`): target oficial único `is_whiff`. AUC test = **0.7297** vs. baseline ingenuo 0.5943 (+0.1354). `run_value` con solo física queda *peor* que el baseline por count (R²=0.0032 vs 0.0205) — por eso no es target de Stuff+. Ablation: quitar `altitude_level` + `magnus_residual` no cuesta AUC (0.7297 → 0.7306, diferencia de ruido).
+**Stuff+ v1** (`historial/reports/stuff_plus_baseline.md`): target oficial único `is_whiff`. AUC test = **0.7297** vs. baseline ingenuo 0.5943 (+0.1354). `run_value` con solo física queda *peor* que el baseline por count (R²=0.0032 vs 0.0205) — por eso no es target de Stuff+. Ablation: quitar `altitude_level` + `magnus_residual` no cuesta AUC (0.7297 → 0.7306, diferencia de ruido).
 
-**Location+ v1** (`reports/location_plus_baseline.md`): GAM, solo ubicación+conteo+lateralidad. `is_called_strike` AUC=**0.8468**, `is_chase` AUC=**0.7993** (ambos oficiales). Confirmación simétrica del ablation de Stuff+: con solo ubicación, `is_whiff` predice peor (AUC 0.6839) que con física.
+**Location+ v1** (`historial/reports/location_plus_baseline.md`): GAM, solo ubicación+conteo+lateralidad. `is_called_strike` AUC=**0.8468**, `is_chase` AUC=**0.7993** (ambos oficiales). Confirmación simétrica del ablation de Stuff+: con solo ubicación, `is_whiff` predice peor (AUC 0.6839) que con física.
 
-**SHAP sobre Stuff+** (`reports/shap_findings.md`): top-5 global por importancia — VertApprAngle (0.2985), HorzRelAngle (0.2861), VertRelAngle (0.2709), RelSide (0.1840), RelHeight (0.1208). `altitude_level` es la feature **menos importante** de las 23 (rank 23, mean|SHAP|=0.0076), confirmando el ablation. `magnus_residual_horz` (rank 10) se investigó y se concluyó que es redundancia (correlación -0.809 con SpinAxis), no señal nueva.
+**SHAP sobre Stuff+** (`historial/reports/shap_findings.md`): top-5 global por importancia — VertApprAngle (0.2985), HorzRelAngle (0.2861), VertRelAngle (0.2709), RelSide (0.1840), RelHeight (0.1208). `altitude_level` es la feature **menos importante** de las 23 (rank 23, mean|SHAP|=0.0076), confirmando el ablation. `magnus_residual_horz` (rank 10) se investigó y se concluyó que es redundancia (correlación -0.809 con SpinAxis), no señal nueva.
 
-**Pitching+ v1 combinado** (`reports/pitching_plus_baseline.md`): 33 features, 8 targets, LightGBM. AUC `pitcher_holdout`: is_whiff=0.7575, is_chase=0.9173, is_called_strike=0.8840, is_weak_contact=0.7677, is_groundball=0.7812, is_hard_contact=0.8105, is_out_in_pa=0.6292; run_value R²=0.0435. Mejora sobre sub-modelos individuales: is_whiff +0.0279 AUC vs. Stuff+ solo, is_called_strike +0.0371 y is_chase +0.1180 vs. Location+ solo — confirma que combinar aporta señal real, no redundancia.
+**Pitching+ v1 combinado** (`historial/reports/pitching_plus_baseline.md`): 33 features, 8 targets, LightGBM. AUC `pitcher_holdout`: is_whiff=0.7575, is_chase=0.9173, is_called_strike=0.8840, is_weak_contact=0.7677, is_groundball=0.7812, is_hard_contact=0.8105, is_out_in_pa=0.6292; run_value R²=0.0435. Mejora sobre sub-modelos individuales: is_whiff +0.0279 AUC vs. Stuff+ solo, is_called_strike +0.0371 y is_chase +0.1180 vs. Location+ solo — confirma que combinar aporta señal real, no redundancia.
 
 **Pitching+ score OOF (versión oficial)** (`reports/pitching_plus_score_oof.md`): n=1,628 pitcher-temporadas, mean=100.00, std=**6.32**, rango [53.88, 131.13]. Correlación con la versión in-sample = **0.9429**, overlap top-10 = 9/10, bottom-10 = 3/10 — ranking robusto al sesgo in-sample, pero esta es la versión a usar de aquí en más.
 
@@ -49,21 +49,21 @@ Documento consolidado de todos los hallazgos del proyecto, con cifras exactas y 
 
 ## 3. Validación
 
-**Diseño de 2 pasos del contrafactual** (`reports/notas_metodologicas.md`): un contrafactual ingenuo (cambiar solo `altitude_level` dejando el movimiento fijo) mide ~0 por construcción, dado que el ablation de Stuff+ ya mostró que el efecto de altitud está completamente mediado por el movimiento observado. Diseño correcto: recalcular movimiento vía Magnus preservando el residual del pitcher, luego predecir con Stuff+/Pitching+.
+**Diseño de 2 pasos del contrafactual** (`historial/reports/notas_metodologicas.md`): un contrafactual ingenuo (cambiar solo `altitude_level` dejando el movimiento fijo) mide ~0 por construcción, dado que el ablation de Stuff+ ya mostró que el efecto de altitud está completamente mediado por el movimiento observado. Diseño correcto: recalcular movimiento vía Magnus preservando el residual del pitcher, luego predecir con Stuff+/Pitching+.
 
 **Modelo físico de Magnus** (`reports/magnus_analysis.md`): offset SpinAxis→dirección de break calibrado empíricamente en 178.67° (std=8.72°, redondeado a 180°) sobre 633,447 pitches. El modelo sobreestima la magnitud del break ~1.46x (razón teórica/observada mediana) — consistente con no separar spin útil de giroscópico. El residual de Magnus reduce la varianza explicada por altitud en 79.2% (vertical) y 98.9% (horizontal) vs. el movimiento crudo. **Hallazgo abierto sin resolver:** Medium Altitude tiene el residual vertical más negativo de las 3 categorías, patrón no-monotónico que sobrevive al descartar composición de AutoPitchType (Cramer's V=0.0587, ajuste apenas mueve -2.6214→-2.6341).
 
-**Chequeo OOD del contrafactual** (`reports/altitude_counterfactual_ood_check.md`): % de combinaciones fuera de distribución (percentiles 1-99, referencia = train de `pitcher_holdout`, 503,112 pitches) — No Altitude 7.02%, Medium Altitude 13.81%, Extreme Altitude 10.39%. **Calibración clave: la tasa "natural" de OOD en pitches reales de test (nunca vistos en train) es 8.52%** — prácticamente el mismo orden que los escenarios contrafactuales. Conclusión: **no es un artefacto de extrapolación**.
+**Chequeo OOD del contrafactual** (`historial/reports/altitude_counterfactual_ood_check.md`): % de combinaciones fuera de distribución (percentiles 1-99, referencia = train de `pitcher_holdout`, 503,112 pitches) — No Altitude 7.02%, Medium Altitude 13.81%, Extreme Altitude 10.39%. **Calibración clave: la tasa "natural" de OOD en pitches reales de test (nunca vistos en train) es 8.52%** — prácticamente el mismo orden que los escenarios contrafactuales. Conclusión: **no es un artefacto de extrapolación**.
 
-**z-test estratificado por tipo de pitch** (`reports/altitude_whiff_stratified.md`): Cochran-Mantel-Haenszel pooled, controlando por AutoPitchType — OR=**0.9055**, chi2=107.09, p<0.001. El efecto agregado sobrevive al control por tipo de pitch; composición de tipos explica ~-7% de la brecha cruda (prácticamente nada). Curveball muestra dirección opuesta (+5.47% relativo, z=2.10, **p=0.036**) — señalado explícitamente como "patrón real pero con mayor incertidumbre relativa" (no sobrevive corrección de Bonferroni con 7 tipos testeados, umbral≈0.0071).
+**z-test estratificado por tipo de pitch** (`historial/reports/altitude_whiff_stratified.md`): Cochran-Mantel-Haenszel pooled, controlando por AutoPitchType — OR=**0.9055**, chi2=107.09, p<0.001. El efecto agregado sobrevive al control por tipo de pitch; composición de tipos explica ~-7% de la brecha cruda (prácticamente nada). Curveball muestra dirección opuesta (+5.47% relativo, z=2.10, **p=0.036**) — señalado explícitamente como "patrón real pero con mayor incertidumbre relativa" (no sobrevive corrección de Bonferroni con 7 tipos testeados, umbral≈0.0071).
 
-**Sanity check del dashboard** (`reports/dashboard_sanity_check.md`): identidad (reconstruir bajo la misma categoría de referencia) — diferencia máxima **8.88e-16 pulgadas** sobre 28 pitches (error de punto flotante puro). Proyección Extreme Altitude vs. pitches reales similares: **27 de 28 pitches (96%) caen dentro de 2 desviaciones estándar** de la distribución real observada. Investigación de sesgo direccional en HorzBreak: con n=5 los 5 z-scores salían positivos, pero con n=28 el sesgo **no se confirmó sistemático** (39% positivos, p=0.345) — coincidencia de muestra chica, no un patrón real ni relacionado con el hallazgo de Medium Altitude de `magnus_analysis.md`.
+**Sanity check del dashboard** (`historial/reports/dashboard_sanity_check.md`): identidad (reconstruir bajo la misma categoría de referencia) — diferencia máxima **8.88e-16 pulgadas** sobre 28 pitches (error de punto flotante puro). Proyección Extreme Altitude vs. pitches reales similares: **27 de 28 pitches (96%) caen dentro de 2 desviaciones estándar** de la distribución real observada. Investigación de sesgo direccional en HorzBreak: con n=5 los 5 z-scores salían positivos, pero con n=28 el sesgo **no se confirmó sistemático** (39% positivos, p=0.345) — coincidencia de muestra chica, no un patrón real ni relacionado con el hallazgo de Medium Altitude de `magnus_analysis.md`.
 
 ---
 
 ## 4. Efecto de altitud
 
-**Delta de Pitching+ por tipo de pitch** (Extreme − No Altitude), contrafactual sobre muestra estratificada de 100,000 pitches (`reports/altitude_counterfactual.md` sección 1):
+**Delta de Pitching+ por tipo de pitch** (Extreme − No Altitude), contrafactual sobre muestra estratificada de 100,000 pitches (`historial/reports/altitude_counterfactual.md` sección 1):
 
 | AutoPitchType | delta Pitching+ | n |
 |---|---:|---:|
@@ -77,11 +77,11 @@ Documento consolidado de todos los hallazgos del proyecto, con cifras exactas y 
 
 **Los 7 tipos pierden Pitching+ en altitud extrema — ninguno gana.** Sinker pierde más; Curveball, Four-Seam y Splitter pierden menos (no ganan valor).
 
-**Descomposición en 8 componentes** (`reports/altitude_counterfactual.md` sección 4): `is_out_in_pa` domina la caída en los 7 tipos (entre −0.52 y −0.65 puntos). Caso Curveball: `is_whiff` (+0.063) e `is_weak_contact` (+0.057) son, cada uno, el máximo de los 7 tipos — compensan parcialmente la pérdida en `is_called_strike` (peor de los 7, −0.057) e `is_out_in_pa`.
+**Descomposición en 8 componentes** (`historial/reports/altitude_counterfactual.md` sección 4): `is_out_in_pa` domina la caída en los 7 tipos (entre −0.52 y −0.65 puntos). Caso Curveball: `is_whiff` (+0.063) e `is_weak_contact` (+0.057) son, cada uno, el máximo de los 7 tipos — compensan parcialmente la pérdida en `is_called_strike` (peor de los 7, −0.057) e `is_out_in_pa`.
 
-**H2 (diferencial de velocidad vs. fastball)** (`reports/altitude_counterfactual.md` sección 2): **no consistente** en la muestra agregada de todos los tipos (bin más lejano del fastball pierde −0.856, el más cercano −0.819, dirección contraria a la esperada). Restringido a Changeup (sección 2b): se sostiene en los extremos (−0.910 vs. −1.167) pero **no de forma monotónica** — quiebre explicado por un salto real de SpinRate (~1,750→~2,000+ rpm) entre sub-poblaciones de Changeup, verificado robusto a exclusión de los 5 pitchers más frecuentes por bin.
+**H2 (diferencial de velocidad vs. fastball)** (`historial/reports/altitude_counterfactual.md` sección 2): **no consistente** en la muestra agregada de todos los tipos (bin más lejano del fastball pierde −0.856, el más cercano −0.819, dirección contraria a la esperada). Restringido a Changeup (sección 2b): se sostiene en los extremos (−0.910 vs. −1.167) pero **no de forma monotónica** — quiebre explicado por un salto real de SpinRate (~1,750→~2,000+ rpm) entre sub-poblaciones de Changeup, verificado robusto a exclusión de los 5 pitchers más frecuentes por bin.
 
-**Traducción a carreras/temporada** (`reports/runs_translation.md`): pendiente Pitching+→runs = **−0.001551 runs/pitch por punto** (R²=0.7177, n=1,278 pitcher-temporadas con ≥100 pitches).
+**Traducción a carreras/temporada** (`historial/reports/runs_translation.md`): pendiente Pitching+→runs = **−0.001551 runs/pitch por punto** (R²=0.7177, n=1,278 pitcher-temporadas con ≥100 pitches).
 
 | AutoPitchType | Abridor (2,500-3,000 pitches) | Relevista (800-1,000 pitches) |
 |---|---|---|
@@ -95,9 +95,9 @@ Documento consolidado de todos los hallazgos del proyecto, con cifras exactas y 
 
 (positivo = carreras permitidas de más = pérdida de valor). El mecanismo aislado de "más whiffs con la curva" vale solo ~0.27 carreras/temporada — no revierte el resultado neto de Curveball (sigue perdiendo ~3.5).
 
-**Modelo bayesiano jerárquico** (`reports/bayesian_hierarchical.md`): 180,018 pitches (28.8% del universo válido), 3,008 grupos pitcher×cluster, NUTS 4 cadenas × 2,000 draws. **Convergencia perfecta**: r_hat máximo 1.0100 (0 parámetros por encima del umbral), ess_bulk mínimo 1,174, 11 divergencias/4,000 (0.275%, no invalidante). Efecto de altitud por cluster (No→Extreme, IC 94%): fastballs +0.01817 [+0.01465,+0.02156], breaking +0.01839 [+0.01394,+0.02279], offspeed +0.01688 [+0.01024,+0.02211] runs/pitch — **misma dirección en los 3 clusters**, pero ~1.8-2x más grande que el contrafactual (avg ratio 1.83x). Se verificó aritméticamente que esto NO se explica por la partición 82%/18% del run_value_validation.md (ratio esperado 5.56x bajo esa hipótesis) — queda como discrepancia residual entre "proporción de brecha observacional" y "proporción de efecto marginal en un modelo distinto", sin forzar una explicación numérica exacta. Shrinkage confirmado: pitcher con n=1 pitch se encoge 99.9% hacia la media de su cluster.
+**Modelo bayesiano jerárquico** (`historial/reports/bayesian_hierarchical.md`): 180,018 pitches (28.8% del universo válido), 3,008 grupos pitcher×cluster, NUTS 4 cadenas × 2,000 draws. **Convergencia perfecta**: r_hat máximo 1.0100 (0 parámetros por encima del umbral), ess_bulk mínimo 1,174, 11 divergencias/4,000 (0.275%, no invalidante). Efecto de altitud por cluster (No→Extreme, IC 94%): fastballs +0.01817 [+0.01465,+0.02156], breaking +0.01839 [+0.01394,+0.02279], offspeed +0.01688 [+0.01024,+0.02211] runs/pitch — **misma dirección en los 3 clusters**, pero ~1.8-2x más grande que el contrafactual (avg ratio 1.83x). Se verificó aritméticamente que esto NO se explica por la partición 82%/18% del run_value_validation.md (ratio esperado 5.56x bajo esa hipótesis) — queda como discrepancia residual entre "proporción de brecha observacional" y "proporción de efecto marginal en un modelo distinto", sin forzar una explicación numérica exacta. Shrinkage confirmado: pitcher con n=1 pitch se encoge 99.9% hacia la media de su cluster.
 
-**Causal Forest** (`reports/causal_forest.md`): 180,001 pitches, `CausalForestDML` con tratamiento continuo. ATE global +0.00566 runs/pitch/nivel, **IC 94% incluye cero [−0.01325, +0.02457]**. Los 7 CATE por tipo de pitch tienen ICs que se solapan casi por completo (ningún par distinguible entre sí) — **el ranking por tipo de pitch NO es estadísticamente distinguible del ruido con esta muestra**. Solo el signo del ATE global es consistente en dirección con los otros 3 métodos. Spearman: contrafactual vs. z-test = +0.607 (razonable), ambos vs. causal forest ≈ 0.
+**Causal Forest** (`historial/reports/causal_forest.md`): 180,001 pitches, `CausalForestDML` con tratamiento continuo. ATE global +0.00566 runs/pitch/nivel, **IC 94% incluye cero [−0.01325, +0.02457]**. Los 7 CATE por tipo de pitch tienen ICs que se solapan casi por completo (ningún par distinguible entre sí) — **el ranking por tipo de pitch NO es estadísticamente distinguible del ruido con esta muestra**. Solo el signo del ATE global es consistente en dirección con los otros 3 métodos. Spearman: contrafactual vs. z-test = +0.607 (razonable), ambos vs. causal forest ≈ 0.
 
 **Síntesis de 4 métodos:** contrafactual, z-test estratificado y bayesiano (a nivel de cluster) coinciden en dirección (altitud reduce el valor del pitcher) con evidencia estadística sólida. El causal forest confirma la dirección del efecto agregado pero está subpotenciado para resolver heterogeneidad por tipo de pitch a este tamaño de muestra — no confirma ni contradice el ranking de los otros 3.
 
@@ -105,29 +105,29 @@ Documento consolidado de todos los hallazgos del proyecto, con cifras exactas y 
 
 ## 5. Recomendaciones
 
-De `reports/runs_translation.md` y `reports/scouting/`:
+De `historial/reports/runs_translation.md` y `reports/scouting/`:
 
 - **Un abridor sinker-heavy pierde ~4.5 carreras/temporada** (rango 4.1-4.9) al jugar en altitud extrema vs. nivel del mar — el mayor impacto entre los 7 tipos analizados.
 - **Curveball, Four-Seam y Splitter son los que MENOS pierden** (~3.5 carreras/temporada) — no presentar como que "ganan" valor, la cifra sigue siendo una pérdida neta.
 - Para un relevista (800-1,000 pitches/temporada), el mismo efecto por tipo de pitch representa ~1.1-1.5 carreras/temporada — menor solo por volumen, no por un efecto distinto por pitch.
 - **Reportes de scouting individuales** (`reports/scouting/README.md`, 10 pitchers): ejemplo verificado — `pitcher_00107` (Sinker 77% de uso de su arsenal) recibe la recomendación automática "riesgo de pérdida de valor en altitud extrema (~+4.5 carreras/temporada proyectadas)" generada por regla determinística, consistente con la tabla de arriba; percentil 94 en su temporada 2026 (n_pool=368 pitcher-temporadas confiables). `pitcher_00469` (top Pitching+=116.25, percentil 100) sirve de ejemplo de arsenal balanceado (Slider 43.5% / Sinker 41.7% / Curveball 13.8%) sin tipo dominante de alto riesgo.
-- El dashboard interactivo (`dashboard/app.py`) permite evaluar cualquier pitch hipotético (prospecto externo o pitcher actual con referencia de altitud ajustable) usando el mismo mecanismo de 2 pasos validado en la sección 3.
+- El dashboard interactivo (`historial/dashboard/app.py`) permite evaluar cualquier pitch hipotético (prospecto externo o pitcher actual con referencia de altitud ajustable) usando el mismo mecanismo de 2 pasos validado en la sección 3.
 
 ---
 
 ## 6. Límites del análisis
 
-1. **Elevación de las categorías de altitud es un supuesto, no un dato medido.** No Altitude=50m, Medium=800m, Extreme=1,900m — el Harp Helú real está a ~2,240 msnm, así que el punto medio usado para Extreme es conservador (`reports/magnus_analysis.md`).
+1. **Elevación de las categorías de altitud es un supuesto, no un dato medido.** No Altitude=50m, Medium=800m, Extreme=1,900m — la altitud real de los estadios no está en el dataset, así que el punto medio usado para Extreme es conservador (`reports/magnus_analysis.md`).
 2. **El modelo de Magnus no separa spin útil de spin giroscópico**, por lo que sobreestima la magnitud del break ~1.46x — la comparación *relativa* entre categorías de altitud no se ve afectada, pero la magnitud absoluta del residual sí (`reports/magnus_analysis.md`).
 3. **Hallazgo abierto sin explicación:** el residual vertical de Magnus en Medium Altitude es sistemáticamente el más negativo de las 3 categorías, sin explicación de composición de tipos de pitch — candidatos no investigados: efecto de drag, composición de pitchers/equipos por estadio (`reports/magnus_analysis.md`).
-4. **H2 (diferencial de velocidad vs. fastball) no está confirmada** en la muestra agregada; dentro de Changeup se sostiene solo en los extremos, no monotónicamente, y el quiebre coincide con una sub-población de mayor SpinRate no explicada más allá de una hipótesis física plausible (`reports/altitude_counterfactual.md`).
-5. **El hallazgo de Curveball (dirección opuesta en is_whiff) tiene significancia estadística débil** (p=0.036, no sobrevive corrección de Bonferroni con 7 tipos) — reportado con menor confianza que el hallazgo principal (`reports/altitude_whiff_stratified.md`, `reports/runs_translation.md`).
-6. **Discrepancia de magnitud sin resolver entre el modelo bayesiano y el contrafactual** (~1.8-2x), verificada aritméticamente como NO explicable por la partición 82%/18% de `run_value_validation.md` — queda como diferencia metodológica de fondo entre "brecha observacional" y "efecto marginal en un modelo" (`reports/bayesian_hierarchical.md`).
-7. **El Causal Forest está subpotenciado** para resolver heterogeneidad por tipo de pitch con 180k pitches — sus 7 intervalos de confianza se solapan casi por completo; no debe citarse como confirmación ni contradicción del ranking por tipo de pitch de los otros métodos (`reports/causal_forest.md`).
+4. **H2 (diferencial de velocidad vs. fastball) no está confirmada** en la muestra agregada; dentro de Changeup se sostiene solo en los extremos, no monotónicamente, y el quiebre coincide con una sub-población de mayor SpinRate no explicada más allá de una hipótesis física plausible (`historial/reports/altitude_counterfactual.md`).
+5. **El hallazgo de Curveball (dirección opuesta en is_whiff) tiene significancia estadística débil** (p=0.036, no sobrevive corrección de Bonferroni con 7 tipos) — reportado con menor confianza que el hallazgo principal (`historial/reports/altitude_whiff_stratified.md`, `historial/reports/runs_translation.md`).
+6. **Discrepancia de magnitud sin resolver entre el modelo bayesiano y el contrafactual** (~1.8-2x), verificada aritméticamente como NO explicable por la partición 82%/18% de `run_value_validation.md` — queda como diferencia metodológica de fondo entre "brecha observacional" y "efecto marginal en un modelo" (`historial/reports/bayesian_hierarchical.md`).
+7. **El Causal Forest está subpotenciado** para resolver heterogeneidad por tipo de pitch con 180k pitches — sus 7 intervalos de confianza se solapan casi por completo; no debe citarse como confirmación ni contradicción del ranking por tipo de pitch de los otros métodos (`historial/reports/causal_forest.md`).
 8. **El score de Pitching+ es in-sample para pitchers de train** en la versión original (corregido por la versión OOF, que es la oficial) — usar siempre `pitching_plus_scores_oof.parquet`, nunca la versión in-sample, para análisis nuevos (`reports/pitching_plus_score_oof.md`).
-9. **`is_out_in_pa` (AUC=0.6292) es el target con peor poder predictivo de los 8**, aunque es el que domina el efecto de altitud en la descomposición — el modelo predictivo de ESTE target específico es el más débil del ensemble, algo a tener en cuenta al interpretar magnitudes finas (`reports/pitching_plus_baseline.md`).
+9. **`is_out_in_pa` (AUC=0.6292) es el target con peor poder predictivo de los 8**, aunque es el que domina el efecto de altitud en la descomposición — el modelo predictivo de ESTE target específico es el más débil del ensemble, algo a tener en cuenta al interpretar magnitudes finas (`historial/reports/pitching_plus_baseline.md`).
 10. **El dashboard completa 24 de 33 features del modelo con supuestos** (mediana histórica por tipo de pitch, conteo 0-0, ubicación al centro de la zona) cuando el usuario solo provee 9 — validado end-to-end contra datos reales (sección 3), pero no reemplaza una predicción con las features reales completas de un pitch específico.
-11. **Reconstrucción de ocupación de bases** en run_value sigue teniendo 0.97% de casos degenerados sin resolver del todo (404 de 41,579 PA con hit) — no afecta runs/outs reales, solo el detalle de a qué base llegó cada corredor (`reports/run_value_validation.md`).
+11. **Reconstrucción de ocupación de bases** en run_value sigue teniendo 0.97% de casos degenerados sin resolver del todo (404 de 41,579 PA con hit) — no afecta runs/outs reales, solo el detalle de a qué base llegó cada corredor (`historial/reports/run_value_validation.md`).
 
 ---
 
@@ -259,7 +259,7 @@ Por par de temporadas, Pitching+ v3 DIPS (mín. 100) da +0.045 en 2024→2025 y 
 - Queda pendiente una **decisión del usuario**: adoptar Pitching+ v3 por equivalencia de rendimiento y mejor metodología, aunque no por mejora demostrada. Corrige los problemas señalados de pesos arbitrarios, traducción a carreras circular y etiquetas mal condicionadas.
 
 **Cifras de arriba que esto matiza:**
-- Sección 2, pesos de Pitching+ (`reports/pitching_plus_score.md`): la cadena v3 obtiene los pesos de las carreras y no de una tabla elegida a mano, con poder predictivo equivalente.
+- Sección 2, pesos de Pitching+ (`historial/reports/pitching_plus_score.md`): la cadena v3 obtiene los pesos de las carreras y no de una tabla elegida a mano, con poder predictivo equivalente.
 - Sección 4, traducción a carreras: la pendiente de −0.001551 runs/pitch por punto se calculó contra una predicción que forma parte del mismo score. En v3, el score **ya está en carreras** (E[Δ] por pitch), así que la traducción es directa y no circular.
 
 ### 7.5 Decisión — Pitching+ v3 adoptado como índice oficial (2026-10-03)
@@ -368,7 +368,7 @@ Pitchers que lanzan mayormente en Extreme: 94.99 con altitud → **98.68** neutr
 - La regla "en casa conviene apoyarse en X" compara el **valor** del pitch en altitud contra su tipo, no solo cuánto pierde. Una primera versión recomendaba el pitch que menos pierde aunque fuera el peor del arsenal; se corrigió.
 - Las fichas v1 quedan en `reports/scouting/v1/`.
 
-**Dashboard v3** (`dashboard/app.py`, `dashboard/scoring.py`):
+**Dashboard v3** (`historial/dashboard/app.py`, `dashboard/scoring.py`):
 - **Pitch hipotético:** construye la trayectoria que reproduce el movimiento ingresado en la categoría donde se midió, la re-simula en las 3 categorías con los ratios medidos y la valúa en carreras/100 con Pitching+ v3. La valuación es neutral al conteo (promedio de los 12 conteos ponderado por frecuencia) y compara contra el pitch típico de su tipo. Separa la pérdida de calidad del pitch del entorno de bola en juego.
 - **Pitcher existente:** Pitching+ oficial con intervalo, el índice con altitud, la exposición a cada altitud, el arsenal y las recomendaciones.
 - Verificado con `streamlit.testing.AppTest`: las dos pestañas corren sin excepciones.
@@ -420,7 +420,7 @@ Pitchers que lanzan mayormente en Extreme: 94.99 con altitud → **98.68** neutr
 
 ### 7.10 Documento técnico reescrito (2026-10-03)
 
-`reports/documento_tecnico.md` se reescribió sobre la versión oficial (Pitching+ v3 neutral por altitud). Reemplaza al borrador basado en v1 y resuelve sus marcas `[PENDIENTE]`. La formulación matemática completa está en `reports/resumen_matematico.md`.
+`reports/documento_tecnico.md` se reescribió sobre la versión oficial (Pitching+ v3 neutral por altitud). Reemplaza al borrador basado en v1 y resuelve sus marcas `[PENDIENTE]`. La formulación matemática completa está en `historial/reports/resumen_matematico.md`.
 
 ### 7.11 Ajuste de hiperparámetros de Pitching+ v3 (2026-10-03)
 
@@ -465,7 +465,7 @@ El documento técnico (v3.1) y `resumen_matematico.md` ya tienen las cifras nuev
 .venv\Scripts\python -m src.models.stuff_plus_v4
 .venv\Scripts\python -m src.reports.scouting_report_v2
 .venv\Scripts\python -m pytest tests
-.venv\Scripts\streamlit run dashboard/app.py
+.venv\Scripts\streamlit run historial/dashboard/app.py
 ```
 
 ### 7.12 Auditoría matemática y de implementación (2026-10-05)
@@ -480,18 +480,18 @@ Se contrastó `resumen_matematico.md` contra el código y se corrieron pruebas n
 
 ### 7.13 Auditoría inicial del proyecto "CDMX Como Variable" (2026-10-05)
 
-Inventario del proyecto, reproducción de resultados y lo que falta para el nuevo enfoque. Reporte completo: `AUDITORIA_INICIAL.md`.
+Inventario del proyecto, reproducción de resultados y lo que falta para el nuevo enfoque. Reporte completo: `historial/AUDITORIA_INICIAL.md`.
 
 - Las cifras vigentes se reproducen exactamente (AUC Stuff+ v1 0.7315, ratios ρ̂, −0.327 → −0.054, 0.208 → 0.276).
-- **Extreme Altitude no es el Harp Helú.** Se reconstruyeron los equipos anónimos con el grafo de pitchers que lanzan juntos (k = 20 en 2024, 97% de pureza). Entre 5 y 6 equipos juegan de local en Extreme. Su ratio de drag dentro de pitcher va de 0.81 a 0.90, así que son estadios físicamente distintos. El dataset no trae estadio, equipo ni clima.
+- **Extreme Altitude no es un solo estadio.** Se reconstruyeron los equipos anónimos con el grafo de pitchers que lanzan juntos (k = 20 en 2024, 97% de pureza). Entre 5 y 6 equipos juegan de local en Extreme. Su ratio de drag dentro de pitcher va de 0.81 a 0.90, así que son estadios físicamente distintos. El dataset no trae estadio, equipo ni clima.
 - Lectura descriptiva preliminar de la hipótesis del analista: en Extreme la bola en juego vale +0.090 carreras, contra +0.019 en No Altitude. Con 0-2, la diferencia entre un whiff y una bola en juego es 0.43 carreras en Extreme y 0.34 en No Altitude. Está confundido por equipos y estadios; no es una prueba.
-- **Pendiente de decisión del usuario:** usar el calendario público de la LMB para identificar los juegos en Harp Helú, o trabajar con los estadios de altitud extrema reconstruidos y anónimos.
+- **Pendiente de decisión del usuario:** usar el calendario público de la LMB para identificar los juegos de un estadio concreto, o trabajar con los estadios de altitud extrema reconstruidos y anónimos.
 
 ### 7.14 Correcciones P0 y P1 de la auditoría (2026-10-05)
 
-Detalle completo: `reports/validacion_post_auditoria.md`. Pipeline regenerado desde los datos crudos con `python -m src.pipeline` (21 pasos, todos OK).
+Detalle completo: `historial/reports/validacion_post_auditoria.md`. Pipeline regenerado desde los datos crudos con `python -m src.pipeline` (21 pasos, todos OK).
 
-- **P0.1 HBP.** `targets.py` reconstruye el golpeado desde PitchCall (0 → 2,276). Su valor pasa de +0.004 a +0.397 carreras, y Δ(hbp) < 0 pasa de 7 conteos a 0. Pitching+ cambia hasta 5.9 puntos (corr 0.988). Las etiquetas y probabilidades de los modelos son idénticas, así que los hiperparámetros siguen siendo válidos (`reports/hbp_antes_despues.md`).
+- **P0.1 HBP.** `targets.py` reconstruye el golpeado desde PitchCall (0 → 2,276). Su valor pasa de +0.004 a +0.397 carreras, y Δ(hbp) < 0 pasa de 7 conteos a 0. Pitching+ cambia hasta 5.9 puntos (corr 0.988). Las etiquetas y probabilidades de los modelos son idénticas, así que los hiperparámetros siguen siendo válidos (`historial/reports/hbp_antes_despues.md`).
 - **P0.3 Baseline obligatorio.** El neutral físico **no supera** al ajuste trivial temporada × categoría: 0.279 vs. 0.279 con mín. 300, y 0.181 vs. 0.191 con mín. 100 (`reports/baselines.md`). **Se retira** la conclusión "la neutralización física mejora la predicción" (§7.7, §7.11).
 - **P0.4 Validación preespecificada (§7.2).** No se cumple: neutral 0.153 vs. Pitching+ v1 0.188 (P = 20%). La prueba ajustada por entorno queda como secundaria post-hoc. **Se retira** "cumple el criterio de 7.2" (§7.7).
 - **P0.5 Temporal estricta.** Todo entrenado con temporadas < t (pareja 2025→2026). No hay señal de inflación por leakage, y el neutral tampoco supera al trivial (`reports/validacion_temporal.md`).
@@ -501,7 +501,7 @@ Detalle completo: `reports/validacion_post_auditoria.md`. Pipeline regenerado de
   - atribución de Shapley del efecto de altitud: antes del contacto +0.39/100, bola en juego +0.71/100. Reemplaza a "calidad del pitch" (+0.32).
   - `stuff_plus_v1` declarado como modelo que usa ubicación implícita y altitud;
   - escala: 100 = pitch promedio de la liga; se conserva;
-  - estadios reconstruidos: Extreme = 4–5 estadios, Harp Helú no identificable;
+  - estadios reconstruidos: Extreme = 4–5 estadios, ningún estadio identificable;
   - hipótesis del analista respaldadas en esos estadios: menos whiff, más contacto, menos K, contacto más caro; G_E − G_N = +0.046;
   - la sensibilidad individual a la altitud no es medible (confiabilidad 0.11).
 - **Tests:** 21 automáticos pasan (15 nuevos). El test nuevo de ratios inválidos encontró una falla silenciosa en `trajectory.lookup_ratios`, ya corregida.
@@ -606,3 +606,19 @@ Requisitos complementarios incorporados sin cambiar la estructura (Pitching+ sig
   - mejor Stuff ≠ mejor pitch.
 - **Página:** secciones nuevas 9 ("¿Qué cambia en nuestro Pitching+?") y 10 ("¿Es el mismo un buen lanzamiento en cualquier estadio?"); las siguientes se renumeraron a 11–16.
 - **Tests:** 62 PASS.
+
+### 7.20 Preparación de la entrega (2026-10-19)
+
+- **Revisión contra los entregables del reto.** Se completaron los faltantes:
+  - validación fuera de muestra del modelo final;
+  - recomendaciones operativas: formas de pitch, contacto duro y HR, mapa de movimiento, arsenales y perfil de prospecto;
+  - documento técnico nuevo de 7 páginas, con PDF.
+- **Validación fuera de muestra** (`reports/validacion_fuera_de_muestra.md`):
+  - mejora del MSE sobre el modelo nulo por conteo de 4.1–4.8%;
+  - pendiente de calibración 0.96–1.00 en pitcher, season y park holdout;
+  - en el park holdout de Extreme el modelo subestima un poco el valor realizado (el contacto cuesta más), coherente con P2 §7.2.
+- **Formas de pitch:** los pitches que más dependen del giro pierden más en Extreme. Ejemplo: recta de mucho ride, −7.7 de Stuff+ y −7.9 pp de whiff/swing, contra −3.8 y −1.4 pp con poco ride.
+- **Nombres:** decisión del usuario. Se usa "Extreme Altitude" y se explica que corresponde a la pregunta del reto sobre la Ciudad de México, sin identificar estadios. Se quitaron los nombres reales de todos los documentos.
+- **Limpieza:** `historial/` con índice; README como índice de entrega; 42 capturas nuevas.
+- **Tests:** 66 PASS.
+

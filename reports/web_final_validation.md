@@ -209,3 +209,30 @@ página mostraba "≥ 0.92" con un valor de 0.916; ahora muestra tres decimales.
 - El bootstrap es de candidatos, no de modelos reentrenados.
 - La capa física es aproximada.
 - El óptimo no considera biomecánica ni repertorio.
+
+## 8. Revisión de entregables y limpieza para la entrega
+
+La página se revisó contra la lista de entregables del reto y se completaron los faltantes:
+
+- **Validación fuera de muestra del modelo final:** `src/validation/holdout_final.py` (pitcher, season y park holdout contra el modelo nulo por
+  conteo, con calibración). Sección 16 de la página y `reports/validacion_fuera_de_muestra.md`.
+- **Recomendaciones operativas:** nueva sección 11 (`src/analysis/deliverables.py`). Incluye:
+  - perfiles por forma de pitch con Δ Stuff+, whiff, contacto duro y HR/BIP;
+  - mapa de movimiento de los pitches más y menos efectivos;
+  - arsenales con mayor Stuff+ en Extreme;
+  - flujo para perfilar prospectos, con una calculadora de AEPP que reproduce el AEPP oficial.
+- **Documento técnico nuevo:** `src/reports/technical_document.py` → `reports/documento_tecnico.md`, `.html` y `.pdf` (7 páginas, cifras leídas del
+  pipeline). La versión anterior está en `historial/`.
+- **Nombres:** nota al inicio de la página (la categoría Extreme Altitude responde a la pregunta del reto sobre la Ciudad de México sin identificar estadios).
+
+Las secciones se renumeraron (11 Recomendaciones; 12–17 las siguientes). Correcciones visuales:
+- títulos encimados en "Explora un tipo";
+- etiquetas recortadas en la gráfica de contribuciones;
+- ejes encimados en la de ganancia por quintil;
+- rótulo cortado en el radar.
+
+Capturas: 42 nuevas en `reports/capturas_web/`, tomadas a 1100 × 820. Tests: 66 PASS.
+
+**Limpieza:** el material de fases anteriores se movió a `historial/` con `git mv`, con un índice; `src/` quedó completo. Se quitaron los
+nombres reales de todos los documentos, y el README es ahora un índice de entrega.
+

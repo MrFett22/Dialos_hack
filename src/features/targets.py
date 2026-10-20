@@ -597,7 +597,7 @@ def format_report(report: dict) -> str:
         f"- Coincide con is_swinging_strike en {wf['pct_matches_is_swinging_strike']}% de las filas",
         f"- Inconsistencias is_whiff==1 pero is_swing==0: {wf['inconsistent_not_a_swing']:,}",
         f"- **Inconsistencias is_whiff==1 y is_contact==1 al mismo tiempo (contradiccion logica): "
-        f"{wf['inconsistent_whiff_and_contact']:,}** — revisar con Diablos antes de usarla sin filtrar.",
+        f"{wf['inconsistent_whiff_and_contact']:,}** — revisar con el organizador antes de usarla sin filtrar.",
         "",
         "## 3. Validacion de `is_called_strike` (columna existente)",
         "",

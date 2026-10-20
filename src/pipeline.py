@@ -63,6 +63,9 @@ STEPS = [
     ("p2_report", "src.reports.p2_report", []),
     ("web_data", "src.reports.web_data", []),
     ("pitch_environment", "src.analysis.pitch_environment", []),
+    ("holdout_final", "src.validation.holdout_final", []),
+    ("deliverables", "src.analysis.deliverables", []),
+    ("technical_document", "src.reports.technical_document", []),
     ("tests", "pytest", ["-q", "tests"]),
 ]
 

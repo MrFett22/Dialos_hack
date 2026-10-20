@@ -44,7 +44,7 @@ entradas completas de un pitcher específico. Ejemplo real, `game_000486`
 
 **Conclusión:** el nulo está ligado a la **identidad de pitchers específicos**
 (probablemente abridores/pitchers nuevos de la cola de la temporada 2026 que
-aún no pasaron por el proceso de anonimización de Diablos al momento de
+aún no pasaron por el proceso de anonimización del organizador al momento de
 exportar el dataset), no a un problema de tracking aleatorio pitch por pitch.
 Es un patrón de **missingness no aleatorio (MNAR)**: un pitcher entero (todos
 sus pitches, en todos los juegos donde apareció) queda invisible.
@@ -166,7 +166,7 @@ está perfectamente poblado pero `altitude_category` no.
 **Conclusión:** es un problema de **mapeo estadio → altitude_category**
 faltante para un lote específico de 10 juegos (probablemente porque esos
 juegos se jugaron en una sede que aún no estaba en la tabla de buckets de
-altitud de Diablos al momento del export), distinto del mapeo de
+altitud del organizador al momento del export), distinto del mapeo de
 pitcher_anon_id (identidad de jugador). Ambos son fallas de "tabla de lookup
 incompleta para datos recientes", pero en tablas de lookup DIFERENTES —
 consistente con que solo 4 de 10 juegos se solapen entre ambos problemas.

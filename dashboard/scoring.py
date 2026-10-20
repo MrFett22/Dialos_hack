@@ -1,4 +1,6 @@
-"""Lógica del dashboard (dashboard/app.py), sin dependencias de Streamlit.
+"""Funciones de puntuación (defaults por tipo de pitch, ratios de densidad, conteos) que usa la página (web/engine.py).
+
+Antes servían al dashboard v3 (archivado en historial/dashboard/app.py). Sin dependencias de Streamlit.
 
 Versión v3 (2026-10-03): usa el índice oficial Pitching+ v3 y el
 contrafactual de trayectoria completa. Reemplaza al mecanismo v1 (Magnus

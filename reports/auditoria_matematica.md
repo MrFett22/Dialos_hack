@@ -1,6 +1,6 @@
 # Auditoría matemática y de implementación (2026-10-05)
 
-**Alcance.** Se contrastó `reports/resumen_matematico.md` contra el código (commit `db1eed6`) y se ejecutaron pruebas numéricas sobre los datos y artefactos existentes. **No se modificó código del proyecto.** Los scripts de la auditoría están fuera del repositorio (scratchpad): `audit_data.py`, `audit_tests.py`, `audit_t8.py` y `audit_temporal.py`.
+**Alcance.** Se contrastó `historial/reports/resumen_matematico.md` contra el código (commit `db1eed6`) y se ejecutaron pruebas numéricas sobre los datos y artefactos existentes. **No se modificó código del proyecto.** Los scripts de la auditoría están fuera del repositorio (scratchpad): `audit_data.py`, `audit_tests.py`, `audit_t8.py` y `audit_temporal.py`.
 
 **Cifras del encargo vs. cifras vigentes.** Algunas cifras del encargo son las previas al ajuste de hiperparámetros (§7.7 de la bitácora):
 

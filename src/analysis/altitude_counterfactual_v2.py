@@ -193,7 +193,7 @@ def format_report(ratios, ratios_a, validation, identity, effect, effect_all, co
         "# Contrafactual de altitud v2 — trayectoria completa + Pitching+ v3",
         "",
         "Generado por `src/analysis/altitude_counterfactual_v2.py` (física en `src/features/trajectory.py`). "
-        f"Reemplaza al contrafactual v1 (`reports/altitude_counterfactual.md`). Pitches: {n:,}.",
+        f"Reemplaza al contrafactual v1 (`historial/reports/altitude_counterfactual.md`). Pitches: {n:,}.",
         "",
         "## 1. Densidad del aire medida con los datos (no supuesta)",
         "",

@@ -191,7 +191,7 @@ def format_report(report: dict) -> str:
         "`data/processed/pitching_plus_scores.parquet` (in-sample, se conserva solo "
         "como referencia historica/auditoria, no usar para analisis nuevos).",
         "",
-        f"Metodologia identica a `reports/pitching_plus_score.md` (mismos pesos, mismo "
+        f"Metodologia identica a `historial/reports/pitching_plus_score.md` (mismos pesos, mismo "
         f"signo invertido en run_value/is_hard_contact, mismo z-score por temporada, "
         f"misma formula 100+10z) — el UNICO cambio es el origen de las predicciones: "
         f"K-fold agrupado por pitcher (k={N_FOLDS}, seed={OOF_SEED}) en vez de un solo "

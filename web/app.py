@@ -49,7 +49,10 @@ def load() -> dict:
             "relgain": csv("pitching_relative_gain_by_whiff"), "opt_prof": csv("optimal_pitch_profiles"),
             "opt_cmp": csv("optimal_pitch_comparison"), "opt_loc": csv("optimal_pitch_location"),
             "opt_heat": csv("optimal_location_heatmap"), "opt_fixed": csv("optimal_location_fixed_pitch"),
-            "opt_meta": json.loads((WEB / "optimal_pitch_meta.json").read_text(encoding="utf-8"))}
+            "opt_meta": json.loads((WEB / "optimal_pitch_meta.json").read_text(encoding="utf-8")),
+            "shape": csv("pitch_shape_altitude_effects"), "mmap": csv("movement_map"), "arsenal": csv("arsenal_altitude"),
+            "prospect": json.loads((WEB / "prospect_reference.json").read_text(encoding="utf-8")),
+            "valid": json.loads((WEB / "validation_holdout.json").read_text(encoding="utf-8"))}
 
 
 D = load()
@@ -111,9 +114,9 @@ REG_LABEL = {"corazón": "Corazón de la zona", "borde": "Borde", "persecución"
 NAV = [("hero", "Inicio"), ("evidencia", "1 · Evidencia"), ("insight", "2 · El contacto cuesta más"), ("perfil", "3 · Qué buscamos"),
        ("stuff", "4 · Stuff+ Physical"), ("location", "5 · Location+"), ("tipos", "6 · Tipos de lanzamiento"), ("pitching", "7 · Pitching+"),
        ("simulador", "8 · Construye tu lanzamiento"), ("generalvsalt", "9 · Pitching+ general vs. altitud"),
-       ("optimo", "10 · ¿El mismo buen lanzamiento?"), ("ambientes", "11 · Compara ambientes"), ("ranking", "12 · Ranking de pitchers"),
-       ("sensibilidad", "13 · Sensibilidad (exploratorio)"), ("fisica", "14 · Física y contrafactual"), ("metodo", "15 · Qué funcionó y qué no"),
-       ("futuro", "16 · Qué mejoraríamos")]
+       ("optimo", "10 · ¿El mismo buen lanzamiento?"), ("recomendaciones", "11 · Recomendaciones"), ("ambientes", "12 · Compara ambientes"),
+       ("ranking", "13 · Ranking de pitchers"), ("sensibilidad", "14 · Sensibilidad (exploratorio)"), ("fisica", "15 · Física y contrafactual"),
+       ("metodo", "16 · Validación y limitaciones"), ("futuro", "17 · Qué mejoraríamos")]
 with st.sidebar:
     st.markdown("### Pitching+ en altitud")
     st.markdown("\n".join(f"- [{t}](#{a})" for a, t in NAV))
@@ -147,6 +150,10 @@ st.markdown(f"""
 Necesitamos identificar qué pitchers poseen en mayor medida <b>las habilidades que se vuelven todavía más valiosas cuando permitir contacto cuesta más</b>:
 <ul><li>generar whiffs;</li><li>generar ponches;</li><li>evitar bolas en juego;</li><li>mantener buen Stuff;</li><li>ejecutar buenas ubicaciones.</li></ul>
 </div>""", unsafe_allow_html=True)
+st.markdown('<div class="warnbox"><b>Sobre los nombres.</b> El reto plantea sus preguntas para la altitud de la Ciudad de México. El dataset está '
+            "anonimizado: para cada juego solo dice si fue en <b>No Altitude</b>, <b>Medium</b> o <b>Extreme Altitude</b>. Por eso respondemos con "
+            "la categoría <b>Extreme Altitude</b>, la de condiciones de altitud extrema como las de la Ciudad de México, sin identificar qué estadio "
+            "es cuál: dentro de Extreme hay varios estadios anónimos distintos (sección 15).</div>", unsafe_allow_html=True)
 st.markdown("**Stuff+** nos dice qué tan bueno es el lanzamiento físicamente. **Location+**, qué tan bien fue ejecutado. "
             "**Pitching+**, cuánto vale realmente.")
 
@@ -223,7 +230,7 @@ levels(
     "juegos (500 réplicas). En el árbol de Pitching+ el componente de bola en juego es Σ_k P(k)·Δ(k) = P(BIP)·E[Δ | BIP] "
     "(identidad verificada numéricamente).")
 st.caption("Advertencia de medición: la velocidad de salida y el contacto duro dependen de la calibración del Trackman de cada estadio y "
-           "cambian entre temporadas (sección 15). El run value no depende de esa calibración.")
+           "cambian entre temporadas (sección 16). El run value no depende de esa calibración.")
 
 st.markdown("### Si el contacto ocurre, el tipo de contacto también importa")
 c = st.columns([1, 1.25])
@@ -326,7 +333,7 @@ with st.expander("Comparar neutral vs. observado (tres versiones del mismo model
     st.markdown(f"- El **observado** castiga a quien lanzó mucho en altitud (r = {V['observado']['r_pct_extreme']:+.2f}).\n"
                 f"- La versión **oficial** casi no depende del ambiente ({V['oficial']['r_pct_extreme']:+.3f}) y es la que mejor predice el whiff "
                 f"del año siguiente ({V['oficial']['whiff_t1']:.3f} vs. {V['neutral']['whiff_t1']:.3f} de la neutral): **es la que se usa en toda la página**.\n"
-                f"- La **neutral física** es un poco más estable ({V['neutral']['estabilidad']:.3f}) y sirve para explicar el mecanismo (sección 14).")
+                f"- La **neutral física** es un poco más estable ({V['neutral']['estabilidad']:.3f}) y sirve para explicar el mecanismo (sección 15).")
 levels(
     "Stuff+ responde: si el bateador le tira, ¿qué tan difícil es pegarle a este pitch solo por cómo se mueve y qué tan rápido va? 100 es el "
     "promedio y cada 10 puntos son una desviación estándar.",
@@ -498,7 +505,7 @@ VP = S["validacion_perfil"]
 st.markdown(f"**Comparación.** Stuff+ explica la parte física y Location+ la de ejecución; Pitching+ las combina con el contexto en un solo valor "
             f"esperado. Por pitcher, Pitching+ es estable (r año a año = {VP['pitching_plus']['estabilidad']:.2f}) y se relaciona con las carreras "
             f"en altitud del año siguiente (r = {VP['pitching_plus']['r_altitud_t1']:.2f}). Para elegir pitchers en altitud, el perfil por "
-            f"resultados AEPP predice mejor (sección 12).")
+            f"resultados AEPP predice mejor (sección 13).")
 st.markdown('<div class="okbox"><b>Pitching+ no depende de un claim causal.</b> Su lógica para ambientes de altitud es: <i>"en estos contextos '
             'observados, ciertos resultados tienen un costo diferente"</i> (el contacto cuesta más, el ponche protege más). No dice "la altitud causa '
             'exactamente X". Eso permite construir una métrica útil sin pedirle al diseño más de lo que identifica.</div>', unsafe_allow_html=True)
@@ -701,7 +708,7 @@ RG = EV["ganancia_relativa_mismo_conteo"]["correlaciones"]
 st.markdown('<div class="bigidea"><b>Stuff+</b> = física. <b>Location+</b> = ejecución. <b>Pitching+</b> = valor total. El mismo lanzamiento '
             "(misma física, misma ubicación, mismo conteo) puede valer distinto si cambia <b>lo que cuesta cada resultado</b>.</div>",
             unsafe_allow_html=True)
-st.markdown("La sección 11 cambia la **física** del pitch (cómo se mueve en otro aire). Aquí el pitch es **exactamente el mismo**: las "
+st.markdown("La sección 12 cambia la **física** del pitch (cómo se mueve en otro aire). Aquí el pitch es **exactamente el mismo**: las "
             "probabilidades del modelo no cambian; cambia el valor en carreras de cada resultado.")
 gva = E.general_vs_altitude(res)
 g_, a_ = gva["general"], gva["alt"]
@@ -844,7 +851,7 @@ st.markdown(f'<div class="{"okbox" if clase == "Poco" else "warnbox"}"><b>¿Camb
 c = st.columns([1, 1.3])
 pct_rows = {"General": {k: pg[k + "_pct"] for k in units}, ("Extreme" if layer == "extreme" else "Extreme (física aprox.)"): {k: pa[k + "_pct"] for k in units},
             "Mejor Stuff+": {k: ps[k + "_pct"] for k in units}}
-c[0].plotly_chart(charts.profile_radar(pct_rows, {k: u[0] for k, u in units.items()}), width="stretch", key="opt_radar")
+c[0].plotly_chart(charts.profile_radar(pct_rows, {k: u[0].split(" (")[0] for k, u in units.items()}), width="stretch", key="opt_radar")
 with c[1]:
     st.markdown("**Ubicación: ¿la misma sigue siendo óptima?** (experimento 2, lanzamiento fijo con muy buen Stuff+)")
     side = st.radio("Enfrentamiento", ["same", "opposite"], horizontal=True, key="opt_side",
@@ -890,13 +897,126 @@ levels(
     "bootstrap por pitcher (200); distancia en sd del tipo. Detalle: `reports/optimal_pitch_by_environment.md`.")
 
 # ---------------------------------------------------------------------------
-# 11. Comparar ambientes
+# 11. Recomendaciones para el cuerpo técnico
 # ---------------------------------------------------------------------------
 
-section("ambientes", "11 · Compara ambientes: el mismo lanzamiento en tres ambientes", "sim")
+section("recomendaciones", "11 · Recomendaciones para el cuerpo técnico", "obs", "asoc")
+SHP, MM, ARS, PRO = D["shape"], D["mmap"], D["arsenal"], D["prospect"]
+st.markdown('<div class="bigidea">¿Qué perfiles de pitch pierden más en altitud y cuáles aguantan? ¿Qué arsenal rinde más en Extreme? ¿Cómo '
+            "perfilar a un prospecto o agente libre? Todo con los datos de la liga y el mismo pitcher comparado consigo mismo.</div>",
+            unsafe_allow_html=True)
+
+st.markdown("### A. Perfiles que pierden más (y los que aguantan) " + badges("obs", "asoc"), unsafe_allow_html=True)
+st.markdown("Cada pitcher × tipo se clasifica por su **movimiento característico medido a nivel del mar** (No Altitude): poco, medio o mucho "
+            "ride en la recta, corrida en el sinker, barrido en el slider, caída en la curva y el splitter, fade en el changeup, corte en el cutter. "
+            "Luego se compara al **mismo pitcher** en Extreme contra No Altitude.")
+METR = {"stuff": ("Stuff+ observado (puntos)", 1.0), "whiff_swing": ("whiff por swing (pp)", 100.0), "hard": ("contacto duro por bola en juego (pp)", 100.0),
+        "hr_bip": ("jonrones por bola en juego (pp)", 100.0), "valor_100": ("valor por 100 pitches (carreras evitadas)", 1.0),
+        "ivb": ("IVB (pulg.)", 1.0), "hb_abs": ("|HB| (pulg.)", 1.0)}
+msel = st.radio("Cambio en Extreme de:", list(METR), format_func=lambda k: METR[k][0], horizontal=True, key="shape_metric")
+st.plotly_chart(charts.shape_effects_chart(SHP, msel, f"Cambio en Extreme vs. No Altitude: {METR[msel][0]} (IC 95%)", METR[msel][1]),
+                width="stretch", key="shape_chart")
+
+
+def _sig(r, m):
+    return abs(r[f"{m}_E"]) > 1.96 * r[f"{m}_E_se"]
+
+
+lines = []
+for t in PITCH_TYPES:
+    g = SHP[SHP["tipo"] == t].set_index("forma")
+    if len(g) < 2 or g["pitcher_tipos"].min() < 20:
+        continue
+    worst, best = g["stuff_E"].idxmin(), g["stuff_E"].idxmax()
+    w, b = g.loc[worst], g.loc[best]
+    eje = w["eje"].split(" (")[0]
+    if abs(w["stuff_E"] - b["stuff_E"]) <= 1.96 * np.hypot(w["stuff_E_se"], b["stuff_E_se"]):
+        lines.append(f"**{t}** ({eje}): sin diferencias claras entre formas (los intervalos se traslapan).")
+        continue
+    risk = [f"contacto duro {100 * w['hard_E']:+.1f} pp" if _sig(w, "hard") else "",
+            f"HR por bola en juego {100 * w['hr_bip_E']:+.1f} pp" if _sig(w, "hr_bip") else ""]
+    risk = [x for x in risk if x]
+    lines.append(f"**{t}** ({eje}): el grupo **{worst}** en {eje} pierde más ({w['stuff_E']:+.1f} de Stuff+, "
+                 f"{100 * w['whiff_swing_E']:+.1f} pp de whiff/swing" + (", " + ", ".join(risk) if risk else "") + "); el grupo "
+                 f"**{best}** aguanta mejor ({b['stuff_E']:+.1f} de Stuff+, {100 * b['whiff_swing_E']:+.1f} pp de whiff/swing).")
+st.markdown("\n".join(f"- {s}" for s in lines))
+st.markdown('<div class="okbox"><b>Explicación física.</b> Con menos densidad del aire hay menos fuerza de Magnus: los pitches que dependen más '
+            "del giro para moverse (mucho ride, mucho barrido, mucha caída o mucho fade) pierden más movimiento en pulgadas, y con él parte del "
+            "swing-and-miss. Lo que se pierde en whiff se paga en contacto, que en altitud es más caro (sección 2).</div>", unsafe_allow_html=True)
+st.caption("Efectos fijos de pitcher × tipo × temporada (movimiento y Stuff+) y de pitcher, bateador, temporada y conteo (resultados); IC 95% con "
+           "errores agrupados por juego. Contacto duro = velocidad de salida ≥ 95 mph, que depende de la calibración del Trackman (sección 16). "
+           "Cutter y splitter tienen pocos pitchers por grupo: intervalos anchos. Es descriptivo, no el efecto causal de cambiar la forma de un pitch.")
+with st.expander("Tabla completa por forma de pitch"):
+    tt = SHP[["tipo", "forma", "eje", "pitcher_tipos", "pitches_extreme", "ivb_no", "hb_arm_no", "stuff_E", "ivb_E", "hb_abs_E", "whiff_swing_E",
+              "hard_E", "hr_bip_E", "rv_bip_E", "valor_100_E"]].copy()
+    for c_ in ("whiff_swing_E", "hard_E", "hr_bip_E"):
+        tt[c_] = 100 * tt[c_]
+    st.dataframe(tt.style.format(precision=2), width="stretch", hide_index=True)
+
+st.markdown("### B. Mapa de movimiento: los pitches más y menos efectivos " + badges("obs"), unsafe_allow_html=True)
+c = st.columns([1, 1, 2])
+mt = c[0].selectbox("Tipo de lanzamiento", PITCH_TYPES, index=0, key="mm_type")
+shift = c[1].checkbox("Mostrar hacia dónde se mueve en Extreme", True, key="mm_shift")
+mm = MM[MM["AutoPitchType"] == mt]
+top, bot = mm[mm["grupo"] == "10% más efectivo"], mm[mm["grupo"] == "10% menos efectivo"]
+c[2].markdown(f"**{mt}:** el 10% más efectivo (Stuff+ del tipo ≥ {top['stuff_plus_tipo'].min():.0f}) tiene en promedio "
+              f"{top['velo'].mean():.1f} mph, IVB {top['ivb'].mean():+.1f} y HB {top['hb_arm'].mean():+.1f} pulg.; el 10% menos efectivo, "
+              f"{bot['velo'].mean():.1f} mph, IVB {bot['ivb'].mean():+.1f} y HB {bot['hb_arm'].mean():+.1f}.")
+st.plotly_chart(charts.movement_map_chart(mm, shift), width="stretch", key="mm_chart")
+st.caption(f"Cada punto = un pitcher × tipo (al menos 50 pitches), con su movimiento promedio medido en No Altitude. Efectividad = Stuff+ del tipo "
+           f"(100 = promedio del tipo). Flecha = movimiento promedio del mismo pitcher × tipo en Extreme (al menos 30 pitches). {len(mm)} pitcher × tipo.")
+
+st.markdown("### C. ¿Qué arsenal produce el Stuff+ más alto en Extreme? " + badges("obs"), unsafe_allow_html=True)
+c = st.columns([1.4, 1])
+c[0].plotly_chart(charts.arsenal_chart(ARS), width="stretch", key="arsenal_chart")
+with c[1]:
+    best_a = ARS.iloc[0]
+    st.markdown(f"- Mayor Stuff+ con pitches de Extreme: **{best_a['arsenal']}** ({best_a['stuff_plus_extreme']:.1f}; "
+                f"{int(best_a['pitchers_con_extreme'])} pitchers con suficientes pitches en Extreme). Le sigue **{ARS.iloc[1]['arsenal']}** "
+                f"({ARS.iloc[1]['stuff_plus_extreme']:.1f}, {int(ARS.iloc[1]['pitchers_con_extreme'])} pitchers).\n"
+                f"- El Stuff+ de cada pitcher con sus pitches de Extreme y con todos sus pitches correlaciona "
+                f"{PRO['arsenal_corr_stuff_extreme_general']:.2f}: el arsenal que rinde en Extreme es, casi siempre, el que rinde en general.\n"
+                "- *Hipótesis no verificable con estos datos:* los arsenales de dos pitches suelen ser de relevistas, que lanzan con más intensidad; "
+                "el dataset no trae el rol del pitcher, así que parte de la diferencia podría ser el rol y no la combinación.")
+    st.caption("Arsenal = tipos con uso ≥ 10%. Stuff+ Physical (escala de pitcher) calculado solo con los pitches del pitcher en Extreme (mínimo 100). "
+               "Solo arsenales con al menos 8 pitchers. Intervalo 90% por bootstrap de pitchers.")
+
+st.markdown("### D. Cómo perfilar a un prospecto o agente libre " + badges("pred", "sim"), unsafe_allow_html=True)
+PCT = PRO["percentiles"]
+st.markdown(f"""1. **Stuff de cada pitch:** en *Construye tu lanzamiento* (sección 8) ingresa velocidad, IVB, HB, spin y extensión de cada pitch. Busca
+   Stuff+ alto **dentro de su tipo** (percentil del tipo) y revisa la nota "Observado · tipo de pitch".
+2. **Swing-and-miss:** whiff por swing y K%. Referencia de los {PRO['n_elegibles']} pitchers del ranking: el cuartil superior empieza en
+   {pct(PCT['whiff_swing']['p75'])} de whiff/swing y {pct(PCT['k_pct']['p75'])} de K%.
+3. **Control:** BB% (cuartil superior por debajo de {pct(PCT['bb_pct']['p25'])}) y Location+.
+4. **Forma de sus pitches:** si su recta es de mucho ride o su slider de mucho barrido, espera una pérdida mayor en altitud (gráfica A).
+5. **Perfil para altitud:** estima su AEPP con la calculadora. No intentes medir su "resistencia a la altitud": hoy no es medible (sección 14).""")
+w_, mu_ = PRO["pesos_altitud"], PRO["media_liga"]
+c = st.columns(4)
+k_in = c[0].slider("K% del prospecto", 0.05, 0.40, float(round(mu_["k_pct"], 2)), 0.005, key="pro_k")
+bb_in = c[1].slider("BB%", 0.02, 0.18, float(round(mu_["bb_pct"], 2)), 0.005, key="pro_bb")
+hbp_in = c[2].slider("HBP%", 0.0, 0.04, float(round(mu_["hbp_pct"], 3)), 0.001, key="pro_hbp")
+rvb_in = c[3].slider("run value por bola en juego", -0.05, 0.15, float(round(mu_["rv_bip"], 3)), 0.005, key="pro_rvbip",
+                     help="Si no lo conoces, déjalo en el promedio de la liga: es poco estable entre temporadas.")
+rbip_ = 1 - k_in - bb_in - hbp_in
+aepp_in = -100 * ((k_in - mu_["k_pct"]) * (w_["v_K"] - w_["v_BIP"]) + (bb_in - mu_["bb_pct"]) * (w_["v_BB"] - w_["v_BIP"])
+                  + (hbp_in - mu_["hbp_pct"]) * (w_["v_HBP"] - w_["v_BIP"]) + rbip_ * (rvb_in - mu_["rv_bip"]))
+pctl = float(np.mean(np.array(PRO["aepp_elegibles"]) <= aepp_in) * 100)
+c = st.columns([1, 2])
+c[0].markdown(card("AEPP estimado", f"{aepp_in:+.2f}", f"carreras evitadas por 100 turnos en altitud · percentil {pctl:.0f} del ranking"), unsafe_allow_html=True)
+ref = pd.DataFrame([{"métrica": v["etiqueta"], "p25": v["p25"], "p50": v["p50"], "p75": v["p75"], "p90": v["p90"],
+                     "mejor": "más alto" if v["mayor_es_mejor"] else "más bajo"} for v in PCT.values()])
+c[1].dataframe(ref.style.format({"p25": "{:.3f}", "p50": "{:.3f}", "p75": "{:.3f}", "p90": "{:.3f}"}), width="stretch", hide_index=True)
+st.caption("AEPP con los pesos en carreras de los ambientes de altitud (los mismos del ranking). Las tasas de otra liga no tienen el ajuste por entorno "
+           "ni el shrinkage del ranking: el resultado es una referencia, no una predicción. La tabla muestra percentiles de los pitchers del ranking.")
+
+# ---------------------------------------------------------------------------
+# 12. Comparar ambientes
+# ---------------------------------------------------------------------------
+
+section("ambientes", "12 · Compara ambientes: el mismo lanzamiento en tres ambientes", "sim")
 SH = S["contrafactual_split_half"]
 st.markdown(f'<div class="warnbox"><b>Simulación contrafactual del modelo · simulación física aproximada / contrafactual explicativo.</b> '
-            f'El modelo físico sobreestima ≈ {pct(SH["sobreprediccion_ivb"], 0)} el cambio de IVB (validación split-half, sección 14). Se toma el lanzamiento que construiste, se reconstruye su trayectoria y '
+            f'El modelo físico sobreestima ≈ {pct(SH["sobreprediccion_ivb"], 0)} el cambio de IVB (validación split-half, sección 15). Se toma el lanzamiento que construiste, se reconstruye su trayectoria y '
             "se vuela de nuevo con el drag y el Magnus medidos en cada categoría. Es una estimación para un ambiente de altitud según el modelo, "
             "no un resultado observado ni el valor en un estadio real. El modelo solo ve el cambio físico del pitch: no incluye el vuelo más largo "
             "de la pelota bateada, así que subestima el daño de contacto en altitud.</div>", unsafe_allow_html=True)
@@ -913,10 +1033,10 @@ st.caption("Cómo leerlo: **E[Δ]** es el valor en carreras del mismo pitch en c
            "lanzamiento típico **de ese mismo ambiente** (ajuste simple), así que casi no cambian: en altitud todos los pitches pierden movimiento.")
 
 # ---------------------------------------------------------------------------
-# 12. Ranking
+# 13. Ranking
 # ---------------------------------------------------------------------------
 
-section("ranking", "12 · Pitchers con perfil más favorable para ambientes de altitud", "pred")
+section("ranking", "13 · Pitchers con perfil más favorable para ambientes de altitud", "pred")
 st.markdown(f"**AEPP** (Altitude Environment Pitcher Profile) = carreras evitadas por 100 turnos frente a un pitcher promedio, usando lo que vale "
             f"cada resultado (ponche, base por bolas, golpeado, bola en juego) en los ambientes de altitud. **Los pesos no se eligieron a mano**: "
             f"son los valores en carreras medidos en esos ambientes.")
@@ -1013,10 +1133,10 @@ st.markdown(badges("lim") + f" **No hay arquetipos claros.** Al agrupar pitchers
             "no se inventaron categorías.", unsafe_allow_html=True)
 
 # ---------------------------------------------------------------------------
-# 13. Sensibilidad
+# 14. Sensibilidad
 # ---------------------------------------------------------------------------
 
-section("sensibilidad", "13 · Sensibilidad observada a la altitud — análisis exploratorio", "expl", "lim")
+section("sensibilidad", "14 · Sensibilidad observada a la altitud — análisis exploratorio", "expl", "lim")
 st.markdown(f'<div class="dangerbox"><b>No es un ranking de pitchers "resistentes".</b> Se intentó medir qué pitchers rinden relativamente mejor '
             f"bajo altitud, pero la métrica presenta demasiada variabilidad para considerarla una habilidad estable.<ul>"
             f"<li>Confiabilidad ≈ <b>{SE['confiabilidad']:.2f}</b>.</li>"
@@ -1041,10 +1161,10 @@ with c[1]:
         st.caption(D["sens"]["advertencia"].iloc[0])
 
 # ---------------------------------------------------------------------------
-# 14. Física
+# 15. Física
 # ---------------------------------------------------------------------------
 
-section("fisica", "14 · Física y contrafactual: herramienta explicativa", "sim", "lim")
+section("fisica", "15 · Física y contrafactual: herramienta explicativa", "sim", "lim")
 st.markdown("Con menos densidad del aire hay menos **drag** (la pelota frena menos) y menos **fuerza de Magnus** (el giro mueve menos la pelota). "
             "Por eso los pitches se mueven menos en altitud. El modelo físico reconstruye la trayectoria completa y la vuela de nuevo en cada "
             "ambiente con la densidad medida en los datos.")
@@ -1089,10 +1209,29 @@ st.caption("Negativo = menos movimiento vertical inducido. La curva tiene IVB ne
            "movimiento: cae menos. Efecto promedio de cada tipo comparando al mismo pitcher; no es el efecto causal de elegir ese pitch.")
 
 # ---------------------------------------------------------------------------
-# 15. Metodología
+# 16. Metodología
 # ---------------------------------------------------------------------------
 
-section("metodo", "15 · Qué funcionó y qué no", "lim")
+section("metodo", "16 · Validación fuera de muestra, qué funcionó y qué no", "pred", "lim")
+VH = D["valid"]["esquemas"]
+VL = {"pitcher_holdout": "Pitcher holdout (k=5 por pitcher)", "season_holdout_2026": "Season holdout (2024–25 → 2026)",
+      "park_holdout_extreme": "Park holdout: sin Extreme → Extreme", "park_holdout_medium": "Park holdout: sin Medium → Medium"}
+st.markdown("### ¿El modelo generaliza? " + badges("pred"), unsafe_allow_html=True)
+st.markdown("El modelo final de Pitching+ se reentrenó dejando fuera **pitchers**, una **temporada** y **ambientes completos**, y se comparó contra "
+            "el **modelo nulo** (valor promedio del pitch por conteo, sin física ni ubicación). El dataset no identifica estadios, así que el "
+            "*park holdout* deja fuera todos los estadios de una categoría: es más exigente que dejar fuera uno.")
+vt = pd.DataFrame([{"esquema": VL[k], "pitches de prueba": e["n_prueba"], "RMSE modelo": e["rmse_modelo"], "RMSE nulo (conteo)": e["rmse_base_conteo"],
+                    "mejora del MSE": e["skill_vs_conteo"], "pendiente de calibración": e["pendiente_calibracion"],
+                    "correlación por pitcher": e["corr_pitcher"], "AUC whiff | swing (Stuff+)": e["stuff"]["auc"],
+                    "AUC nulo por tipo": e["stuff"]["auc_base_tipo"]} for k, e in VH.items()])
+st.dataframe(vt.style.format({"pitches de prueba": "{:,.0f}", "RMSE modelo": "{:.4f}", "RMSE nulo (conteo)": "{:.4f}", "mejora del MSE": "{:+.1%}",
+                              "pendiente de calibración": "{:.2f}", "correlación por pitcher": "{:.2f}", "AUC whiff | swing (Stuff+)": "{:.3f}",
+                              "AUC nulo por tipo": "{:.3f}"}), width="stretch", hide_index=True)
+pe_ = VH["park_holdout_extreme"]
+st.caption(f"Pendiente de calibración = regresión del valor realizado sobre el predicho (1 = perfecta). El valor de un pitch individual es muy ruidoso, "
+           f"por eso el RMSE baja poco en absoluto; el modelo supera al nulo en los cuatro esquemas. Sin haber visto Extreme, el modelo subestima un "
+           f"poco su valor realizado ({pe_['media_predicha']:+.4f} vs. {pe_['media_realizada']:+.4f} carreras por pitch): el contacto ahí cuesta más. "
+           "Detalle: `reports/validacion_fuera_de_muestra.md`.")
 c = st.columns(2)
 c[0].markdown(f"""<div class="okbox"><b>Funcionó</b><ul>
 <li>Separar Stuff+ y Location+: la ubicación explica {pct(SS['eta2_ubicacion_physical'])} de Stuff+ Physical (antes {pct(SS['eta2_ubicacion_v1'], 0)}); r entre ambos = {SL['r_stuff']:+.2f}.</li>
@@ -1123,7 +1262,7 @@ los rivales (r = {SE['r_rivales']:+.2f}).
 **Altitud vs. parque.** Pocos estadios por categoría: la asociación es fuerte y consistente, pero no es identificación causal de la altitud.
 Medium se parece mucho a Extreme.
 
-**Contrafactual físico.** Simulación aproximada: sobreestima ≈ {pct(SH['sobreprediccion_ivb'], 0)} el cambio de IVB (sección 14).
+**Contrafactual físico.** Simulación aproximada: sobreestima ≈ {pct(SH['sobreprediccion_ivb'], 0)} el cambio de IVB (sección 15).
 
 **Simulador.** Usa los modelos finales (entrenados con todos los datos) y no ve el parque: sus diferencias entre ambientes son solo físicas.""")
 with c[1]:
@@ -1149,10 +1288,10 @@ with st.expander("Metodología y reproducibilidad"):
                 "`reports/web_final_validation.md`.")
 
 # ---------------------------------------------------------------------------
-# 16. Qué mejoraríamos
+# 17. Qué mejoraríamos
 # ---------------------------------------------------------------------------
 
-section("futuro", "16 · Qué mejoraríamos con más datos", "hip")
+section("futuro", "17 · Qué mejoraríamos con más datos", "hip")
 st.markdown(f"""1. **Más temporadas** para estimar la sensibilidad individual (hoy harían falta ≈ {SE['pitches_para_0_5']:,.0f} pitches en Extreme por
    pitcher para una confiabilidad de 0.5).
 2. **Ajustar completamente por la calidad de los rivales** en las métricas individuales.
@@ -1164,7 +1303,7 @@ st.markdown("**Extensión importante (no implementada): calidad de contacto espe
 st.markdown('<div class="formula">Expected Contact Quality = f( Exit Velocity, Launch Angle, características del pitch, ubicación, contexto )</div>',
             unsafe_allow_html=True)
 st.markdown("Objetivo: separar mejor la **habilidad del pitcher** de la **defensa**, el **parque** y la **suerte**. Requiere corregir antes la "
-            "calibración de la velocidad de salida por estadio y temporada (sección 15).")
+            "calibración de la velocidad de salida por estadio y temporada (sección 16).")
 
 st.markdown("---")
 st.markdown('<div class="bigidea">En los ambientes de altitud analizados, <b>el contacto cuesta más y los whiffs/ponches son más difíciles de generar</b>. '

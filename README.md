@@ -1,178 +1,128 @@
 # Pitching+ para ambientes de altitud
 
-## Objetivo
+Métricas de calidad de pitcheo (**Stuff+ Physical**, **Location+** y **Pitching+**) construidas con datos Trackman anónimos de la LMB
+para responder:
 
-Construir métricas de calidad de pitcheo (**Stuff+ Physical**, **Location+** y **Pitching+**) a partir de datos
-Trackman anónimos de una liga que juega en ambientes de altitud muy distintos, y usarlas para responder:
+> ¿Qué cambia cuando lanzar en altitud extrema hace más caro permitir contacto, y qué pitchers, pitches y arsenales convienen
+> en ese ambiente?
 
-> ¿Qué cambia cuando lanzar en altura hace más caro permitir contacto, y qué pitchers tienen el perfil más
-> favorable para esos ambientes?
+> **Sobre los nombres.** El reto plantea sus preguntas para la altitud de la Ciudad de México. El dataset está anonimizado: para
+> cada juego solo dice si fue en **No Altitude**, **Medium** o **Extreme Altitude**. Respondemos con la categoría **Extreme Altitude**
+> (condiciones de altitud extrema como las de la Ciudad de México) sin identificar qué estadio es cuál: los estadios se reconstruyen
+> como grupos anónimos `ANON_STADIUM_xx` solo con los datos, y dentro de Extreme hay varios distintos. No se usa información externa.
 
-La menor densidad del aire en altitud reduce el drag y el efecto Magnus: los pitches se mueven menos y la pelota
-bateada vuela más. Un modelo que ignore el ambiente premia o castiga a los pitchers según dónde lanzaron.
+## Entregables del reto: dónde está cada uno
 
-> **Anonimización.** El dataset no identifica estadios, equipos ni pitchers. Solo trae una categoría de altitud por
-> juego (No / Medium / Extreme). Los estadios se reconstruyen como grupos anónimos `ANON_STADIUM_xx`
-> (`src/data/parks.py`) usando únicamente los datos; no se usa información externa ni se intenta identificar
-> estadios, equipos o pitchers reales. "Extreme" agrupa varios estadios con densidades efectivas distintas.
+La página es `web/app.py` (Streamlit). Los números de sección son los de la página.
 
-## La página web y el reporte
+| entregable | en la página | archivos |
+|---|---|---|
+| **1. Stuff+, Location+ y Pitching+ por pitch** | 8 · Construye tu lanzamiento (cualquier pitch); 4, 5 y 7 (cómo se calculan) | `src/models/`, `web/engine.py` |
+| **1. Agregación por pitcher y por repertorio** | 13 · Ranking y ficha del pitcher (Stuff+ y Location+ por tipo) | `data/web/pitcher_altitude_profiles.csv`, `pitcher_pitch_types.csv` |
+| **1. ¿Qué arsenal produce el Stuff+ más alto en altitud?** | 11 · Recomendaciones, parte C | `data/web/arsenal_altitude.csv` |
+| **1. Altitud vs. nivel del mar (efecto cuantificado)** | 1 · Evidencia, 6 · Tipos de lanzamiento, 9 · Pitching+ general vs. altitud, 12 · Compara ambientes | `reports/p2_pitcher_profiles_altitude.md` |
+| **2. Perfil físico ideal** | 10 · ¿Es el mismo un buen lanzamiento?, 11 · Recomendaciones (A y C) | `reports/optimal_pitch_by_environment.md` |
+| **2. Argumentación física y estadística** | 2 · El contacto cuesta más, 3 · Qué buscamos, 15 · Física | `reports/documento_tecnico.pdf` §2 y §6 |
+| **3. Perfiles que ganan o pierden en altitud (contacto duro y jonrón)** | 11 · Recomendaciones, parte A; 6 · Tipos de lanzamiento | `data/web/pitch_shape_altitude_effects.csv` |
+| **3. Cómo perfilar un prospecto o agente libre** | 11 · Recomendaciones, parte D (flujo y calculadora de AEPP) | `data/web/prospect_reference.json` |
+| **4. Simulador para el pitching coach** | 8 · Construye tu lanzamiento | `web/engine.py` |
+| **4. El mismo pitch en altitud vs. nivel del mar, lado a lado** | 9 (costo de los resultados) y 12 (física) | `reports/pitching_plus_general_vs_altitude.md` |
+| **4. Mapa de movimiento de los pitches más y menos efectivos** | 11 · Recomendaciones, parte B | `data/web/movement_map.csv` |
+| **5. Documento técnico (6–10 páginas)** | — | [`reports/documento_tecnico.pdf`](reports/documento_tecnico.pdf) (también `.md`) |
+| **Validación fuera de muestra (pitcher, season y park holdout)** | 16 · Validación | [`reports/validacion_fuera_de_muestra.md`](reports/validacion_fuera_de_muestra.md) |
+| **Para presentar** | — | [`reports/guia_para_presentacion.md`](reports/guia_para_presentacion.md) |
 
-- **Reporte principal:** [`reports/p2_pitcher_profiles_altitude.md`](reports/p2_pitcher_profiles_altitude.md) (perfiles de pitcher para ambientes de altitud).
-- **Resultados y bitácora:** [`reports/resultados_finales.md`](reports/resultados_finales.md) · Auditoría: [`reports/auditoria_matematica.md`](reports/auditoria_matematica.md).
-- **Página:** `web/app.py` (Streamlit). Plan: [`reports/web_architecture_plan.md`](reports/web_architecture_plan.md) · Validación: [`reports/web_final_validation.md`](reports/web_final_validation.md).
-- **Capturas de toda la página, sección por sección:** [`reports/capturas_web/`](reports/capturas_web/).
+## Resultados clave
 
-> Este repositorio no incluye los datos crudos ni procesados (`data/raw`, `data/processed`). Solo incluye lo que necesita la página publicada: las tablas derivadas y anónimas de `data/web/` y tres agregados pequeños de `data/processed/`. La página corre en Streamlit Community Cloud con `web/app.py` como archivo principal (dependencias en `web/requirements.txt`).
+- En Extreme, comparando al mismo pitcher contra el mismo bateador: whiff por swing −2.9 pp, ponche por turno −4.7 pp y +0.068 carreras
+  por bola en juego, en 16 de 16 combinaciones estadio anónimo × temporada. Cambiar una bola en juego por un ponche vale ≈ 27% más.
+- El modelo final supera al modelo nulo por conteo y está calibrado en pitcher, season y park holdout.
+- El perfil favorable es el de swing-and-miss; la altitud premia más lo que ya era bueno (ranking con pesos de altitud vs. nivel del
+  mar: correlación 0.986).
+- Los pitches que más dependen del giro (mucho ride, barrido, caída o fade) son los que más pierden en altitud.
+- Un gran lanzamiento sigue siendo un gran lanzamiento: el óptimo de cada tipo casi no cambia con el ambiente.
+
+## Cómo verlo y correrlo
+
+```bash
+.venv\Scripts\streamlit run web/app.py           # página (también desplegable en Streamlit Community Cloud: web/app.py)
+.venv\Scripts\python -m pytest tests             # pruebas
+.venv\Scripts\python -m src.pipeline              # todo el pipeline desde los datos crudos (requiere data/raw)
+.venv\Scripts\python -m src.pipeline --from web_data   # solo regenerar los datos de la página y los documentos
+```
+
+La página no entrena modelos: usa los artefactos de `src/models/artifacts/` (`pitching_plus_v3.pkl`, `stuff_plus_physical.pkl`,
+`location_plus_v2.pkl`) y las tablas de `data/web/`. Ninguna cifra de la página está escrita a mano. Dependencias de la página:
+`web/requirements.txt`; del pipeline completo: `requirements.txt` (versiones exactas en `requirements-lock.txt`).
+
+## Estructura del repositorio
+
+```
+.
+├── web/                  # página final (Streamlit): app.py, engine.py (simulador), charts.py, style.css
+├── src/
+│   ├── data/             # limpieza y estadios anónimos
+│   ├── features/         # targets (RE24), física de la trayectoria, arsenal
+│   ├── models/           # Stuff+ Physical, Location+ v2, Pitching+ (cadena de probabilidades) y versiones anteriores
+│   ├── analysis/         # efectos de altitud, perfiles (AEPP), óptimo por ambiente, entregables
+│   ├── validation/       # splits, baselines, validación temporal y fuera de muestra
+│   ├── reports/          # generadores de reportes, datos de la página y documento técnico
+│   └── pipeline.py       # corre todo en orden y escribe reports/pipeline_run.md
+├── data/web/             # tablas derivadas y anónimas que usa la página
+├── reports/              # documento técnico, guía, reportes de cada fase, figuras y capturas
+├── historial/            # material de fases anteriores (ver historial/README.md)
+├── dashboard/scoring.py  # funciones de puntuación que usa el simulador
+└── tests/                # pruebas (pytest)
+```
+
+## Datos y confidencialidad
+
+El repositorio no incluye los datos crudos ni procesados (`data/raw`, `data/processed`). Solo incluye las tablas derivadas y anónimas
+de `data/web/` y tres agregados pequeños de `data/processed/` que necesita la página publicada.
+
+## Documentos de respaldo
+
+- Fases del proyecto: `reports/p0_altitude_pipeline.md` (estadios anónimos y baselines), `reports/hipotesis_altitud.md` (efectos de
+  altitud), `reports/p2_pitcher_profiles_altitude.md` (métricas y perfiles).
+- Auditoría matemática: `reports/auditoria_matematica.md`. Bitácora completa: `reports/resultados_finales.md` §7.
+- Página: `reports/web_architecture_plan.md` y `reports/web_final_validation.md`; capturas en `reports/capturas_web/`.
+
+## Capturas
+
+Las 42 capturas de la página completa están en [`reports/capturas_web/`](reports/capturas_web/). Algunas clave:
 
 **Inicio**
 
 ![Inicio](reports/capturas_web/00_inicio.jpg)
 
-**El contacto cuesta más: pirámide y rodado**
+**Simulador: Stuff+, Location+, Pitching+ y el desglose P(BIP) × E[RV | BIP]**
 
-![El contacto cuesta más: pirámide y rodado](reports/capturas_web/02_contacto_c_piramide_rodado.jpg)
+![Simulador: Stuff+, Location+, Pitching+ y el desglose P(BIP) × E[RV | BIP]](reports/capturas_web/17_s08_simulador_c_por_que.jpg)
 
-**Qué buscamos: estabilidad de cada métrica**
+**El mismo pitch con los costos de la liga y los de Extreme**
 
-![Qué buscamos: estabilidad de cada métrica](reports/capturas_web/03_que_buscamos_b_estabilidad.jpg)
+![El mismo pitch con los costos de la liga y los de Extreme](reports/capturas_web/19_s09_general_vs_altitud_a.jpg)
 
-**Location+: regiones de la zona**
+**Lanzamiento óptimo por ambiente**
 
-![Location+: regiones de la zona](reports/capturas_web/05_location_b_regiones.jpg)
+![Lanzamiento óptimo por ambiente](reports/capturas_web/22_s10_optimo_b_perfiles.jpg)
 
-**Tipos de lanzamiento en altitud**
+**Perfiles que pierden más en altitud**
 
-![Tipos de lanzamiento en altitud](reports/capturas_web/06_tipos_a.jpg)
+![Perfiles que pierden más en altitud](reports/capturas_web/24_s11_recomendaciones_a_formas.jpg)
 
-**Pitching+: árbol de probabilidades**
+**Mapa de movimiento**
 
-![Pitching+: árbol de probabilidades](reports/capturas_web/07_pitching_b.jpg)
+![Mapa de movimiento](reports/capturas_web/26_s11_recomendaciones_c_mapa_movimiento.jpg)
 
-**Simulador: Construye tu lanzamiento**
+**Arsenales y perfil de prospecto**
 
-![Simulador: Construye tu lanzamiento](reports/capturas_web/08_simulador_b.jpg)
-
-**Simulador: desglose P(BIP) × E[RV | BIP]**
-
-![Simulador: desglose P(BIP) × E[RV | BIP]](reports/capturas_web/08_simulador_d_por_que.jpg)
+![Arsenales y perfil de prospecto](reports/capturas_web/27_s11_recomendaciones_d_arsenales.jpg)
 
 **Ranking AEPP con incertidumbre**
 
-![Ranking AEPP con incertidumbre](reports/capturas_web/10_ranking_a_incertidumbre.jpg)
+![Ranking AEPP con incertidumbre](reports/capturas_web/30_s13_ranking_a.jpg)
 
-**Ficha del pitcher**
+**Validación fuera de muestra**
 
-![Ficha del pitcher](reports/capturas_web/10_ranking_c_ficha.jpg)
-
-**Sensibilidad (exploratoria)**
-
-![Sensibilidad (exploratoria)](reports/capturas_web/11_sensibilidad_a.jpg)
-
-**Física y contrafactual**
-
-![Física y contrafactual](reports/capturas_web/12_fisica_a.jpg)
-
-## Alcance del proyecto
-
-1. **Ingesta y limpieza de datos** de trackeo de lanzamientos (velocidad, spin rate,
-   movimiento horizontal/vertical, extensión, release point, resultado del pitch) de la LMB.
-2. **Feature engineering** de métricas físicas del lanzamiento, normalizadas por tipo de
-   pitch, brazo del lanzador y condiciones del parque (incluyendo altitud).
-3. **Modelado predictivo** (gradient boosting: LightGBM/XGBoost) del valor esperado de cada
-   lanzamiento en función de sus características físicas.
-4. **Modelado bayesiano/causal** (PyMC, econml) para estimar y descontar el efecto causal
-   de la altitud sobre las métricas observadas, evitando confundir "buen stuff" con
-   "efecto de altitud".
-5. **Validación** del modelo (calibración, backtesting, estabilidad año con año / entre
-   parques) antes de publicar el índice.
-6. **Reportes y dashboard interactivo** (Streamlit) para explorar el índice Stuff+ por
-   lanzador, pitch y parque, incluyendo la corrección por altitud.
-
-## Estructura del proyecto
-
-```
-.
-├── data/
-│   ├── raw/            # Datos crudos de tracking (sin modificar)
-│   ├── processed/       # Datos limpios/transformados listos para modelado
-│   └── web/             # Tablas y resúmenes que usa la página (generados por el pipeline)
-├── notebooks/            # Exploración, prototipado y análisis ad-hoc
-├── src/
-│   ├── features/         # Ingeniería de características
-│   ├── models/           # Entrenamiento e inferencia de modelos (Stuff+, altitud)
-│   └── validation/        # Validación, calibración y métricas de evaluación
-├── reports/               # Reportes generados (figuras, tablas, resúmenes)
-├── web/                   # Página final (Streamlit): narrativa, simulador, ranking
-├── dashboard/             # Dashboard anterior (legado; índice neutral físico)
-├── tests/                 # Pruebas unitarias (pytest)
-├── pyproject.toml
-├── requirements.txt
-└── README.md
-```
-
-## Entorno
-
-Este proyecto usa Python ≥3.10. Dependencias principales:
-
-- **Datos**: `pandas`, `polars`, `pyarrow`
-- **Modelado**: `lightgbm`, `xgboost`, `scikit-learn`
-- **Interpretabilidad**: `shap`
-- **Modelado bayesiano/causal**: `pymc`, `arviz`, `econml`
-- **Visualización / dashboard**: `streamlit`, `plotly`, `matplotlib`, `seaborn`
-- **Testing**: `pytest`
-
-### Instalación
-
-Con `pip` y `pyproject.toml`:
-
-```bash
-pip install -e ".[dev]"
-```
-
-O bien con `requirements.txt`:
-
-```bash
-pip install -r requirements.txt
-```
-
-## Estado actual
-
-**Página final:** `web/app.py` (P0–P2 integrados). Cuenta la historia completa:
-1. evidencia de que el juego cambia en altitud;
-2. el contacto cuesta más (y el rodado como segunda línea de defensa);
-3. perfil favorable (swing-and-miss) y estabilidad de cada métrica;
-4. Stuff+ Physical y Location+ (el corazón de la zona es la región que más valor pierde);
-5. qué tipos de lanzamiento conservan mejor su valor (descriptivo, no causal);
-6. **Pitching+**;
-7. simulador "Construye tu lanzamiento" (P(BIP) × E[RV | BIP], contexto histórico del tipo y de la región);
-8. **Pitching+ general vs. para altitud**: el mismo lanzamiento valuado con los costos de la liga y con los de Extreme;
-9. **¿Es el mismo un buen lanzamiento en cualquier estadio?**: el óptimo de cada tipo de pitch por ambiente;
-10. comparación física de ambientes, ranking de pitchers (AEPP) con P(top 25) e intervalos de lugar;
-11. sensibilidad exploratoria, física, limitaciones y qué mejoraríamos con más datos.
-
-Arquitectura: `reports/web_architecture_plan.md`. Validación: `reports/web_final_validation.md`.
-
-**Para presentar:** [`reports/guia_para_presentacion.md`](reports/guia_para_presentacion.md) (cada concepto en cuatro niveles y más de 20
-preguntas difíciles con respuesta). Extensiones: [`reports/pitching_plus_general_vs_altitude.md`](reports/pitching_plus_general_vs_altitude.md) y
-[`reports/optimal_pitch_by_environment.md`](reports/optimal_pitch_by_environment.md).
-
-- **Pitching+** (índice principal): cadena de probabilidades condicionales valuada en carreras, con ajuste simple por
-  temporada × estadio anónimo. El contrafactual físico se conserva como herramienta explicativa: no mostró ventaja
-  predictiva frente al ajuste simple (`reports/p0_altitude_pipeline.md`).
-- **Stuff+ Physical** y **Location+ v2**: `reports/stuff_plus_physical.md`, `reports/location_plus_v2.md`.
-- **Perfiles y ranking (AEPP)**: `reports/p2_pitcher_profiles_altitude.md`.
-- Bitácora completa: [`reports/resultados_finales.md`](reports/resultados_finales.md) (sección 7).
-
-Entorno: `.venv` con Python 3.14, versiones exactas en `requirements-lock.txt`.
-
-```bash
-.venv\Scripts\python -m src.pipeline              # todo el pipeline, desde los datos crudos (incluye data/web/)
-.venv\Scripts\python -m src.pipeline --from web_data   # solo regenerar los datos de la página
-.venv\Scripts\python -m pytest tests             # pruebas (incluye tests/test_web.py)
-.venv\Scripts\streamlit run web/app.py           # página final (http://localhost:8501)
-```
-
-La página no entrena modelos: usa los artefactos finales de `src/models/artifacts/` (`pitching_plus_v3.pkl`,
-`stuff_plus_physical.pkl`, `location_plus_v2.pkl`) y los archivos de `data/web/`. Todas las cifras de los textos salen
-de `data/web/summary.json`.
+![Validación fuera de muestra](reports/capturas_web/38_s16_validacion.jpg)

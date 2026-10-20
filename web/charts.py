@@ -315,7 +315,8 @@ def pitch_type_detail(row: pd.Series) -> go.Figure:
     """Cambio del tipo elegido en cada métrica, Medium y Extreme, con IC 95%."""
     from plotly.subplots import make_subplots
     keys = list(TYPE_METRICS)
-    fig = make_subplots(rows=1, cols=len(keys), subplot_titles=[f"{TYPE_METRICS[m][0]}<br>({TYPE_METRICS[m][2]})" for m in keys])
+    short = {"whiff_swing": "Δ whiff/sw", "bip_swing": "Δ BIP/sw", "rv_bip": "Δ RV/BIP", "ivb": "Δ IVB", "hb_abs": "Δ |HB|", "delta_por_100": "costo"}
+    fig = make_subplots(rows=1, cols=len(keys), subplot_titles=[f"{short[m]}<br>({TYPE_METRICS[m][2]})" for m in keys], horizontal_spacing=0.06)
     for j, m in enumerate(keys, start=1):
         _, k, unit = TYPE_METRICS[m]
         vals = [k * row[f"{m}_M"], k * row[f"{m}_E"]]
@@ -382,7 +383,7 @@ def relative_gain_bars(tab: pd.DataFrame) -> go.Figure:
             fig.add_trace(go.Bar(x=t["quintil_whiff"], y=t[col], name=name, marker_color=color, showlegend=(j == 1),
                                  text=[f"{v:+.2f}" for v in t[col]], textposition="outside"), row=1, col=j)
         fig.add_hline(y=0, line_color="#8892a6", row=1, col=j)
-    fig.update_xaxes(title_text="quintil de P(whiff) frente al típico del conteo (Q5 = más swing-and-miss)")
+    fig.update_xaxes(title_text="quintil de P(whiff) (Q5 = más whiff)")
     fig.update_yaxes(title_text="ganancia en Extreme (carreras/100)", row=1, col=1)
     return _layout(fig, 360, barmode="group", legend=dict(orientation="h", y=1.18, x=1, xanchor="right"))
 
@@ -395,6 +396,8 @@ def contribution_bars(contrib: dict) -> go.Figure:
                            text=[f"{v:+.2f}" for v in vals], textposition="outside"))
     fig.add_vline(x=0, line_color="#8892a6")
     fig = _layout(fig, 230, xaxis_title="carreras por 100 pitches frente al típico del conteo (+ = gana valor)", showlegend=False)
+    lim = 1.6 * max(abs(v) for v in vals) if any(vals) else 1
+    fig.update_xaxes(range=[-lim, lim])
     fig.update_layout(margin=dict(l=10, r=40, t=10, b=10))
     return fig
 
@@ -409,7 +412,9 @@ def profile_radar(rows: dict, labels: dict) -> go.Figure:
         fig.add_trace(go.Scatterpolar(r=r, theta=cats + [cats[0]], name=name, line=dict(color=colors.get(name, "#5b6577"), width=2),
                                       fill="toself" if name == "General" else None, opacity=0.85))
     fig.update_layout(polar=dict(radialaxis=dict(range=[0, 100], tickvals=[25, 50, 75], ticksuffix="")))
-    return _layout(fig, 380, legend=dict(orientation="h", y=-0.12, x=0), title=dict(text="Perfil óptimo en percentiles del tipo", font=dict(size=14)))
+    fig = _layout(fig, 380, legend=dict(orientation="h", y=-0.12, x=0), title=dict(text="Perfil óptimo en percentiles del tipo", font=dict(size=14)))
+    fig.update_layout(margin=dict(l=70, r=70, t=50, b=10))
+    return fig
 
 
 def location_pair(h: pd.DataFrame, title_a: str = "Pitching+ general", title_b: str = "Pitching+ Extreme (costos)",
@@ -431,3 +436,56 @@ def location_pair(h: pd.DataFrame, title_a: str = "Pitching+ general", title_b: 
         fig.update_xaxes(title_text="lado (pies, + = lado del brazo)", row=1, col=j)
     fig.update_yaxes(title_text="altura (pies)", row=1, col=1)
     return _layout(fig, 400)
+
+
+# ---------------------------------------------------------------------------
+# Recomendaciones operativas: formas de pitch, mapa de movimiento, arsenales
+# ---------------------------------------------------------------------------
+
+
+def shape_effects_chart(e: pd.DataFrame, metric: str, label: str, scale: float = 1.0) -> go.Figure:
+    """Cambio en Extreme por tipo × forma (bajo / medio / alto movimiento característico), IC 95%."""
+    colors = {"bajo": "#9fb4d6", "medio": "#4c78a8", "alto": "#13213c"}
+    fig = go.Figure()
+    for f in ["bajo", "medio", "alto"]:
+        g = e[e["forma"] == f]
+        y = scale * g[f"{metric}_E"]
+        fig.add_trace(go.Bar(x=g["tipo"], y=y, name=f"{f} movimiento característico", marker_color=colors[f],
+                             error_y=dict(type="data", array=1.96 * scale * g[f"{metric}_E_se"], color="#5b6577", thickness=1),
+                             customdata=g["eje"], hovertemplate="%{x} · " + f + " %{customdata}<br>%{y:+.2f}<extra></extra>"))
+    fig.add_hline(y=0, line_color="#8892a6")
+    return _layout(fig, 340, barmode="group", title=dict(text=label, font=dict(size=14)), legend=dict(orientation="h", y=-0.18, x=0))
+
+
+def movement_map_chart(m: pd.DataFrame, show_shift: bool = True) -> go.Figure:
+    """Mapa de movimiento HB–IVB de cada pitcher × tipo (No Altitude), color = Stuff+ del tipo; flechas = cambio en Extreme."""
+    fig = go.Figure()
+    rest = m[m["grupo"] == "resto"]
+    fig.add_trace(go.Scatter(x=rest["hb_arm"], y=rest["ivb"], mode="markers", name="resto", marker=dict(color="#c9cfdb", size=6, opacity=0.6),
+                             hovertemplate="HB %{x:.1f} · IVB %{y:.1f}<extra></extra>"))
+    for grp, color, sym in (("10% más efectivo", "#2e8b57", "circle"), ("10% menos efectivo", "#d1495b", "x")):
+        g = m[m["grupo"] == grp]
+        fig.add_trace(go.Scatter(x=g["hb_arm"], y=g["ivb"], mode="markers", name=grp, marker=dict(color=color, size=9, symbol=sym),
+                                 customdata=np.c_[g["stuff_plus_tipo"], g["velo"], g["pitcher_anon_id"]],
+                                 hovertemplate="%{customdata[2]}<br>HB %{x:.1f} · IVB %{y:.1f}<br>Stuff+ del tipo %{customdata[0]:.0f} · "
+                                               "%{customdata[1]:.1f} mph<extra></extra>"))
+        if show_shift:
+            s = g.dropna(subset=["ivb_ext", "hb_arm_ext"])
+            for r in s.itertuples():
+                fig.add_annotation(x=r.hb_arm_ext, y=r.ivb_ext, ax=r.hb_arm, ay=r.ivb, xref="x", yref="y", axref="x", ayref="y",
+                                   showarrow=True, arrowhead=2, arrowsize=1, arrowwidth=1, arrowcolor=color, opacity=0.6)
+    fig.add_hline(y=0, line_color="#e3e7ef")
+    fig.add_vline(x=0, line_color="#e3e7ef")
+    return _layout(fig, 460, xaxis_title="movimiento horizontal (pulg., + = lado del brazo)", yaxis_title="movimiento vertical inducido (pulg.)",
+                   legend=dict(orientation="h", y=-0.15, x=0))
+
+
+def arsenal_chart(a: pd.DataFrame) -> go.Figure:
+    t = a.iloc[::-1]
+    fig = go.Figure(go.Scatter(x=t["stuff_plus_extreme"], y=t["arsenal"], mode="markers", marker=dict(color="#d1495b", size=10),
+                               error_x=dict(type="data", symmetric=False, array=t["stuff_extreme_hi"] - t["stuff_plus_extreme"],
+                                            arrayminus=t["stuff_plus_extreme"] - t["stuff_extreme_lo"], color="#8892a6"),
+                               customdata=np.c_[t["pitchers_con_extreme"], t["aepp"]],
+                               hovertemplate="%{y}<br>Stuff+ en Extreme %{x:.1f}<br>%{customdata[0]} pitchers · AEPP %{customdata[1]:+.2f}<extra></extra>"))
+    fig.add_vline(x=100, line_dash="dot", line_color="#8892a6")
+    return _layout(fig, max(320, 28 * len(t) + 80), xaxis_title="Stuff+ Physical con sus pitches en Extreme (escala de pitcher, intervalo 90%)")

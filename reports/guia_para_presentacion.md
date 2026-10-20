@@ -506,3 +506,21 @@ Formato: **respuesta breve** (para contestar ya) y **respuesta extendida** (si p
 > En altitud, el contacto cuesta más y el swing-and-miss se vuelve más valioso. Pero eso no crea un tipo nuevo de pitcher: el perfil
 > favorable sigue siendo el de un buen pitcher, con más premio al ponche. Y un gran lanzamiento sigue siendo un gran lanzamiento en cualquier
 > estadio. Pitching+ nos permite ver todo esto pitch por pitch, con física, ubicación, contexto y el costo real de cada resultado.
+
+## 18. Preguntas sobre la validación y las recomendaciones
+
+**24. ¿Cómo saben que el modelo funciona con pitchers o estadios que no vio?**
+- *Breve:* Lo reentrenamos dejando fuera pitchers, una temporada y ambientes completos, y lo comparamos con un modelo nulo (valor promedio por conteo).
+- *Extendida:* En los cuatro esquemas (pitcher, season, park holdout de Extreme y de Medium) mejora el error cuadrático entre 4.1% y 4.8%, y la pendiente de calibración queda entre 0.96 y 1.00 (1 = perfecta). Sin haber visto Extreme, subestima un poco su valor realizado: el contacto ahí cuesta más. Como el dataset no identifica estadios, el *park holdout* deja fuera todos los estadios de una categoría.
+
+**25. ¿Por qué el RMSE baja tan poco?**
+- *Breve:* Porque el valor de un pitch individual es casi todo azar: el mismo pitch puede terminar en strike, foul o jonrón.
+- *Extendida:* Lo importante es que el modelo supera al nulo de forma consistente y está calibrado: cuando predice un valor, en promedio eso es lo que pasa.
+
+**26. ¿Qué le recomiendan al pitching coach?**
+- *Breve:* Buscar swing-and-miss; desconfiar de los pitches que dependen mucho del giro (mucho ride, barrido o caída), porque son los que más pierden en altitud.
+- *Extendida:* Las rectas de mucho ride pierden más Stuff+ y whiff en Extreme que las de poco ride (−7.7 contra −3.8 de Stuff+), y en los changeups de mucho fade el contacto duro sube más (+7.5 pp). Recta + slider es el arsenal con mayor Stuff+ con pitches de Extreme. Todo es descriptivo, no una receta.
+
+**27. ¿Cómo perfilarían a un agente libre?**
+- *Breve:* Stuff+ de cada pitch en el simulador, swing-and-miss (whiff/swing, K%), control (BB%, Location+), forma de sus pitches y su AEPP estimado con la calculadora.
+- *Extendida:* La calculadora usa la misma fórmula y pesos del ranking; la tabla de referencia da los percentiles de los 599 pitchers. No medimos "resistencia a la altitud" individual porque hoy no es medible.

@@ -15,7 +15,7 @@
 
 ## 1. Corrección del golpeado (HBP)
 
-Fuente: `reports/hbp_antes_despues.md`.
+Fuente: `historial/reports/hbp_antes_despues.md`.
 
 **Problema.** La columna `is_hit_by_pitch` del dataset vale 0 en las 633,447 filas. Por eso el golpeado:
 - no cerraba el turno;
