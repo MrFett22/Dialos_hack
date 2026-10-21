@@ -52,7 +52,8 @@ def load() -> dict:
             "opt_meta": json.loads((WEB / "optimal_pitch_meta.json").read_text(encoding="utf-8")),
             "shape": csv("pitch_shape_altitude_effects"), "mmap": csv("movement_map"), "arsenal": csv("arsenal_altitude"),
             "prospect": json.loads((WEB / "prospect_reference.json").read_text(encoding="utf-8")),
-            "valid": json.loads((WEB / "validation_holdout.json").read_text(encoding="utf-8"))}
+            "valid": json.loads((WEB / "validation_holdout.json").read_text(encoding="utf-8")),
+            "oop": json.loads((WEB / "outs_on_play_check.json").read_text(encoding="utf-8"))}
 
 
 D = load()
@@ -1265,6 +1266,13 @@ Medium se parece mucho a Extreme.
 **Contrafactual físico.** Simulación aproximada: sobreestima ≈ {pct(SH['sobreprediccion_ivb'], 0)} el cambio de IVB (sección 15).
 
 **Simulador.** Usa los modelos finales (entrenados con todos los datos) y no ve el parque: sus diferencias entre ambientes son solo físicas.""")
+    OO = D["oop"]
+    st.markdown(f"""**Outs no registrados.** La columna `OutsOnPlay` casi no registra las dobles matanzas: en {pct(OO['pct_turnos']['No Altitude'])}
+de los turnos de No Altitude y {pct(OO['pct_turnos']['Extreme Altitude'])} de los de Extreme (en rodados, {pct(OO['pct_rodados']['No Altitude'])} y
+{pct(OO['pct_rodados']['Extreme Altitude'])}) el siguiente turno empieza con un out más de los registrados. El run value trata ese out como si no
+hubiera ocurrido, un poco más en Extreme. El sesgo aproximado explicaría {OO['sesgo_extreme_menos_no']:+.3f} de las
+{S['efectos']['rv_bip']['extreme']:+.3f} carreras más por bola en juego en Extreme, dentro de su intervalo de confianza. No lo corregimos porque
+el dataset no trae corredores en base.""")
 with c[1]:
     hp = TS["hard_pct_bip"]
     ev = TS["ev_media_bip"]

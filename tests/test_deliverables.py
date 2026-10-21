@@ -60,3 +60,15 @@ def test_movement_map_and_arsenals():
     assert (a["pitchers_con_extreme"] >= 8).all()
     assert ((a["stuff_extreme_lo"] <= a["stuff_plus_extreme"]) & (a["stuff_plus_extreme"] <= a["stuff_extreme_hi"])).all()
     assert a["stuff_plus_extreme"].is_monotonic_decreasing
+
+
+@needs
+def test_outs_on_play_check_is_consistent():
+    o = json.loads((WEB / "outs_on_play_check.json").read_text(encoding="utf-8"))
+    assert 0 < o["turnos_con_out_faltante"] < o["turnos_revisados"]
+    re_o = [o["re_por_outs"][k] for k in ("0", "1", "2", "3")]
+    assert all(a > b for a, b in zip(re_o, re_o[1:]))  # cada out reduce la expectativa de carreras
+    for c in ("No Altitude", "Medium Altitude", "Extreme Altitude"):
+        assert o["pct_rodados"][c] > o["pct_turnos"][c] > 0  # el out faltante es sobre todo de rodados (dobles matanzas)
+        assert o["sesgo_rv_bip"][c] > 0
+    assert abs(o["sesgo_extreme_menos_no"] - (o["sesgo_rv_bip"]["Extreme Altitude"] - o["sesgo_rv_bip"]["No Altitude"])) < 1e-12

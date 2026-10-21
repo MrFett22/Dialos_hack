@@ -148,6 +148,10 @@ def test_presentation_guide_cites_current_numbers(EV):
         f"{100 * S['G_aumento_relativo_extreme']:.0f}%", f"{EV['comparacion_lanzamientos']['spearman_general_extreme']:.3f}",
         f"{S['stuff']['estabilidad']['stuff_plus_physical']:.2f}", f"{S['ahorro_rodado']['No Altitude']:.3f}", f"{S['ahorro_rodado']['Extreme']:.3f}",
     ]
+    oo = json.loads((WEB / "outs_on_play_check.json").read_text(encoding="utf-8"))
+    expected += [f"{100 * oo['pct_turnos'][c]:.1f}%" for c in ("No Altitude", "Extreme Altitude")]
+    expected += [f"{100 * oo['pct_rodados'][c]:.1f}%" for c in ("No Altitude", "Extreme Altitude")]
+    expected.append(f"{oo['sesgo_extreme_menos_no']:+.3f} de las")
     for alt in ("extreme", "extreme_fisica"):
         x = C[C["alterno"] == alt]
         expected.append(f"{int((x['clase'] == 'Poco').sum())} de {len(x)}")

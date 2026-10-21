@@ -388,6 +388,7 @@ EXTENSION_FILES = {
     "movement_map.csv": "mapa de movimiento por pitcher × tipo (No Altitude y Extreme), Stuff+ del tipo y grupo más/menos efectivo",
     "arsenal_altitude.csv": "arsenales (tipos con uso ≥ 10%): Stuff+ con pitches de Extreme, AEPP, K% y whiff",
     "prospect_reference.json": "percentiles de referencia y parámetros de la calculadora de AEPP para prospectos",
+    "outs_on_play_check.json": "outs que OutsOnPlay no registra (dobles matanzas) por ambiente y su sesgo aproximado en el run value por bola en juego",
 }
 
 

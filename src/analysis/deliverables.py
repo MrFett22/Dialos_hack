@@ -12,6 +12,8 @@ No cambia ningún índice oficial. Todo sale de los pitches reales y de los outp
 3. Arsenales: combinación de tipos con uso ≥ 10%; Stuff+ de cada pitcher calculado solo con sus pitches en Extreme (escala de
    pitcher), AEPP y K% por arsenal.
 4. Prospecto / agente libre: percentiles de referencia de los pitchers elegibles y los parámetros de la calculadora de AEPP.
+5. Revisión de `OutsOnPlay`: turnos cuyo siguiente turno de la misma media entrada empieza con más outs de los registrados
+   (sobre todo dobles matanzas no registradas) y su sesgo aproximado en el run value por bola en juego de cada ambiente.
 """
 
 import json
@@ -23,6 +25,7 @@ import pandas as pd
 
 from src.analysis import altitude_hypotheses as hyp
 from src.analysis import p2_common as pc
+from src.features import targets as tg
 from src.models import stuff_plus_physical as spp
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -193,6 +196,37 @@ def prospect_reference() -> dict:
             "aepp_elegibles": sorted(prof["aepp"].round(3).tolist()), "n_elegibles": int(len(prof))}
 
 
+def outs_on_play_check() -> dict:
+    """Outs que `OutsOnPlay` no registra y su sesgo aproximado en el run value por bola en juego.
+
+    Un turno tiene un out faltante si el siguiente turno de la misma media entrada empieza con más outs que
+    Outs + OutsOnPlay (no se puede revisar el último turno de cada media entrada). El costo de cada out faltante se
+    aproxima con la expectativa de carreras por número de outs (promediada sobre las bases): RE(o) − RE(o + 1).
+    """
+    cols = ["PitchUID", "game_anon_id", "Inning", "Top/Bottom", "Outs", "OutsOnPlay", "RunsScored", "altitude_category",
+            "strikeout", "base_on_balls", "is_hit_by_pitch", "is_ball_in_play", "hit_type"]
+    df = tg._assign_plate_appearances(tg._add_uuid_time(pd.read_parquet(pc.ROOT / "data" / "processed" / "pitches_with_targets.parquet", columns=cols)))
+    key = ["_half_inning_id", "_pa_num"]
+    ini = df.groupby(key)["Outs"].first().rename("outs_ini")
+    end = df[df["_pa_end"]].groupby(key)[["OutsOnPlay", "RunsScored", "altitude_category", "is_ball_in_play", "hit_type"]].last()
+    pa = end.join(ini, how="inner").reset_index().sort_values(key)
+    pa["outs_sig"] = pa.groupby("_half_inning_id")["outs_ini"].shift(-1)
+    after = (pa["outs_ini"] + pa["OutsOnPlay"]).clip(upper=3)
+    pa["falta"] = pa["outs_sig"] - after >= 1
+    pa["resto"] = pa.iloc[::-1].groupby("_half_inning_id")["RunsScored"].cumsum().iloc[::-1]
+    re_o = {**pa.groupby("outs_ini")["resto"].mean().reindex([0, 1, 2]).to_dict(), 3: 0.0}
+    pa["costo"] = np.where(pa["falta"] & (after < 3), after.map(re_o) - (after + 1).clip(upper=3).map(re_o), 0.0)
+    pa = pa[pa["outs_sig"].notna() & pa["altitude_category"].isin(pc.CATS)]
+    bip = pa[pa["is_ball_in_play"] == 1]
+    out = {"turnos_revisados": int(len(pa)), "turnos_con_out_faltante": int(pa["falta"].sum()),
+           "pct_turnos": pa.groupby("altitude_category")["falta"].mean().to_dict(),
+           "pct_rodados": pa[pa["hit_type"] == "GroundBall"].groupby("altitude_category")["falta"].mean().to_dict(),
+           "sesgo_rv_bip": bip.groupby("altitude_category")["costo"].mean().to_dict(),
+           "re_por_outs": {str(k): float(v) for k, v in re_o.items()}}
+    out["sesgo_extreme_menos_no"] = out["sesgo_rv_bip"]["Extreme Altitude"] - out["sesgo_rv_bip"]["No Altitude"]
+    return out
+
+
 def run() -> dict:
     f = load_frame()
     logger.info("Formas de pitch…")
@@ -209,9 +243,12 @@ def run() -> dict:
     ref["arsenal_corr_stuff_extreme_general"] = float(per_pitcher["stuff_plus_extreme"].corr(per_pitcher["stuff_plus_physical"]))
     ref["arsenal_stuff_por_n_tipos"] = per_pitcher.groupby("n_tipos")["stuff_plus_extreme"].agg(["mean", "size"]).reset_index().to_dict("records")
     (WEB / "prospect_reference.json").write_text(json.dumps(ref, indent=2, ensure_ascii=False), encoding="utf-8")
+    logger.info("Revisión de OutsOnPlay…")
+    oop = outs_on_play_check()
+    (WEB / "outs_on_play_check.json").write_text(json.dumps(oop, indent=2, ensure_ascii=False), encoding="utf-8")
     from src.reports import web_data
     web_data.write_readme()
-    return {"formas": eff, "mapa": mm, "arsenales": ars, "referencia": ref}
+    return {"formas": eff, "mapa": mm, "arsenales": ars, "referencia": ref, "outs_on_play": oop}
 
 
 if __name__ == "__main__":

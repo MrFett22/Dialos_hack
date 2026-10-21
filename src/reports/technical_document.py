@@ -68,6 +68,7 @@ def build() -> str:
     VH = J(WEB / "validation_holdout.json")["esquemas"]
     TV = J(BENCH / "validacion_temporal.json")["prespecified"]
     PR = J(WEB / "prospect_reference.json")
+    OO = J(WEB / "outs_on_play_check.json")
     OC = pd.read_csv(WEB / "optimal_pitch_comparison.csv")
     SH = pd.read_csv(WEB / "pitch_shape_altitude_effects.csv")
     TY = pd.read_csv(WEB / "pitch_type_altitude_effects.csv").set_index("tipo")
@@ -304,6 +305,13 @@ def build() -> str:
         "- **Calidad de rivales:** los efectos del ambiente la controlan; las métricas por pitcher del ranking no del todo.",
         "- **Datos de contacto:** la velocidad de salida depende de la calibración de cada estadio y temporada; el daño por bola en juego de un "
         f"pitcher casi no se repite (r = {m(stab['rv_bip']['estabilidad_cruda'], 2)}).",
+        "- **Outs no registrados:** `OutsOnPlay` casi no registra las dobles matanzas. En "
+        f"{pct(OO['pct_turnos']['No Altitude'])} de los turnos de No Altitude y {pct(OO['pct_turnos']['Extreme Altitude'])} de los de Extreme "
+        f"(en rodados, {pct(OO['pct_rodados']['No Altitude'])} y {pct(OO['pct_rodados']['Extreme Altitude'])}) el siguiente turno empieza con un "
+        "out más de los registrados, así que el RE24 valora esos outs como si no hubieran ocurrido. El sesgo aproximado en el run value por bola "
+        f"en juego es {m(OO['sesgo_rv_bip']['No Altitude'], 3)} en No Altitude y {m(OO['sesgo_rv_bip']['Extreme Altitude'], 3)} en Extreme: "
+        f"explicaría ≈ {m(OO['sesgo_extreme_menos_no'], 3)} de las {m(ef['rv_bip']['extreme'], 3)} carreras de diferencia, dentro de su intervalo "
+        "de confianza. No lo corregimos porque el dataset no trae corredores en base para saber qué out faltó.",
         "- **El óptimo no es una receta:** no considera biomecánica, salud, secuencias, repertorio ni fatiga.",
         "",
         "## Referencias",

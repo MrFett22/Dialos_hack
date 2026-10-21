@@ -1,0 +1,26 @@
+{
+  "turnos_revisados": 126713,
+  "turnos_con_out_faltante": 2425,
+  "pct_turnos": {
+    "Extreme Altitude": 0.022927361225629706,
+    "Medium Altitude": 0.01879168804515136,
+    "No Altitude": 0.016864599875716358
+  },
+  "pct_rodados": {
+    "Extreme Altitude": 0.04753673292999136,
+    "Medium Altitude": 0.037611349389640385,
+    "No Altitude": 0.033851666986625714
+  },
+  "sesgo_rv_bip": {
+    "Extreme Altitude": 0.008542919196788911,
+    "Medium Altitude": 0.007135305629461662,
+    "No Altitude": 0.006198400439741786
+  },
+  "re_por_outs": {
+    "0": 0.8587646652864044,
+    "1": 0.6532628634737282,
+    "2": 0.3236653728373871,
+    "3": 0.0
+  },
+  "sesgo_extreme_menos_no": 0.002344518757047125
+}

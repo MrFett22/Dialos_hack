@@ -524,3 +524,7 @@ Formato: **respuesta breve** (para contestar ya) y **respuesta extendida** (si p
 **27. ¿Cómo perfilarían a un agente libre?**
 - *Breve:* Stuff+ de cada pitch en el simulador, swing-and-miss (whiff/swing, K%), control (BB%, Location+), forma de sus pitches y su AEPP estimado con la calculadora.
 - *Extendida:* La calculadora usa la misma fórmula y pesos del ranking; la tabla de referencia da los percentiles de los 599 pitchers. No medimos "resistencia a la altitud" individual porque hoy no es medible.
+
+**28. ¿Revisaron la calidad de la columna de outs?**
+- *Breve:* Sí. `OutsOnPlay` casi no registra las dobles matanzas; lo medimos y el sesgo es pequeño frente al efecto de altitud.
+- *Extendida:* En 1.7% de los turnos de No Altitude y 2.3% de los de Extreme (en rodados, 3.4% y 4.8%) el siguiente turno empieza con un out más de los registrados. Ese out falta en el run value, un poco más en Extreme. Con la expectativa de carreras por número de outs, eso explicaría +0.002 de las +0.068 carreras más por bola en juego en Extreme: queda dentro del intervalo de confianza y no cambia ninguna conclusión. No lo corregimos porque el dataset no trae corredores en base para saber qué out faltó.
