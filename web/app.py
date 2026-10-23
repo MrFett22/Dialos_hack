@@ -36,6 +36,11 @@ def engine() -> Engine:
     return Engine()
 
 
+@st.cache_resource(show_spinner="Cargando los scores por lanzamiento…")
+def pitch_scores() -> pd.DataFrame:
+    return pd.read_parquet(WEB / "pitch_scores.parquet")
+
+
 @st.cache_data(show_spinner=False)
 def load() -> dict:
     csv = lambda n: pd.read_csv(WEB / f"{n}.csv")  # noqa: E731
@@ -1127,6 +1132,37 @@ if len(ok):
     st.markdown(f"Mejor arma según Stuff+ (relativo a su tipo): **{ok.loc[ok['stuff_plus_tipo'].idxmax(), 'AutoPitchType']}** · mejor Location+: "
                 f"**{ok.loc[ok['location_plus_tipo'].idxmax(), 'AutoPitchType']}** · mayor whiff por swing: **{ok.loc[ok['whiff_swing'].idxmax(), 'AutoPitchType']}**. "
                 "Solo tipos con al menos 50 pitches.")
+st.markdown("#### Score de cada lanzamiento")
+st.markdown("Stuff+, Location+ y Pitching+ de **cada lanzamiento real** del pitcher, en la escala de lanzamiento del simulador (100 = lanzamiento "
+            "promedio de la liga, 10 = una desviación estándar entre lanzamientos). Usa los mismos modelos y la misma escala que el simulador, con "
+            "todas las características medidas del lanzamiento; Stuff+ y Pitching+ incluyen el ajuste del ambiente en el que se lanzó.")
+PS = pitch_scores()
+mine = PS[PS["pitcher_anon_id"] == pid]
+c = st.columns(4)
+f_tipo = c[0].multiselect("Tipo", sorted(mine["tipo"].unique().tolist()), key="ps_tipo")
+f_amb = c[1].multiselect("Ambiente", [a for a in ("No Altitude", "Medium Altitude", "Extreme Altitude") if a in set(mine["ambiente"])], key="ps_amb")
+f_temp = c[2].multiselect("Temporada", sorted(mine["temporada"].unique().tolist()), key="ps_temp")
+orden = c[3].selectbox("Ordenar por", ["Pitching+", "Stuff+", "Location+"], key="ps_orden")
+keep = pd.Series(True, index=mine.index)
+for col, vals in (("tipo", f_tipo), ("ambiente", f_amb), ("temporada", f_temp)):
+    if vals:
+        keep &= mine[col].isin(vals)
+sel = mine[keep]
+col_orden = {"Pitching+": "pitching_plus", "Stuff+": "stuff_plus", "Location+": "location_plus"}[orden]
+sel = sel.sort_values(col_orden, ascending=False)
+tabla = sel.drop(columns="pitcher_anon_id").rename(columns={
+    "velocidad": "velocidad (mph)", "ivb": "IVB (pulg)", "hb_brazo": "HB al brazo (pulg)", "giro": "giro (rpm)",
+    "lado_placa": "lado en el plato (pies)", "altura_placa": "altura en el plato (pies)",
+    "stuff_plus": "Stuff+", "location_plus": "Location+", "pitching_plus": "Pitching+"})
+st.dataframe(tabla.style.format({"Stuff+": "{:.0f}", "Location+": "{:.0f}", "Pitching+": "{:.0f}", "velocidad (mph)": "{:.1f}",
+                                 "IVB (pulg)": "{:.1f}", "HB al brazo (pulg)": "{:.1f}", "giro (rpm)": "{:,.0f}",
+                                 "lado en el plato (pies)": "{:.2f}", "altura en el plato (pies)": "{:.2f}"}, na_rep="—"),
+             width="stretch", hide_index=True, height=320)
+c = st.columns([3, 1])
+c[0].caption(f"{len(sel):,} de {len(mine):,} lanzamientos. El score mide la calidad esperada del lanzamiento, no su resultado: un buen lanzamiento "
+             "puede terminar en jonrón y uno malo en out. Un lanzamiento suelto es muy ruidoso; para evaluar al pitcher usa las métricas de arriba, "
+             "que agregan todos sus lanzamientos con shrinkage. Lado en el plato desde la vista del cátcher.")
+c[1].download_button("Descargar (CSV)", tabla.to_csv(index=False).encode("utf-8"), file_name=f"scores_{pid}.csv", mime="text/csv", key="ps_dl")
 st.caption("Lectura correcta: su perfil presenta características que históricamente son más (o menos) favorables en estos contextos. No es una "
            "garantía de rendimiento ni una prueba de que el pitcher sea \"resistente a la altitud\".")
 st.markdown(badges("lim") + f" **No hay arquetipos claros.** Al agrupar pitchers, la mejor separación tiene silueta {max(S['arquetipos']['silueta'].values()):.2f} "

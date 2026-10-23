@@ -17,7 +17,7 @@ La página es `web/app.py` (Streamlit). Los números de sección son los de la p
 
 | entregable | en la página | archivos |
 |---|---|---|
-| **1. Stuff+, Location+ y Pitching+ por pitch** | 8 · Construye tu lanzamiento (cualquier pitch); 4, 5 y 7 (cómo se calculan) | `src/models/`, `web/engine.py` |
+| **1. Stuff+, Location+ y Pitching+ por pitch** | 13 · Ficha del pitcher, "Score de cada lanzamiento" (cada lanzamiento real, filtrable y descargable); 8 · Construye tu lanzamiento (cualquier pitch); 4, 5 y 7 (cómo se calculan) | `data/web/pitch_scores.parquet`, `src/analysis/pitch_scores.py`, `web/engine.py` |
 | **1. Agregación por pitcher y por repertorio** | 13 · Ranking y ficha del pitcher (Stuff+ y Location+ por tipo) | `data/web/pitcher_altitude_profiles.csv`, `pitcher_pitch_types.csv` |
 | **1. ¿Qué arsenal produce el Stuff+ más alto en altitud?** | 11 · Recomendaciones, parte C | `data/web/arsenal_altitude.csv` |
 | **1. Altitud vs. nivel del mar (efecto cuantificado)** | 1 · Evidencia, 6 · Tipos de lanzamiento, 9 · Pitching+ general vs. altitud, 12 · Compara ambientes | `reports/p2_pitcher_profiles_altitude.md` |

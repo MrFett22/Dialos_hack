@@ -69,6 +69,7 @@ def build() -> str:
     TV = J(BENCH / "validacion_temporal.json")["prespecified"]
     PR = J(WEB / "prospect_reference.json")
     OO = J(WEB / "outs_on_play_check.json")
+    PSC = pd.read_parquet(WEB / "pitch_scores.parquet", columns=["stuff_plus"])
     OC = pd.read_csv(WEB / "optimal_pitch_comparison.csv")
     SH = pd.read_csv(WEB / "pitch_shape_altitude_effects.csv")
     TY = pd.read_csv(WEB / "pitch_type_altitude_effects.csv").set_index("tipo")
@@ -285,6 +286,8 @@ def build() -> str:
         "compara lado a lado en altitud y a nivel del mar, por física (re-simulación de la trayectoria) y por costo de los resultados "
         f"(correlación de rangos general vs. Extreme {EV['comparacion_lanzamientos']['spearman_general_extreme']:.3f}; con dos strikes gana el "
         f"swing-and-miss: correlación {m(rg['dos strikes']['whiff_vs_general'], 2)}).",
+        f"- **Score de cada lanzamiento:** Stuff+, Location+ y Pitching+ de los {len(PSC):,} lanzamientos reales, en la misma escala del simulador, "
+        "filtrables y descargables en la ficha de cada pitcher.",
         "- **Ranking AEPP** con intervalo del lugar y P(top 25); la incertidumbre es grande (amplitud mediana del intervalo de 80%: "
         f"{ae['ancho_mediano_rango_80']:.0f} posiciones).",
         "- **Recomendaciones:** formas de pitch que pierden más en altitud, mapa de movimiento de los pitches más y menos efectivos, arsenales y "

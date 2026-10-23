@@ -122,6 +122,7 @@ El valor de un pitch individual es muy ruidoso, por eso el RMSE baja poco en abs
 ## 8. Uso para el cuerpo técnico
 
 - **Simulador:** el pitching coach ingresa velocidad, IVB, HB, spin, extensión, salida, ubicación y conteo y obtiene Stuff+, Location+, Pitching+, P(whiff), P(bola en juego), el daño esperado de contacto y alertas si la combinación sale de lo observado. El mismo pitch se compara lado a lado en altitud y a nivel del mar, por física (re-simulación de la trayectoria) y por costo de los resultados (correlación de rangos general vs. Extreme 0.997; con dos strikes gana el swing-and-miss: correlación +0.70).
+- **Score de cada lanzamiento:** Stuff+, Location+ y Pitching+ de los 626,551 lanzamientos reales, en la misma escala del simulador, filtrables y descargables en la ficha de cada pitcher.
 - **Ranking AEPP** con intervalo del lugar y P(top 25); la incertidumbre es grande (amplitud mediana del intervalo de 80%: 294 posiciones).
 - **Recomendaciones:** formas de pitch que pierden más en altitud, mapa de movimiento de los pitches más y menos efectivos, arsenales y un flujo para perfilar prospectos con una calculadora de AEPP.
 - **Lanzamiento óptimo por ambiente:** buscado entre lanzamientos reales (sin extrapolar); con la física aproximada del aire de Extreme el perfil óptimo sigue dentro del ruido en 17 de 21 combinaciones.

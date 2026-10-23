@@ -65,6 +65,7 @@ STEPS = [
     ("pitch_environment", "src.analysis.pitch_environment", []),
     ("holdout_final", "src.validation.holdout_final", []),
     ("deliverables", "src.analysis.deliverables", []),
+    ("pitch_scores", "src.analysis.pitch_scores", []),
     ("technical_document", "src.reports.technical_document", []),
     ("tests", "pytest", ["-q", "tests"]),
 ]

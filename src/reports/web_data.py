@@ -59,7 +59,12 @@ def hand_sign(throws: pd.Series) -> np.ndarray:
 # ---------------------------------------------------------------------------
 
 
-def scales() -> dict:
+def final_pitch_values() -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Valores de cada lanzamiento real con los modelos FINALES (los del simulador).
+
+    Regresa (df, ld): df con P(whiff | swing) de Stuff+ Physical (`p_st`) y E[Δ] de Pitching+ (`xrv`) por pitch;
+    ld con el valor de Location+ (`loc_value`, E[Δ] menos la referencia del contexto) por pitch.
+    """
     df = chain.load_data()
     frame = pc.load_pitch_frame()[["PitchUID", "env", "altitude_category"]]
     df = df.merge(frame, on="PitchUID", how="left")
@@ -87,6 +92,12 @@ def scales() -> dict:
     xrv_loc = chain.expected_run_value(chain.event_probabilities(pr), Dm)
     key = list(zip(ld["AutoPitchType"].astype(str), ld["same_side"].astype(str), ld["bat_side"].astype(str), ld["Balls"], ld["Strikes"]))
     loc_value = xrv_loc - np.array([loc["reference_by_context"][k] for k in key])
+    return df.assign(p_st=p_st, xrv=xrv), ld.assign(loc_value=loc_value)
+
+
+def scales(values: tuple[pd.DataFrame, pd.DataFrame] | None = None) -> dict:
+    df, ld = values if values is not None else final_pitch_values()
+    p_st, xrv, loc_value = df["p_st"].to_numpy(), df["xrv"].to_numpy(), ld["loc_value"].to_numpy()
 
     # Ajuste por ambiente a nivel de categoría (el oficial usa temporada × estadio; el simulador solo conoce la categoría)
     cat = df["altitude_category"]
@@ -388,6 +399,7 @@ EXTENSION_FILES = {
     "movement_map.csv": "mapa de movimiento por pitcher × tipo (No Altitude y Extreme), Stuff+ del tipo y grupo más/menos efectivo",
     "arsenal_altitude.csv": "arsenales (tipos con uso ≥ 10%): Stuff+ con pitches de Extreme, AEPP, K% y whiff",
     "prospect_reference.json": "percentiles de referencia y parámetros de la calculadora de AEPP para prospectos",
+    "pitch_scores.parquet": "Stuff+, Location+ y Pitching+ de cada lanzamiento real (escala de lanzamiento del simulador), con contexto, características físicas y resultado",
     "outs_on_play_check.json": "outs que OutsOnPlay no registra (dobles matanzas) por ambiente y su sesgo aproximado en el run value por bola en juego",
 }
 

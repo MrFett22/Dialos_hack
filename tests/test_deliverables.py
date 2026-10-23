@@ -72,3 +72,17 @@ def test_outs_on_play_check_is_consistent():
         assert o["pct_rodados"][c] > o["pct_turnos"][c] > 0  # el out faltante es sobre todo de rodados (dobles matanzas)
         assert o["sesgo_rv_bip"][c] > 0
     assert abs(o["sesgo_extreme_menos_no"] - (o["sesgo_rv_bip"]["Extreme Altitude"] - o["sesgo_rv_bip"]["No Altitude"])) < 1e-12
+
+
+@pytest.mark.skipif(not (WEB / "pitch_scores.parquet").exists(), reason="requiere el paso pitch_scores del pipeline")
+def test_pitch_scores_use_the_simulator_scale():
+    t = pd.read_parquet(WEB / "pitch_scores.parquet")
+    s = json.loads((WEB / "simulator_scales.json").read_text(encoding="utf-8"))
+    assert not {"PitchUID", "game_anon_id", "batter_anon_id"} & set(t.columns)  # sin identificadores de lanzamiento, juego ni bateador
+    for name in ("stuff", "location", "pitching"):
+        v = t[f"{name}_plus"].dropna()
+        assert len(v) > 0.99 * len(t)
+        # misma escala que el simulador: los percentiles de los lanzamientos reales coinciden con los de simulator_scales.json
+        for q in (10, 50, 90):
+            assert abs(v.quantile(q / 100) - s[name]["percentiles_lanzamientos"][str(q)]) < 0.15
+    assert set(t["resultado"].dropna()) <= {"bola", "strike cantado", "golpeado", "swing fallado", "foul", "out", "sencillo", "doble", "triple", "jonrón"}

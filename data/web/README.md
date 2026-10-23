@@ -34,5 +34,6 @@ Generados por el pipeline (`src/reports/p2_report.py`, `src/reports/web_data.py`
 | `arsenal_altitude.csv` | arsenales (tipos con uso ≥ 10%): Stuff+ con pitches de Extreme, AEPP, K% y whiff |
 | `prospect_reference.json` | percentiles de referencia y parámetros de la calculadora de AEPP para prospectos |
 | `outs_on_play_check.json` | outs que OutsOnPlay no registra (dobles matanzas) por ambiente y su sesgo aproximado en el run value por bola en juego |
+| `pitch_scores.parquet` | Stuff+, Location+ y Pitching+ de cada lanzamiento real (escala de lanzamiento del simulador), con contexto, características físicas y resultado |
 
 La sensibilidad observada es exploratoria (confiabilidad ≈ 0.11). El contrafactual físico es explicativo: no mostró ventaja predictiva frente a la normalización simple por estadio anónimo.
