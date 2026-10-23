@@ -138,6 +138,10 @@ El valor de un pitch individual es muy ruidoso, por eso el RMSE baja poco en abs
 - **Outs no registrados:** `OutsOnPlay` casi no registra las dobles matanzas. En 1.7% de los turnos de No Altitude y 2.3% de los de Extreme (en rodados, 3.4% y 4.8%) el siguiente turno empieza con un out más de los registrados, así que el RE24 valora esos outs como si no hubieran ocurrido. El sesgo aproximado en el run value por bola en juego es +0.006 en No Altitude y +0.009 en Extreme: explicaría ≈ +0.002 de las +0.068 carreras de diferencia, dentro de su intervalo de confianza. No lo corregimos porque el dataset no trae corredores en base para saber qué out faltó.
 - **El óptimo no es una receta:** no considera biomecánica, salud, secuencias, repertorio ni fatiga.
 
+## Herramientas y uso de IA
+
+Usamos Claude (Anthropic) como asistente para escribir código y redactar textos. El planteamiento, las decisiones de modelado y la revisión de los resultados son del equipo; todas las cifras salen del pipeline reproducible. Librerías de código abierto: LightGBM, scikit-learn, Optuna, pandas, NumPy, PyArrow, SciPy, Streamlit, Plotly, Matplotlib y pytest. Datos: solo el dataset Trackman anónimo del hackathon.
+
 ## Referencias
 
 - Adair, R. K. (2002). *The Physics of Baseball* (3.ª ed.). HarperCollins.

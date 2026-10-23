@@ -317,6 +317,13 @@ def build() -> str:
         "de confianza. No lo corregimos porque el dataset no trae corredores en base para saber qué out faltó.",
         "- **El óptimo no es una receta:** no considera biomecánica, salud, secuencias, repertorio ni fatiga.",
         "",
+        "## Herramientas y uso de IA",
+        "",
+        "Usamos Claude (Anthropic) como asistente para escribir código y redactar textos. El planteamiento, las decisiones de modelado y la "
+        "revisión de los resultados son del equipo; todas las cifras salen del pipeline reproducible. Librerías de código abierto: LightGBM, "
+        "scikit-learn, Optuna, pandas, NumPy, PyArrow, SciPy, Streamlit, Plotly, Matplotlib y pytest. Datos: solo el dataset "
+        "Trackman anónimo del hackathon.",
+        "",
         "## Referencias",
         "",
         "- Adair, R. K. (2002). *The Physics of Baseball* (3.ª ed.). HarperCollins.",

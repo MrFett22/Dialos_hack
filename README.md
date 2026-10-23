@@ -80,6 +80,17 @@ La página no entrena modelos: usa los artefactos de `src/models/artifacts/` (`p
 El repositorio no incluye los datos crudos ni procesados (`data/raw`, `data/processed`). Solo incluye las tablas derivadas y anónimas
 de `data/web/` y tres agregados pequeños de `data/processed/` que necesita la página publicada.
 
+## Herramientas, librerías e IA
+
+- **IA generativa:** usamos Claude (Anthropic) como asistente para escribir código y redactar textos (documentos, reportes y página). El
+  planteamiento, las decisiones de modelado y la revisión de los resultados son del equipo; todas las cifras salen del pipeline
+  reproducible y las pruebas de `tests/` revisan que los textos citen los números actuales.
+- **Librerías de código abierto:** LightGBM (modelos), scikit-learn (validación y métricas), Optuna (ajuste de hiperparámetros), pandas,
+  NumPy, PyArrow y SciPy (datos y estadística), Streamlit y Plotly (página), Matplotlib (figuras) y pytest (pruebas). En los
+  análisis exploratorios archivados en `historial/` también se usaron SHAP, PyMC y EconML. Versiones exactas en `requirements-lock.txt`.
+- **Literatura:** las referencias de física del béisbol, sabermetría y métodos están en el documento técnico.
+- **Datos:** solo el dataset Trackman anónimo del hackathon; ninguna fuente externa.
+
 ## Documentos de respaldo
 
 - Fases del proyecto: `reports/p0_altitude_pipeline.md` (estadios anónimos y baselines), `reports/hipotesis_altitud.md` (efectos de
